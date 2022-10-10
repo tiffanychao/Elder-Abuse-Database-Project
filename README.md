@@ -1,5 +1,5 @@
 # Elder-Abuse-Database-Project
-How to run if version of pip is less than version 2.2:
+How to run if version of flask is less than version 2.2:
 
 1.) Go to the project directory 
 
