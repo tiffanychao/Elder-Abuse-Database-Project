@@ -1,82 +1,82 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
 
 <head>
-    <link rel="stylesheet" href="../static/framework.css">
-    <meta charset="UTF-8">
+    {% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='clientInformation.css') }}">
+    <title>{% block title %}{% endblock %} - My Webpage</title>
+    {% endblock %}
 </head>
 
 <body>
-    <div class="title">Forensic Center Database</div>
-    <div class="header_container">
-        <div class="referral_information_bar">
-            <div class="referral_information">Referral Information</div>
-            <div>
-                <button class="case_summary_button">Case Summary</button>
-                <button class="save_record_button">Save Records</button>
+    <div>
+        <div class="title">Forensic Center Database</div>
+        <div class="header_container">
+            <div class="referral_information_bar">
+                <div class="referral_information">Referral Information</div>
+                <div>
+                    <button class="case_summary_button">Case Summary</button>
+                    <button class="save_record_button">Save Records</button>
+                </div>
             </div>
+            <div class="status_container">
+                <!-- urgent status -->
+                <div class="checkbox_with_label">
+                    <div>Case Status</div>
+                    <input type="checkbox">
+                </div>
+                <!-- Routine Status -->
+                <div class="checkbox_with_label">
+                    <div>Routine Status</div>
+                    <input type="checkbox">
+                </div>
+                <!-- Case Closed -->
+                <div class="checkbox_with_label">
+                    <div>Case Closed</div>
+                    <input type="checkbox">
+                </div>
+                <!-- Case Date -->
+                <div class="checkbox_with_label">
+                    <div>Case Date</div>
+                    <input class="text_input" type="text">
+                </div>
+                <!-- Case Number -->
+                <div class="checkbox_with_label">
+                    <div>Case Number</div>
+                    <input class="text_input" type="text">
+                </div>
+            </div>
+            <div class="case_tabs">
+                <a href="/" class="individual_case_tab">Consultation</a>
+                <a href="/" class="individual_case_tab">Referring Agency</a>
+                <a href="/" class="individual_case_tab">Referring Agency</a>
+                <a href="/" class="individual_case_tab">Client</a>
+                <a href="/" class="individual_case_tab">Client Info </a>
+                <a href="/" class="individual_case_tab">Abuser(s) </a>
+                <a href="/" class="individual_case_tab">Abuser Info </a>
+                <a href="/" class="individual_case_tab">Notes </a>
+                <a href="/" class="individual_case_tab">Narrative </a>
+                <a href="/" class="individual_case_tab">Outcome </a>
+                <a href="/" class="individual_case_tab">Attachments </a>
+            </div>
+            <!-- can supply your new view in the div below -->
+            <div class="different_views">{% block content %}{% endblock %}</div>
         </div>
-        <div class="status_container">
-            <!-- urgent status -->
-            <div class="checkbox_with_label">
-                <div>Case Status</div>
-                <input type="checkbox">
-            </div>
-            <!-- Routine Status -->
-            <div class="checkbox_with_label">
-                <div>Routine Status</div>
-                <input type="checkbox">
-            </div>
-            <!-- Case Closed -->
-            <div class="checkbox_with_label">
-                <div>Case Closed</div>
-                <input type="checkbox">
-            </div>
-            <!-- Case Date -->
-            <div class="checkbox_with_label">
-                <div>Case Date</div>
-                <input class="text_input" type="text">
-            </div>
-            <!-- Case Number -->
-            <div class="checkbox_with_label">
-                <div>Case Number</div>
-                <input class="text_input" type="text">
-            </div>
+        <div class="sidebar_container">
+            <a href="/" class="flexbox_item">Main</a>
+            <a href="/" class="flexbox_item">New Record</a>
+            <a href="/" class="flexbox_item">Reports</a>
+            <a href="/" class="flexbox_item">Import Form</a>
+            <a href="/" class="flexbox_item">Full Database Export</a>
+            <a href="/" class="flexbox_item">Deidentified Export</a>
+            <a href="/" class="flexbox_item">Search</a>
+            <a href="/" class="flexbox_item">Search by presenter</a>
+            <a href="/" class="flexbox_item">Search by Suspect</a>
+            <a href="/" class="flexbox_item">Agency Attendance</a>
+            <a href="/" class="flexbox_item">Case Status</a>
+            <a href="/" class="flexbox_item">Center Roster</a>
         </div>
-        <div class="case_tabs">
-            <a href="/placeholder" class="individual_case_tab">Consultation</a>
-            <a href="/placeholder" class="individual_case_tab">Referring Agency</a>
-            <a href="/placeholder" class="individual_case_tab">Referring Agency</a>
-            <a href="/placeholder" class="individual_case_tab">Client</a>
-            <a href="/placeholder" class="individual_case_tab">Client Info </a>
-            <a href="/placeholder" class="individual_case_tab">Abuser(s) </a>
-            <a href="/placeholder" class="individual_case_tab">Abuser Info </a>
-            <a href="/placeholder" class="individual_case_tab">Notes </a>
-            <a href="/placeholder" class="individual_case_tab">Narrative </a>
-            <a href="/placeholder" class="individual_case_tab">Outcome </a>
-            <a href="/placeholder" class="individual_case_tab">Attachments </a>
-        </div>
-        <!-- can supply your new view in the div below -->
-        <div class="different_views">new text here</div>
     </div>
-
-    <div class="sidebar_container">
-        <a href="/placeholder" class="flexbox_item">Main</a>
-        <a href="/placeholder" class="flexbox_item">New Record</a>
-        <a href="/placeholder" class="flexbox_item">Reports</a>
-        <a href="/placeholder" class="flexbox_item">Import Form</a>
-        <a href="/placeholder" class="flexbox_item">Full Database Export</a>
-        <a href="/placeholder" class="flexbox_item">Deidentified Export</a>
-        <a href="/placeholder" class="flexbox_item">Search</a>
-        <a href="/placeholder" class="flexbox_item">Search by presenter</a>
-        <a href="/placeholder" class="flexbox_item">Search by Suspect</a>
-        <a href="/placeholder" class="flexbox_item">Agency Attendance</a>
-        <a href="/placeholder" class="flexbox_item">Case Status</a>
-        <a href="/placeholder" class="flexbox_item">Center Roster</a>
-    </div>
-
-
-
 </body>
 
 </html>

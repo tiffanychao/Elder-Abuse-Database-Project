@@ -1,0 +1,24 @@
+.text_with_input_container{
+    display: grid;
+    grid-template-columns: 300px 200px;
+    padding-top: 10px;
+}
+
+.client_information_container{
+    padding: 40px 0px 0px 140px;
+}
+
+
+.previous_reports_container{
+    display: flex;
+    flex-direction: column;
+}
+
+.radio_button_adjust{
+    position: relative;
+    right: 4px;
+}
+
+
+
+

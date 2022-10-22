@@ -1,0 +1,137 @@
+{% extends "framework.html" %}
+{% block title %}Index{% endblock %}
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="../static/clientInformation.css">
+<link rel="stylesheet" href="../static/framework.css">
+{% endblock %}
+{% block content %}
+<div class="client_information_container">
+    <!-- Physician Name -->
+    <div class="text_with_input_container">
+        <div>
+            Physician Name
+        </div>
+        <input value="{{sampleInfo}}" class="text_input_design">
+    </div>
+    <!-- Physician Telephone -->
+    <div class="text_with_input_container">
+        <div>
+            Physician Telephone
+        </div>
+        <input class="text_input_design">
+    </div>
+    <!-- Insurance -->
+    <div class="text_with_input_container">
+        <div>
+            Insurance
+        </div>
+        <input class="text_input_design">
+    </div>
+    <!-- Medications and Dosage -->
+    <div class="text_with_input_container">
+        <div>
+            Medications and Dosage
+        </div>
+        <textarea rows="3" class="text_input_design"></textarea>
+    </div>
+    <!-- Illnesses and Addictions -->
+    <div class="text_with_input_container">
+        <div>
+            Illnesses and Addictions
+        </div>
+        <textarea rows="3" class="text_input_design"></textarea>
+    </div>
+    <!-- Physical Functional Status: Appears -->
+    <div class="text_with_input_container">
+        <div>
+            Insurance
+        </div>
+        <select name="selectName" class="dropdown_design">
+            <option value="Value1">Value1</option>
+            <option value="Value2">Value2</option>
+            <option value="Value3">Value3</option>
+            <option value="Value4">Value4</option>
+        </select>
+    </div>
+    <!-- Cognitive Functional Status: Appears -->
+    <div class="text_with_input_container">
+        <div>
+            Cognitive Functional Status: Appears
+        </div>
+        <select name="selectName" class="dropdown_design">
+            <option value="Value1">Value1</option>
+            <option value="Value2">Value2</option>
+            <option value="Value3">Value3</option>
+            <option value="Value4">Value4</option>
+        </select>
+    </div>
+    <!-- Living Setting -->
+    <div class="text_with_input_container">
+        <div>
+            Living Setting
+        </div>
+        <select name="selectName" class="dropdown_design">
+            <option value="Value1">Value1</option>
+            <option value="Value2">Value2</option>
+            <option value="Value3">Value3</option>
+            <option value="Value4">Value4</option>
+        </select>
+    </div>
+    <!-- Lives With -->
+    <div class="text_with_input_container">
+        <div>
+            Lives With
+        </div>
+        <select name="selectName" class="dropdown_design">
+            <option value="Value1">Value1</option>
+            <option value="Value2">Value2</option>
+            <option value="Value3">Value3</option>
+            <option value="Value4">Value4</option>
+        </select>
+    </div>
+    <!-- Other(describe) -->
+    <div class="text_with_input_container">
+        <div>
+            Other (describe)
+        </div>
+        <input class="text_input_design">
+    </div>
+    <!-- Previous Reports of Abuse -->
+    <div class="text_with_input_container">
+        <div>
+            Previous Reports of Abuse
+        </div>
+        <div class="previous_reports_container">
+            <div class="radio_button_adjust">
+                <input type="radio" id="html" name="fav_language" value="HTML">
+                <label for="html">No</label><br>
+            </div>
+            <div class="radio_button_adjust">
+                <input type="radio" id="html" name="fav_language" value="HTML">
+                <label for="html">Yes</label><br>
+            </div>
+            <div>if Yes then explain</div>
+            <textarea name="w3review" rows="3" cols="50" class="text_input_design"></textarea>
+
+            <div></div>
+        </div>
+
+    </div>
+    <!-- Multiple Alleged Suspects -->
+    <div class="text_with_input_container">
+        <div>
+            Multiple Alleged Suspects
+        </div>
+        <div>
+            {% if exampleCheckbox == "1" %}
+            <input type="checkbox" class="radio_button_adjust" checked>
+            {% endif %}
+            {% if exampleCheckbox != "1" %}
+            <input type="checkbox" class="radio_button_adjust">
+            {% endif %}
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}
