@@ -10,3 +10,9 @@ def client_information():
 def homepage():
     return render_template('homepage.html')
 
+
+@app.route('/example')
+def example():
+    variable = "check your name"
+    return render_template('example.html', value = variable)
+
