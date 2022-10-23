@@ -6,6 +6,31 @@ app = Flask(__name__)
 def client_information():
     return render_template('clientInformation.html', sampleInfo = "sampleInfo", exampleCheckbox = "1")
 
+@app.route('/test', methods =["GET", "POST"])
+def get_abuser_info_from_db():
+    # size 10
+    Dic = dict()
+    Dic["referCaseNum"] = "12345"
+    Dic["firstName"] = "Jorge"
+    Dic["lastName"] = "Sole"
+    Dic["FCTeamMember"] = "APS"
+    Dic["fcTeamOther"] = ""
+    Dic["email"] = "jsole@hs.uci.edu"
+    Dic["officePhone"] = "(714)456-8586"
+    Dic["officeTax"] = "(714)456-7933"
+    Dic["mobilePhone"] = ""
+    Dic["supervisorName"] = "Jacklyn Schult"
+ 
+    return Dic
+
+@app.route('/referring_agency',methods =["GET", "POST"])
+def referring_agency():
+    if request.method == "POST":
+        data = request.form.get("ReferCaseNum")
+        print(data)
+    dictInfo = get_abuser_info_from_db()
+    return render_template('referringAgency.html', **dictInfo)
+
 @app.route('/')
 def homepage():
     return render_template('homepage.html')
@@ -15,4 +40,6 @@ def homepage():
 def example():
     variable = "check your name"
     return render_template('example.html', value = variable)
+
+
 

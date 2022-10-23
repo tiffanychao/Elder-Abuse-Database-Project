@@ -1,0 +1,102 @@
+{% extends "framework.html" %}
+{% block title %}Index{% endblock %}
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="../static/2columns.css">
+<link rel="stylesheet" href="../static/framework.css">
+{% endblock %}
+{% block content %}
+<div class="container">
+    <form action="{{ url_for("referring_agency")}}" method="post">
+    <!-- Referring Case Number -->
+    <div class="text_with_input_container">
+        <div>
+            Referring Case Number
+        </div>
+        <input name = "ReferCaseNum" value="{{referCaseNum}}" class="text_input_design">
+    </div>
+    <!-- First Name -->
+    <div class="text_with_input_container">
+        <div>
+            First Name
+        </div>
+        <input name = "FirstName" value ="{{firstName}}" class="text_input_design">
+    </div>
+    <!-- Last Name -->
+    <div class="text_with_input_container">
+        <div>
+            Last Name
+        </div>
+        <input name = "LastName" value="{{lastName}}" class="text_input_design">
+    </div>
+
+
+    <!-- FCTeamMember -->
+    <div class="text_with_input_container">
+        <div>
+            FCTeamMember
+        </div>
+        <select name="FCTeamMember" id="FCTeamMember">
+            <option value="Select">Select</option>
+            <option value="APS">.APS</option>
+            <option value="LawEnforcement">Law Enforcement</option>
+            <option value="DA">D.A.</option>
+            <option value="CivilAttorney">Civil Attorney</option>
+            <option value="Ombudsman">Ombudsman</option>
+            <option value="Coroner">Coroner/ME</option>
+            <option value="MedicalPractitioner">Medical Practitioner</option>
+            <option value="MentalHP">Mental Health Practitioner</option>
+    </select><br>
+    </div>
+    <!-- Cognitive Functional Status: Appears -->
+    
+    <!-- FC Team Other -->
+    <div class="text_with_input_container">
+        <div>
+            FC Team Other
+        </div>
+        <input name = "FCTeamOther" value="{{fcTeamOther}}" class="text_input_design">
+    </div>
+    <!-- Email -->
+    <div class="text_with_input_container">
+        <div>
+            Email
+        </div>
+        <input name="Email" value = "{{email}}" class="text_input_design">
+    </div>
+
+    <!-- Office Phone -->
+    <div class="text_with_input_container">
+        <div>
+            Office Phone
+        </div>
+        <input name="OfficePhone" value = "{{officePhone}}" class="text_input_design">
+    </div>
+    <!-- Office Tax -->
+    <div class="text_with_input_container">
+        <div>
+            Office Tax
+        </div>
+        <input name="OfficeTax" value = "{{officeTax}}" class="text_input_design">
+    </div>
+    <!-- Mobile Tax -->
+    <div class="text_with_input_container">
+        <div>
+            Mobile Tax
+        </div>
+        <input name="MobilePhone" value = "{{mobilePhone}}" class="text_input_design">
+    </div>
+    <!-- Supervisor Name -->
+    <div class="text_with_input_container">
+        <div>
+            Supervisor Name
+        </div>
+        <input name="SupervisorName" value = "{{supervisorName}}" class="text_input_design">
+    </div>
+    <br>
+    <button type="submit">Add</button>
+</form>
+
+</div>
+</div>
+{% endblock %}
