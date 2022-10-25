@@ -91,6 +91,7 @@ body {
 
 .different_views {
     position: relative;
+   
 
 }
 
@@ -182,10 +183,6 @@ body {
 
     .checkbox_with_label {
         height: 15px;
-    }
-
-    .header_container {
-        left: -10px;
     }
 
     .title {
