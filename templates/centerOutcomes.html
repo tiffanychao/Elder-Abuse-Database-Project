@@ -8,18 +8,17 @@
 {% block content %}
 <div class="center_outcome_container">
    <div class="conservatorship">
-
-      <div>Conservatorship</div>
-      <div>Type of Conservatorship</div>
+      <div class="section_header">Conservatorship</div>
+      <div class="section_header">Type of Conservatorship</div>
       <div></div>
       <div><input type="checkbox"> <label>Probate Conservatorship</label></div>
       <div> <label>Public Guardian</label> <input type="checkbox"></div>
       <div><label>Extent of Conservatorship</label> <select name="cars" id="cars">
-         <option value="volvo">Volvo</option>
-         <option value="saab">Saab</option>
-         <option value="mercedes">Mercedes</option>
-         <option value="audi">Audi</option>
-      </select></div>
+            <option value="volvo">Volvo</option>
+            <option value="saab">Saab</option>
+            <option value="mercedes">Mercedes</option>
+            <option value="audi">Audi</option>
+         </select></div>
       <div><input type="checkbox"> <label>LPS Conservatorship</label></div>
       <div><label>Private</label> <select name="cars" id="cars">
             <option value="volvo">Volvo</option>
@@ -30,7 +29,58 @@
       <div><label>Name of Conservator</label> <input></div>
       <div><input type="checkbox"> <label>Temporary Conservatorship</label></div>
       <div><label>Conservator is a SA</label> <input type="checkbox"></div>
+   </div>
+   <!-- Evaluations -->
+   <div class="section_header">Evaluation(s)
+   </div>
+   <div class="evaluations">
+      <div><input type="checkbox"> <label>Geriatrician/MD</label></div>
+      <div><input type="checkbox"> <label>Neuro/Geropsychologist</label></div>
+      <div><input type="checkbox"> <label>GENESIS/mental health</label></div>
+      <div><input type="checkbox"> <label>Law enforcement investigation/follow up</label></div>
+   </div>
+   <!-- Supportive Services -->
+   <div class="section_header">Supportive Service(s)</div>
+   <div class="supportive_services">
+      <div><input type="checkbox"> <label>Social service linkage/community resource</label></div>
+      <div><input type="checkbox"> <label>Civil remedy: consultation, meditation, contracts, property,
+            conservatorship</label></div>
+      <div><input type="checkbox"> <label>Initiate companion APS/LE case</label></div>
+   </div>
 
+   <!-- Asset Protection -->
+   <div class="section_header">Asset Protection</div>
+   <div class="asset_protection">
+      <div><input type="checkbox"> <label>Freezing Assets </label></div>
+      <div><input type="checkbox"> <label>Other safeguard to property/assets (e.g rep payee)</label></div>
+      <div><input type="checkbox"> <label>Restitution of property/assets</label></div>
+   </div>
+
+   <!-- Prosecution -->
+   <div class="section_header">Prosecution</div>
+   <div class="prosecution">
+      <div><input type="checkbox"> <label>Filing of charges: District Attorney, City Attorney, other </label></div>
+      <div><input type="checkbox"> <label>Legal outcomes: declined, conviction, sentencing</label></div>
+   </div>
+
+   <!-- Self Sufficiency -->
+   <div class="section_header">Self Sufficiency</div>
+   <div>
+      <div><input type="checkbox"> <label>Filing of charges: District Attorney, City Attorney, other </label></div>
+   </div>
+
+   <!-- Client Protection -->
+   <div class="section_header">Client Protection</div>
+   <div class="client_protection">
+      <div><input type="checkbox"> <label>Arrest of suspected perpetrator</label></div>
+      <div> <label>Restraining Order</label> <select name="cars" id="cars">
+            <option value="volvo">Volvo</option>
+            <option value="saab">Saab</option>
+            <option value="mercedes">Mercedes</option>
+            <option value="audi">Audi</option>
+         </select></div>
+      <div><input type="checkbox"> <label>Hospitalize (medical,psych)</label></div>
+      <div><label>Name of person who RO is for</label> <input></div>
    </div>
 </div>
 
