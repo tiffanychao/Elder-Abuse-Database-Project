@@ -19,6 +19,7 @@ body {
     position: relative;
     align-items: center;
     left: -18px;
+    width: 100%;
     right: 0px;
     height: 40px;
     padding-left: 10px;
@@ -49,6 +50,7 @@ body {
     position: fixed;
     font-size: 50px;
     width: 100%;
+    left: 0px;
     top: 0;
     background-color: black;
     color: white;
