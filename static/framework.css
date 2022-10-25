@@ -165,12 +165,6 @@ body {
     }
 }
 
-@media only screen and (max-width: 700px) {
-    .different_views {
-        right: 100px;
-    }
-
-}
 
 @media only screen and (max-width: 590px) {
     .referral_information {
@@ -200,7 +194,4 @@ body {
         font-size: 40px;
     }
 
-    .different_views {
-        right: 120px;
-    }
 }
