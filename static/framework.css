@@ -19,10 +19,10 @@ body {
     position: relative;
     align-items: center;
     left: -18px;
+    bottom: 10px;
     width: 100%;
     right: 0px;
     height: 40px;
-    padding-left: 10px;
     background-color: #BED4DB;
     margin-left: 20px;
     flex-direction: row;
@@ -48,7 +48,7 @@ body {
 
 .title {
     position: fixed;
-    font-size: 50px;
+    font-size: 40px;
     width: 100%;
     left: 0px;
     top: 0;
@@ -169,7 +169,7 @@ body {
 
 @media only screen and (max-width: 590px) {
     .referral_information {
-        font-size: 20px;
+        font-size: 20px;    
     }
 
     .case_tabs {
@@ -186,9 +186,7 @@ body {
     }
 
     .title {
-        left: -5px;
         right: 0px;
-        font-size: 40px;
     }
 
 }
