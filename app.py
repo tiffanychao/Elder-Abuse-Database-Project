@@ -40,10 +40,27 @@ def homepage():
     return render_template('homepage.html')
 
 
+
+
 @app.route('/example')
 def example():
     variable = "check your name"
     return render_template('example.html', value = variable)
 
+@app.route('/narrative')
+def narrative():
+    variable = "check your name"
+    return render_template('narrative.html', value = variable)
 
 
+
+@app.route('/consulation')
+def consulation():
+    variable = "check your name"
+    return render_template('consulation.html', value = variable)
+
+
+@app.route('/notes')
+def notes():
+    variable = "check your name"
+    return render_template('notes.html', value = variable)
