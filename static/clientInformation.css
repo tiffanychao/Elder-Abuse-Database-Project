@@ -1,3 +1,14 @@
+.client_information_banner{
+    font-size: 40px;
+    position: relative;
+    left: 380px;
+    width: 100%;
+}
+
+.client_information_banner_container{
+    background-color: #AAE8FC;
+}
+
 .text_with_input_container{
     display: grid;
     grid-template-columns: 300px 200px;
@@ -5,7 +16,9 @@
 }
 
 .client_information_container{
-    padding: 40px 0px 0px 140px;
+    padding: 40px 0px 0px 380px;
+    width: 100%;
+    overflow: visible;
 }
 
 
@@ -19,12 +32,31 @@
     right: 4px;
 }
 
-@media only screen and (max-width: 700px) {
+
+@media only screen and (max-width: 1300px) {
     .client_information_container{
         position: relative;
         right: 120px;
     }
+    .client_information_banner{
+        font-size: 30px;
+    }
 }
+
+@media only screen and (max-width: 800px) {
+    .client_information_container{
+        position: relative;
+        right: 380px;
+    }
+    .client_information_banner{
+        font-size: 30px;
+        position: relative;
+        left: 40px;
+        
+    }
+}
+
+
 
 
 

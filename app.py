@@ -6,6 +6,10 @@ app = Flask(__name__)
 def client_information():
     return render_template('clientInformation.html', sampleInfo = "sampleInfo", exampleCheckbox = "1")
 
+@app.route('/center_outcomes')
+def center_outcomes():
+    return render_template("centerOutcomes.html")
+
 @app.route('/test', methods =["GET", "POST"])
 def get_abuser_info_from_db():
     # size 10

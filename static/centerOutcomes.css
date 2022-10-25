@@ -1,0 +1,12 @@
+.center_outcome_container{
+    display: flex;
+    padding: 20px 0px 0px 200px;
+}
+
+.conservatorship{
+    display: grid;
+    grid-template-columns: 300px 200px 300px;
+    row-gap: 20px;
+    column-gap: 20px;
+
+}
