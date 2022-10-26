@@ -9,6 +9,10 @@ def client():
 def client_information():
     return render_template('clientInformation.html', sampleInfo = "sampleInfo", exampleCheckbox = "1")
 
+@app.route('/abuser')
+def abuser():
+    return render_template('abuser.html', sampleInfo = "sampleInfo", exampleCheckbox = "1")
+
 @app.route('/center_outcomes')
 def center_outcomes():
     return render_template("centerOutcomes.html")
