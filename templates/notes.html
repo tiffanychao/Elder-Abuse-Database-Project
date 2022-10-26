@@ -1,0 +1,100 @@
+{% extends "framework.html" %}
+{% block title %}Index{% endblock %}
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="../static/notes.css">
+<link rel="stylesheet" href="../static/framework.css">
+{% endblock %}
+{% block content %}
+<style>
+    #notes {
+      font-family: Arial, Helvetica, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+    
+    #notes td, #notes th {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+    
+    #notes tr:nth-child(even){background-color: white;}
+    
+    
+    
+    #notes th {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      text-align: left;
+      
+      background-color: white;;
+      color:black;
+    }
+    </style>
+<!--  Notes-->
+<div class="client_information_container">
+    
+    <div class="text_with_input_container">
+        <div>
+           Meeting/Case Notes
+            <!--  button -->
+            <button class="blue_button">Add Notes</button>
+        </div>
+        <br>
+        <br>
+    
+    
+    <br>
+
+    <table id="notes">
+        <tr>
+          <th >Presenter/Update by <input type="text" id="fname" name="fname"></th>
+          <th>Date <input type="text" id="fname" name="fname"></th>
+          
+        </tr>
+        <tr>
+          <td colspan="2"><textarea name="w3review" rows="10" cols="100"></textarea >
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="text_with_input_container">
+        <div>
+           Goals
+            <!--  button -->
+            <button class="blue_button">Add Goals</button>
+        </div>
+        <br>
+        <br>
+
+        <table id="notes">
+            <tr>
+              <th ><textarea name="w3review" rows="3" cols="100"></textarea ></th>
+            </tr>
+          </table>
+    </div>
+    <div class="text_with_input_container">
+        <div>
+           Recommendation Actions
+            <!--  button -->
+            <button class="blue_button">Add Actions</button>
+        </div>
+        <br>
+        <br>
+        <table id="notes">
+            <tr>
+              <th >Action Step</th>
+              <th>Person Responsible</th>
+              <th>Follow up Date</th>
+              <th>Status</th>
+            </tr>
+            <tr>
+              <th ><textarea name="w3review" rows="3" cols="22"></textarea ></th>
+              <th><textarea name="w3review" rows="3" cols="22"></textarea ></th>
+              <th><textarea name="w3review" rows="3" cols="22"></textarea ></th>
+              <th><textarea name="w3review" rows="3" cols="22"></textarea ></th>
+            </tr>
+          </table>
+    </div>
+</div>
+{% endblock %}

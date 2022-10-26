@@ -1,0 +1,33 @@
+{% extends "framework.html" %}
+{% block title %}Index{% endblock %}
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="../static/narrative.css">
+<link rel="stylesheet" href="../static/framework.css">
+{% endblock %}
+{% block content %}
+<!--  Narrative -->
+<div class="client_information_container">
+    <div class="text_with_input_container">
+        <div>
+            Case Narrative
+        </div>
+        <br>
+        <br>
+        <div class="textarea_container">
+            <div>
+                <textarea name="w3review" rows="20" cols="100"></textarea>
+            </div>
+        </div>
+    </div>
+    <br>
+    
+    <!--  button -->
+    <div class="button_container">
+        <div class="center">
+            <button class="blue_button">Print</button>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends "framework.html" %}
+{% block title %}Index{% endblock %}
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="../static/notes.css">
+<link rel="stylesheet" href="../static/framework.css">
+{% endblock %}
+{% block content %}
+<style>
+    #attachments {
+      font-family: Arial, Helvetica, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+    
+    #attachments td, #attachments th {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+    
+    #attachments tr:nth-child(even){background-color: white;}
+    
+    
+    
+    #attachments th {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      text-align: left;
+      
+      background-color: white;;
+      color:black;
+    }
+    </style>
+<!--  Click choose file to upload-->
+<div class="client_information_container">
+    
+    <div class="text_with_input_container">
+        <div>
+            Click choose file to upload
+            <form action="/action_page.php">
+                <input type="file" id="myFile" name="filename">
+                <input type="submit" value="Upload" name="submit">
+              </form>
+        </div>
+        <br>
+        <br>
+    
+    
+    <br>
+    <br/>
+    <br/>
+
+    <table id="attachments">
+        <tr>
+          <th >File <input type="text" id="fname" name="fname"></th>
+          <th>Date <input type="text" id="fname" name="fname"></th>
+          
+        </tr>
+        <tr>
+          <td colspan="2"><textarea name="w3review" rows="10" cols="100"></textarea >
+          </td>
+        </tr>
+      </table>
+    </div>
+    
+</div>
+{% endblock %}
