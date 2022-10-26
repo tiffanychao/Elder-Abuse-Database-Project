@@ -1,0 +1,65 @@
+{% extends "framework.html" %}
+{% block title %}Index{% endblock %}
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="../static/caseSummary.css">
+<link rel="stylesheet" href="../static/framework.css">
+{% endblock %}
+{% block content %}
+
+<div class = "centerOnPrintedPage">
+    
+    <div class="container" >
+        <div class="text_with_input_container">
+            <div class = "text_header">
+                Case Summary - {{name}}
+            </div>
+        </div>
+        <br>
+        <br>
+        <br>
+        <div class="text_with_input_container">
+            <div>
+                Suspect First Name, Last Name
+            </div>
+            <br>
+            <br>
+                <output name = "suspectname" class="text_output_design">{{name}}</output>
+        </div>
+    
+        <div class="text_with_input_container">
+            <div>
+                Meeting/Case Notes
+            </div>
+            <br>
+            <br> 
+            <output name = "notes" class="text_output_design">{{notes}}</output>
+        </div>
+    
+        <div class="text_with_input_container">
+            <div>
+                Goal Description
+            </div>
+            <br>
+            <br>
+                <output name = "goaldescri" class="text_output_design">{{goal}}</output>      
+        </div>
+    
+        <div class="text_with_input_container">
+            <div>
+                Recommendations
+            </div>
+            <br>
+            <br>
+            <output name = "rcmd" class="text_output_design">{{rcmd}}</output> 
+        </div>
+        <br>
+        <br>
+        <br>
+        <button onclick="window.print();" class="noPrint">Print</button>
+    </div>
+</div>
+
+
+</div>
+{% endblock %}
