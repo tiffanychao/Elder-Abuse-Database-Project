@@ -71,3 +71,8 @@ def consulation():
 def notes():
     variable = "check your name"
     return render_template('notes.html', value = variable)
+
+@app.route('/attachments')
+def attachments():
+    variable = "check your name"
+    return render_template('attachments.html', value = variable)
