@@ -1,6 +1,9 @@
 from flask import Flask, render_template, request
 app = Flask(__name__)
 
+@app.route('/client')
+def client():
+    return render_template('client.html', sampleInfo = "sampleInfo", exampleCheckbox = "1")
 
 @app.route('/client_information')
 def client_information():
