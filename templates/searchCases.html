@@ -1,0 +1,90 @@
+{% extends "framework.html" %}
+{% block title %}Index{% endblock %}
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="../static/searchCases.css">
+<link rel="stylesheet" href="../static/framework.css">
+{% endblock %}
+{% block content %}
+
+<div class = "centerOnPrintedPage">
+    
+    <div class="container" >
+        <div class="outer_of_header">
+            <div class = "text_header">
+                Cases
+            </div>
+        </div>
+        <br>
+        <br>
+
+ 
+        <div class="text_with_input_container">
+            <div>
+                Search By
+            </div>
+            <select name="searchType" id="searchType">
+                <option value="op1">Option 1</option>
+                <option value="op2">Option 2</option>
+                <option value="op3">Option 3</option>
+            </select>
+        </div>
+
+
+        <div class="row">
+            <div class="column">
+                <div class="text_with_input_container">
+                    <div>
+                        First Name
+                    </div>
+                    <input name = "FirstName" value ="{{firstName}}" class="text_input_design">
+                </div>
+            </div>
+            <div class="column">
+                <div class="text_with_input_container">
+                    <div>
+                        Last Name
+                    </div>
+                    <input name = "LastName" value="{{lastName}}" class="text_input_design">
+                    </div>
+            </div>
+        </div>
+
+        <br>
+        <br>
+        <br>
+        <br>
+        <div class="row">
+            <div class="column">
+                <div class="text_with_input_container">
+                    <div>
+                        Search Closed Cases
+                    </div>
+                    <div>
+                        <input type="checkbox" name = "match" class="radio_button_adjust">
+                    </div>
+                </div>
+                <div class="text_with_input_container">
+                    <div>
+                        Number of Records:
+                    </div>
+                    <output name = "suspectname">{{number}}</output>
+                </div>
+            </div>
+            <div class="column">   
+                <button class = "button"  >Search SQL</button> 
+            </div>
+        </div>
+        
+        <div class="outer_of_header">
+            <output name = "suspectname" class="text_output_design">{{result}}</output>
+        </div>
+        
+
+        
+    </div>
+</div>
+
+
+</div>
+{% endblock %}

@@ -1,23 +1,26 @@
 .head_container{
     padding: 40px 0px 0px 0px;
 }
+
+
 .text_header{
     background: lightblue;
     font-size: 40px;
     text-align: center;
-
+}
+.outer_of_header{
+    display: grid;
+    grid-template-columns: 1000px 200px;
+    padding-top: 10px; 
 }
 .text_with_input_container{
     display: grid;
-    /* grid-template-rows: 1000px,20px; */
-    grid-template-columns: 1000px 200px;
-    padding-top: 10px;
-  
+    grid-template-columns: 150px 200px;
+    padding-top: 10px; 
 }
 
 .container{
     padding: 80px 140px 0px 120px;
-
 }
 
 .text_output_design{
@@ -34,8 +37,21 @@
     position: relative;
     right: 4px;
 }
+/* Create four equal columns that floats next to each other */
+.column {
+    float: left;
+    width: 500px;
+    /* padding: 10px; */
+  }
+  
+  /* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
 
-.button {
+  .button {
     background-color: #4CAF50;
     border: none;
     color: white;
@@ -47,6 +63,3 @@
     margin: 4px 2px;
     cursor: pointer;
 }
-
-
-
