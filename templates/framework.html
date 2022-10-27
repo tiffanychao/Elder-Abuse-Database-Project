@@ -59,14 +59,14 @@
             </div>
             <div class = "noPrint">
                 <div class="case_tabs">
-                    <a href="/" class="individual_case_tab">Consultation</a>
+                    <a href="{{ url_for('consulation') }}" class="individual_case_tab">Consultation</a>
                     <a href="/" class="individual_case_tab">Referring Agency</a>
                     <a href="/" class="individual_case_tab">Client</a>
                     <a href="{{ url_for('client_information') }}" class="individual_case_tab">Client Info </a>
                     <a href="/" class="individual_case_tab">Abuser(s) </a>
                     <a href="/" class="individual_case_tab">Abuser Info </a>
-                    <a href="/" class="individual_case_tab">Notes </a>
-                    <a href="/" class="individual_case_tab">Narrative </a>
+                    <a href="{{ url_for('notes') }}" class="individual_case_tab">Notes </a>
+                    <a href="{{ url_for('narrative') }}" class="individual_case_tab">Narrative </a>
                     <a href="{{ url_for('center_outcomes') }}" class="individual_case_tab">Outcome </a>
                     <a href="/" class="individual_case_tab">Attachments </a>
                 </div>
