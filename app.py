@@ -14,6 +14,8 @@ app.config['MYSQL_DATABASE_DB'] = os.getenv("DatabaseDB")
 app.config['MYSQL_DATABASE_HOST'] = os.getenv("DatabaseHost")
 mysql.init_app(app)
 
+conn = mysql.connect()
+cursor = conn.cursor()
 
 
 @app.route('/client')
