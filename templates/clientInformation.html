@@ -10,6 +10,7 @@
 <div class="client_information_banner_container">
 <div class="client_information_banner">Section 3 Client Information</div>
 </div>
+<form method="POST">
 <div class="client_information_container">
         
     <!-- Physician Name -->
@@ -17,46 +18,46 @@
         <div>
             Physician Name
         </div>
-        <input value="{{sampleInfo}}" class="text_input_design">
+        <input class="text_input_design" name="physician_name" value= {{physican_name}}>
     </div>
     <!-- Physician Telephone -->
     <div class="text_with_input_container">
         <div>
             Physician Telephone
         </div>
-        <input class="text_input_design">
+        <input class="text_input_design" name="physician_telephone" value= {{phys_num}}>
     </div>
     <!-- Insurance -->
     <div class="text_with_input_container">
         <div>
             Insurance
         </div>
-        <input class="text_input_design">
+        <input class="text_input_design" name="insurance" value={{insurance}}>
     </div>
     <!-- Medications and Dosage -->
     <div class="text_with_input_container">
         <div>
             Medications and Dosage
         </div>
-        <textarea rows="3" class="text_input_design"></textarea>
+        <textarea rows="3" class="text_input_design" name="medication">{{medication}}</textarea>
     </div>
     <!-- Illnesses and Addictions -->
     <div class="text_with_input_container">
         <div>
             Illnesses and Addictions
         </div>
-        <textarea rows="3" class="text_input_design"></textarea>
+        <textarea rows="3" class="text_input_design" name="illnesses_and_addictions">{{illnesses}}</textarea>
     </div>
     <!-- Physical Functional Status: Appears -->
     <div class="text_with_input_container">
         <div>
-            Insurance
+            Physical Functional Status: Appears
         </div>
-        <select name="selectName" class="dropdown_design">
-            <option value="Value1">Value1</option>
-            <option value="Value2" >Value2</option>
-            <option value="Value3">Value3</option>
-            <option value="Value4">Value4</option>
+        <select class="dropdown_design" name="func_status">
+            <option value="1" {% if functional_status == '1' %} selected {% endif %} >Value1</option>
+            <option value="2" {% if functional_status == '2' %} selected {% endif %} >Value2</option>
+            <option value="3" {% if functional_status == '3' %} selected {% endif %}>Value3</option>
+            <option value="4" {% if functional_status == '4' %} selected {% endif %}>Value4</option>
         </select>
     </div>
     <!-- Cognitive Functional Status: Appears -->
@@ -64,11 +65,11 @@
         <div>
             Cognitive Functional Status: Appears
         </div>
-        <select name="selectName" class="dropdown_design">
-            <option value="Value1">Value1</option>
-            <option value="Value2">Value2</option>
-            <option value="Value3">Value3</option>
-            <option value="Value4">Value4</option>
+        <select name="selectName" class="dropdown_design" name="cognitive_status", name="cognitive_status">
+            <option value="1" {% if cognitive_status == '1' %} selected {% endif %} >Value1</option>
+            <option value="2" {% if cognitive_status == '2' %} selected {% endif %} >Value2</option>
+            <option value="3" {% if cognitive_status == '3' %} selected {% endif %}>Value3</option>
+            <option value="4" {% if cognitive_status == '4' %} selected {% endif %}>Value4</option>
         </select>
     </div>
     <!-- Living Setting -->
@@ -76,11 +77,11 @@
         <div>
             Living Setting
         </div>
-        <select name="selectName" class="dropdown_design">
-            <option value="Value1">Value1</option>
-            <option value="Value2">Value2</option>
-            <option value="Value3">Value3</option>
-            <option value="Value4">Value4</option>
+        <select name="selectName" class="dropdown_design" name="living_setting">
+            <option value="1" {% if living_setting == '1' %} selected {% endif %} >Value1</option>
+            <option value="2" {% if living_setting == '2' %} selected {% endif %} >Value2</option>
+            <option value="3" {% if living_setting == '3' %} selected {% endif %}>Value3</option>
+            <option value="4" {% if living_setting == '4' %} selected {% endif %}>Value4</option>
         </select>
     </div>
     <!-- Lives With -->
@@ -88,11 +89,11 @@
         <div>
             Lives With
         </div>
-        <select name="selectName" class="dropdown_design">
-            <option value="Value1">Value1</option>
-            <option value="Value2">Value2</option>
-            <option value="Value3">Value3</option>
-            <option value="Value4">Value4</option>
+        <select name="selectName" class="dropdown_design" name="lives_with">
+            <option value="1" {% if lives_with == '1' %} selected {% endif %} >Value1</option>
+            <option value="2" {% if lives_with == '2' %} selected {% endif %} >Value2</option>
+            <option value="3" {% if lives_with == '3' %} selected {% endif %}>Value3</option>
+            <option value="4" {% if lives_with == '4' %} selected {% endif %}>Value4</option>
         </select>
     </div>
     <!-- Other(describe) -->
@@ -100,7 +101,7 @@
         <div>
             Other (describe)
         </div>
-        <input class="text_input_design">
+        <input class="text_input_design" value = {{lives_with_desc}} name="other_describe">
     </div>
     <!-- Previous Reports of Abuse -->
     <div class="text_with_input_container">
@@ -109,15 +110,15 @@
         </div>
         <div class="previous_reports_container">
             <div class="radio_button_adjust">
-                <input type="radio" id="html" name="fav_language" value="HTML">
+                <input type="radio" id="html" name="previous_abuse_no" value="HTML" {% if prev_abuse_no == 1 %} checked {% endif %}>
                 <label for="html">No</label><br>
             </div>
             <div class="radio_button_adjust">
-                <input type="radio" id="html" name="fav_language" value="HTML">
+                <input type="radio" id="html" name="previous_abuse_yes" value="HTML" {% if prev_abuse_yes == 1 %} checked {% endif %}>
                 <label for="html">Yes</label><br>
             </div>
             <div>if Yes then explain</div>
-            <textarea name="w3review" rows="3" cols="50" class="text_input_design"></textarea>
+            <textarea name="previous_abuse_explain" rows="3" cols="50" class="text_input_design">{{prev_abuse_desc}}</textarea>
 
             <div></div>
         </div>
@@ -130,13 +131,16 @@
         </div>
         <div>
             {% if exampleCheckbox == "1" %}
-            <input type="checkbox" class="radio_button_adjust" checked>
-            {% endif %}
-            {% if exampleCheckbox != "1" %}
-            <input type="checkbox" class="radio_button_adjust">
+            <input name="multiple_alleged_suspects" type="checkbox" class="radio_button_adjust" {% if multiple_suspects == 1 %} checked {% endif %}>
             {% endif %}
         </div>
     </div>
 </div>
 </div>
+<button>this is the button</button>
+</form>
+{% endblock %}
+
+{% block content2 %}
+<div>oh yeah it's working now</div>
 {% endblock %}

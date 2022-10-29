@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 app = Flask(__name__)
 from flaskext.mysql import MySQL
 from dotenv import load_dotenv
+from Database.client_information import ClientInformation
 import os #provides ways to access the Operating System and allows us to read the environment variables
 
 load_dotenv()  # take environment variables from .env.
@@ -22,9 +23,44 @@ cursor = conn.cursor()
 def client():
     return render_template('client.html', sampleInfo = "sampleInfo", exampleCheckbox = "1")
 
-@app.route('/client_information')
+@app.route('/client_information', methods = ["POST", "GET"])
 def client_information():
-    return render_template('clientInformation.html', sampleInfo = "sampleInfo", exampleCheckbox = "1")
+    print(request.form.get('func_status'))
+    referral_id = 2
+    # figure out the associated client ID of the referral_id
+    cursor.execute("SELECT * FROM clients INNER JOIN cases ON cases.referral_id = clients.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
+    data = cursor.fetchone()
+    client_id = data[0]
+    if request.method == "POST":
+        cursor.execute("""UPDATE clients SET cl_phys_name = (%s),cl_phys_ph = (%s), cl_insurance = (%s) , 
+        cl_medications = (%s), cl_Illnesses = (%s), cl_functional_status = (%s) WHERE client_id = """ + str(client_id),
+         (request.form["physician_name"], request.form["physician_telephone"], 
+         request.form["insurance"], request.form["medication"], request.form["illnesses_and_addictions"], request.form.get('func_status')))
+        conn.commit()
+
+    cursor.execute("SELECT * FROM clients INNER JOIN cases on clients.referral_id = cases.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
+    data = cursor.fetchone()
+    content = {}
+    content['physican_name'] = data[17]
+    content['phys_num'] = data[18]
+    content['insurance'] = data[19]
+    content['medication'] = data[20]
+    content['illnesses'] = data[21]
+    content['functional_status'] = data[22]
+    content['cognitive_status'] = data[23]
+    content['living_setting'] = data[24]
+    content['lives_with'] = data[25]
+    content['lives_with_desc'] = data[26]
+    content['prev_abuse_no'] = data[27]
+    content['prev_abuse_yes'] = data[28]
+    content['prev_abuse_desc'] = data[29]
+    content['multiple_suspects'] = data[30]
+
+    if data == None:
+        return "Sorry your data isn't here"
+    if request.method == "POST":
+        return render_template('clientInformation.html', **content)
+    return render_template('clientInformation.html', **content)
 
 @app.route('/abuser')
 def abuser():
