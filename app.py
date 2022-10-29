@@ -25,17 +25,35 @@ def client():
 
 @app.route('/client_information', methods = ["POST", "GET"])
 def client_information():
-    print(request.form.get('func_status'))
+    prev_abuse_no = True
+    prev_abuse_yes = True
+    multiple_alleged_suspects = True
+    if request.form.get("previous_abuse_no") == None:
+        prev_abuse_no = False
+    if request.form.get("previous_abuse_yes") == None:
+        prev_abuse_yes = False
+
+    if request.form.get("multiple_alleged_suspects") == None:
+        multiple_alleged_suspects = False
+
+
+    
+    print(prev_abuse_no)
     referral_id = 2
     # figure out the associated client ID of the referral_id
     cursor.execute("SELECT * FROM clients INNER JOIN cases ON cases.referral_id = clients.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
     data = cursor.fetchone()
     client_id = data[0]
     if request.method == "POST":
+        request.form.getlist("previous_abuse_no")
         cursor.execute("""UPDATE clients SET cl_phys_name = (%s),cl_phys_ph = (%s), cl_insurance = (%s) , 
-        cl_medications = (%s), cl_Illnesses = (%s), cl_functional_status = (%s) WHERE client_id = """ + str(client_id),
+        cl_medications = (%s), cl_Illnesses = (%s), cl_functional_status = (%s), cl_cognitive_status = (%s), cl_living_setting = (%s), 
+        cl_lives_with = (%s), cl_lives_with_desc = (%s), cl_prev_abuse_no = (%s), cl_prev_abuse_yes = (%s), 
+        cl_prev_abuse_desc = (%s), cl_multiple_suspects = (%s) WHERE client_id = """ + str(client_id),
          (request.form["physician_name"], request.form["physician_telephone"], 
-         request.form["insurance"], request.form["medication"], request.form["illnesses_and_addictions"], request.form.get('func_status')))
+         request.form["insurance"], request.form["medication"], request.form["illnesses_and_addictions"], 
+         request.form.get('func_status'), request.form.get("cognitive_status"), request.form.get("living_setting"), 
+         request.form.get("lives_with"), request.form.get("other_describe"), prev_abuse_no, prev_abuse_yes, request.form.get("previous_abuse_explain"), multiple_alleged_suspects  ))
         conn.commit()
 
     cursor.execute("SELECT * FROM clients INNER JOIN cases on clients.referral_id = cases.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
