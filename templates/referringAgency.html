@@ -6,7 +6,17 @@
 <link rel="stylesheet" href="../static/framework.css">
 {% endblock %}
 {% block content %}
+
+
 <div class="container">
+
+    <div class="outer_of_header">
+        <div class = "text_header">
+            Referring Agency
+        </div>
+    </div>
+    <br>
+    <br>
     <form action="{{ url_for("referring_agency")}}" method="post">
     <!-- Referring Case Number -->
     <div class="text_with_input_container">

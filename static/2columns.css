@@ -1,24 +1,27 @@
+.head_container{
+    padding: 40px 0px 0px 0px;
+}
+
+
+.text_header{
+    background: lightblue;
+    font-size: 40px;
+    text-align: center;
+}
+.outer_of_header{
+    display: grid;
+    grid-template-columns: 1000px 200px;
+    padding-top: 10px; 
+}
 .text_with_input_container{
     display: grid;
     grid-template-columns: 300px 200px;
-    padding-top: 10px;
+    padding-top: 10px; 
 }
 
 .container{
-    padding: 40px 0px 0px 140px;
+    padding: 80px 140px 0px 120px;
 }
-
-
-.previous_reports_container{
-    display: flex;
-    flex-direction: column;
-}
-
-.radio_button_adjust{
-    position: relative;
-    right: 4px;
-}
-
 
 
 
