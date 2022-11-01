@@ -2,7 +2,6 @@ from flask import Flask, render_template, request
 app = Flask(__name__)
 from flaskext.mysql import MySQL
 from dotenv import load_dotenv
-from Database.client_information import ClientInformation
 import os #provides ways to access the Operating System and allows us to read the environment variables
 
 load_dotenv()  # take environment variables from .env.
