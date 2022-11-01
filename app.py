@@ -247,9 +247,18 @@ def search_cases():
         return  data1 
     # deal with the data
     #
-    v_num = 2
-    v_result = "In the early 19th century,<br> the Bennet family live at their Longbourn estate,<br> situated near the village of Meryton in Hertfordshire, <br>England. Mrs. Bennet's greatest desire is to marry off her five daughters in order to secure their futures. The arrival of Mr. Bingley, a rich bachelor who rents the neighbouring Netherfield estate, gives her hope that one of her daughters might contract an advantageous marriage, because It is a truth universally acknowledged, that a single man in possession of a good fortune, must be in want of a wife. <br>Mr. Collins, the heir to the Longbourn estate, visits the Bennet family with the intention of finding a wife among the five girls under the advice of his patroness Lady Catherine de Bourgh, also revealed to be Mr. Darcy's aunt. He decides to pursue Elizabeth. The Bennet family meet the charming army officer George Wickham, <br>who tells Elizabeth in confidence Mr. Darcy's horrible past actions in his regards. Elizabeth, blinded by her prejudice toward Mr. Darcy, believes him.<br>Elizabeth dances with Mr. Darcy at a ball, where Mrs. Bennet hints loudly that she expects Jane and Bingley to become engaged. Elizabeth rejects Mr. Collins' marriage proposal, to her mother's fury and her father's relief. Mr. Collins instead proposes to Charlotte Lucas, a friend of<br>Elizabeth. Having heard Mrs. Bennet's words at the ball and disapproving of the marriage, Mr. Darcy joins Mr. Bingley in a trip to London and, with the help of his sisters, convinces him not to return to Netherfield. A heartbroken Jane visits her Aunt and Uncle Gardiner in London to<br>raise her spirits, while Elizabeth's hatred for Mr. Darcy grows as she suspects he was responsible for Mr Bingley's departure."
-    return render_template('searchCases.html',number = v_num, result = v_result) 
+    
+    table_list = SQL_for_search_cases()
+    v_num = len(table_list)
+    return render_template('searchCases.html',number = v_num, result = table_list) 
+
+def SQL_for_search_cases():
+    result =  [dict(link="https://www.google.com/",id="1234", name="John Doe4"),
+                dict(link="https://www.google.com/",id="1235", name="John Doe5"),
+                dict(link="https://www.google.com/",id="1236", name="John Doe6"),
+                dict(link="https://www.google.com/",id="1237", name="John Doe7"),
+                ]
+    return result
 
 @app.route('/')
 def homepage():
@@ -285,3 +294,5 @@ def notes():
 def attachments():
     variable = "check your name"
     return render_template('attachments.html', value = variable)
+
+

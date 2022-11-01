@@ -13,6 +13,12 @@
     grid-template-columns: 1000px 200px;
     padding-top: 10px; 
 }
+.table{
+  
+    padding-top: 10px; 
+    border-style: solid;
+    border-color: coral;
+}
 .text_with_input_container{
     display: grid;
     grid-template-columns: 150px 200px;
@@ -63,3 +69,33 @@
     margin: 4px 2px;
     cursor: pointer;
 }
+
+
+tbody td{
+    padding: 8px;
+}
+tr:hover { 
+    background: #cccccc; 
+    cursor: pointer;
+}
+
+tr:hover:nth-child(odd) { 
+    background: #cccccc; 
+    cursor: pointer;
+}
+
+tbody tr:nth-child(odd){
+    background-color: #adcbff;
+    color: #fff;
+}
+
+ td a { 
+    display: block; 
+    border: 1px solid black;
+    padding: 16px; 
+ }
+table {
+     width:100%;
+     margin-bottom:1rem;
+     color:#212529
+    }
