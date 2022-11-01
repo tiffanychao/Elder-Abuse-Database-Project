@@ -14,10 +14,24 @@ app.config['MYSQL_DATABASE_DB'] = os.getenv("DatabaseDB")
 app.config['MYSQL_DATABASE_HOST'] = os.getenv("DatabaseHost")
 mysql.init_app(app)
 
-conn = mysql.connect()
-cursor = conn.cursor()
 
+# conn = mysql.connect()
+# cursor = conn.cursor()
 
+# check whether DB is connected
+try:
+    conn = mysql.connect()
+    if conn:
+        db_Info = conn.get_server_info()
+        print("Connected to MySQL Server version ", db_Info)
+        cursor = conn.cursor()
+        cursor.execute("select database();")
+        
+        record = cursor.fetchone()
+        print("You're connected to database: ", record)
+except Error as e:
+    print("Error while connecting to MySQL", e)
+    
 @app.route('/client')
 def client():
     return render_template('client.html', sampleInfo = "sampleInfo", exampleCheckbox = "1")
