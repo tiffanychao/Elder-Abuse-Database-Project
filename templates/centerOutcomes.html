@@ -6,82 +6,85 @@
 <link rel="stylesheet" href="../static/framework.css">
 {% endblock %}
 {% block content %}
+<form method="POST">
 <div class="center_outcome_container">
    <div class="conservatorship">
       <div class="section_header">Conservatorship</div>
       <div class="section_header">Type of Conservatorship</div>
       <div></div>
-      <div><input type="checkbox"> <label>Probate Conservatorship</label></div>
-      <div> <label>Public Guardian</label> <input type="checkbox"></div>
-      <div><label>Extent of Conservatorship</label> <select name="cars" id="cars">
-            <option value="volvo">Volvo</option>
-            <option value="saab">Saab</option>
-            <option value="mercedes">Mercedes</option>
-            <option value="audi">Audi</option>
+      <div><input type="checkbox" name="oc_csv_probate" {% if oc_csv_probate == 1 %} checked {% endif %}> <label>Probate Conservatorship</label></div>
+      <div> <label>Public Guardian</label> <input type="checkbox" name="oc_csv_pubg" {% if oc_csv_pubg == 1 %} checked {% endif %}></div>
+      <div><label>Extent of Conservatorship</label> <select name="oc_csv_ext">
+            <option value="1" {% if oc_csv_ext == '1' %} selected {% endif %}>Volvo</option>
+            <option value="2" {% if oc_csv_ext == '2' %} selected {% endif %}>Saab</option>
+            <option value="3" {% if oc_csv_ext == '3' %} selected {% endif %}>Mercedes</option>
+            <option value="4" {% if oc_csv_ext == '4' %} selected {% endif %}>Audi</option>
          </select></div>
-      <div><input type="checkbox"> <label>LPS Conservatorship</label></div>
-      <div><label>Private</label> <select name="cars" id="cars">
-            <option value="volvo">Volvo</option>
-            <option value="saab">Saab</option>
-            <option value="mercedes">Mercedes</option>
-            <option value="audi">Audi</option>
+      <div><input type="checkbox" name="oc_csv_lps" {% if oc_csv_lps == 1 %} checked {% endif %}> <label>LPS Conservatorship</label></div>
+      <div><label>Private</label> <select name="oc_csv_priv">
+            <option value="1" {% if oc_csv_priv == '1' %} selected {% endif %}>Volvo</option>
+            <option value="2" {% if oc_csv_priv == '2' %} selected {% endif %}>Saab</option>
+            <option value="3" {% if oc_csv_priv == '3' %} selected {% endif %}>Mercedes</option>
+            <option value="4" {% if oc_csv_priv == '4' %} selected {% endif %}>Audi</option>
          </select></div>
-      <div><label>Name of Conservator</label> <input></div>
-      <div><input type="checkbox"> <label>Temporary Conservatorship</label></div>
-      <div><label>Conservator is a SA</label> <input type="checkbox"></div>
+      <div><label>Name of Conservator</label> <textarea name="oc_csv_name">{{oc_csv_name}}</textarea></div>
+      <div><input type="checkbox" name="oc_csv_temp" {% if oc_csv_temp == 1 %} checked {% endif %}> <label>Temporary Conservatorship</label></div>
+      <div><label>Conservator is a SA</label> <input type="checkbox" name="oc_sa" {% if oc_sa == 1 %} checked {% endif %}></div>
    </div>
    <!-- Evaluations -->
    <div class="section_header">Evaluation(s)
    </div>
    <div class="evaluations">
-      <div><input type="checkbox"> <label>Geriatrician/MD</label></div>
-      <div><input type="checkbox"> <label>Neuro/Geropsychologist</label></div>
-      <div><input type="checkbox"> <label>GENESIS/mental health</label></div>
-      <div><input type="checkbox"> <label>Law enforcement investigation/follow up</label></div>
+      <div><input type="checkbox" name="oc_ev_geri" {% if oc_ev_geri == 1 %} checked {% endif %} > <label>Geriatrician/MD</label></div>
+      <div><input type="checkbox" name="oc_ev_neuro" {% if oc_ev_neuro == 1 %} checked {% endif %}> <label>Neuro/Geropsychologist</label></div>
+      <div><input type="checkbox" name="oc_ev_mental" {% if oc_ev_mental == 1 %} checked {% endif %}> <label>GENESIS/mental health</label></div>
+      <div><input type="checkbox" name="oc_ev_law" {% if oc_ev_law == 1 %} checked {% endif %}> <label>Law enforcement investigation/follow up</label></div>
    </div>
    <!-- Supportive Services -->
    <div class="section_header">Supportive Service(s)</div>
    <div class="supportive_services">
-      <div><input type="checkbox"> <label>Social service linkage/community resource</label></div>
-      <div><input type="checkbox"> <label>Civil remedy: consultation, meditation, contracts, property,
+      <div><input type="checkbox" name="oc_ss_support" {% if oc_ss_support == 1 %} checked {% endif %}> <label>Social service linkage/community resource</label></div>
+      <div><input type="checkbox" name="oc_ss_compAPS" {% if oc_ss_compAPS == 1 %} checked {% endif %}> <label>Civil remedy: consultation, meditation, contracts, property,
             conservatorship</label></div>
-      <div><input type="checkbox"> <label>Initiate companion APS/LE case</label></div>
+      <div><input type="checkbox" name="oc_ss_civil" {% if oc_ss_civil == 1 %} checked {% endif %}> <label>Initiate companion APS/LE case</label></div>
    </div>
 
    <!-- Asset Protection -->
    <div class="section_header">Asset Protection</div>
    <div class="asset_protection">
-      <div><input type="checkbox"> <label>Freezing Assets </label></div>
-      <div><input type="checkbox"> <label>Other safeguard to property/assets (e.g rep payee)</label></div>
-      <div><input type="checkbox"> <label>Restitution of property/assets</label></div>
+      <div><input type="checkbox" name="oc_ap_freeze" {% if oc_ap_freeze == 1 %} checked {% endif %}> <label>Freezing Assets </label></div>
+      <div><input type="checkbox" name="oc_ap_other" {% if oc_ap_other == 1 %} checked {% endif %}> <label>Other safeguard to property/assets (e.g rep payee)</label></div>
+      <div><input type="checkbox" name="oc_ap_restitution" {% if oc_ap_restitution == 1 %} checked {% endif %}> <label>Restitution of property/assets</label></div>
    </div>
 
    <!-- Prosecution -->
    <div class="section_header">Prosecution</div>
    <div class="prosecution">
-      <div><input type="checkbox"> <label>Filing of charges: District Attorney, City Attorney, other </label></div>
-      <div><input type="checkbox"> <label>Legal outcomes: declined, conviction, sentencing</label></div>
+      <div><input type="checkbox" name="oc_pr_charges" {% if oc_pr_charges == 1 %} checked {% endif %}> <label>Filing of charges: District Attorney, City Attorney, other </label></div>
+      <div><input type="checkbox" name="oc_pr_legal" {% if oc_pr_legal == 1 %} checked {% endif %}> <label>Legal outcomes: declined, conviction, sentencing</label></div>
    </div>
 
    <!-- Self Sufficiency -->
    <div class="section_header">Self Sufficiency</div>
    <div>
-      <div><input type="checkbox"> <label>Filing of charges: District Attorney, City Attorney, other </label></div>
+      <div><input type="checkbox" name="oc_self_suff" {% if oc_self_suff == 1 %} checked {% endif %}> <label>Filing of charges: District Attorney, City Attorney, other </label></div>
    </div>
 
    <!-- Client Protection -->
    <div class="section_header">Client Protection</div>
    <div class="client_protection">
-      <div><input type="checkbox"> <label>Arrest of suspected perpetrator</label></div>
-      <div> <label>Restraining Order</label> <select name="cars" id="cars">
-            <option value="volvo">Volvo</option>
-            <option value="saab">Saab</option>
-            <option value="mercedes">Mercedes</option>
-            <option value="audi">Audi</option>
+      <div><input type="checkbox" name="oc_cp_arrest" {% if oc_cp_arrest == 1 %} checked {% endif %}> <label>Arrest of suspected perpetrator</label></div>
+      <div> <label>Restraining Order</label> <select name="oc_ro">
+            <option value="1" {% if oc_ro == '1' %} selected {% endif %}>Volvo</option>
+            <option value="2" {% if oc_ro == '2' %} selected {% endif %}>Saab</option>
+            <option value="3" {% if oc_ro == '3' %} selected {% endif %}>Mercedes</option>
+            <option value="4" {% if oc_ro == '4' %} selected {% endif %}>Audi</option>
          </select></div>
-      <div><input type="checkbox"> <label>Hospitalize (medical,psych)</label></div>
-      <div><label>Name of person who RO is for</label> <input></div>
+      <div><input type="checkbox" name="oc_cp_hospital" {% if oc_cp_hospital == 1 %} checked {% endif %}> <label>Hospitalize (medical,psych)</label></div>
+      <div><label>Name of person who RO is for</label> <textarea name="oc_ro_name">{{oc_ro_name}}</textarea></div>
    </div>
 </div>
+<button>this is the button</button>
+</form>
 
 {% endblock %}

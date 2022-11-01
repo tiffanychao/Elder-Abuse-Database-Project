@@ -38,11 +38,12 @@ def client_information():
 
 
     
-    print(prev_abuse_no)
-    referral_id = 2
+    referral_id = 1
     # figure out the associated client ID of the referral_id
     cursor.execute("SELECT * FROM clients INNER JOIN cases ON cases.referral_id = clients.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
     data = cursor.fetchone()
+    if data == None:
+        return "There is no data sorry"
     client_id = data[0]
     if request.method == "POST":
         request.form.getlist("previous_abuse_no")
@@ -74,8 +75,6 @@ def client_information():
     content['prev_abuse_desc'] = data[29]
     content['multiple_suspects'] = data[30]
 
-    if data == None:
-        return "Sorry your data isn't here"
     if request.method == "POST":
         return render_template('clientInformation.html', **content)
     return render_template('clientInformation.html', **content)
@@ -84,9 +83,122 @@ def client_information():
 def abuser():
     return render_template('abuser.html', sampleInfo = "sampleInfo", exampleCheckbox = "1")
 
-@app.route('/center_outcomes')
+@app.route('/center_outcomes', methods = ["POST", "GET"])
 def center_outcomes():
-    return render_template("centerOutcomes.html")
+    content = {}
+    referral_id = 1
+    oc_csv_probate = True
+    oc_csv_pubg = True
+    oc_csv_lps = True
+    oc_csv_temp = True
+    oc_sa = True
+    oc_ev_geri = True
+    oc_ev_neuro = True
+    oc_ev_mental = True
+    oc_ev_law = True
+    oc_ss_support = True
+    oc_ss_compAPS = True
+    oc_ss_civil = True
+    oc_ap_freeze = True
+    oc_ap_other = True
+    oc_ap_restitution = True
+    oc_pr_charges = True
+    oc_pr_legal = True
+    oc_self_suff = True
+    oc_cp_arrest = True
+    oc_cp_hospital = True
+    if(request.form.get("oc_csv_probate") == None):
+        oc_csv_probate = False
+    if(request.form.get("oc_csv_pubg") == None):
+        oc_csv_pubg = False
+    if(request.form.get("oc_csv_lps") == None):
+        oc_csv_lps = False
+    if(request.form.get("oc_csv_temp") == None):
+        oc_csv_temp = False
+    if(request.form.get("oc_sa") == None):
+        oc_sa = False
+    if(request.form.get("oc_ev_geri") == None):
+        oc_ev_geri = False
+    if(request.form.get("oc_ev_neuro") == None):
+        oc_ev_neuro = False
+    if(request.form.get("oc_ev_mental") == None):
+        oc_ev_mental = False
+    if(request.form.get("oc_ev_law") == None):
+        oc_ev_law = False
+    if(request.form.get("oc_ss_support") == None):
+        oc_ss_support = False
+    if(request.form.get("oc_ss_compAPS") == None):
+        oc_ss_compAPS = False
+    if(request.form.get("oc_ss_civil") == None):
+        oc_ss_civil = False
+    if(request.form.get("oc_ap_freeze") == None):
+        oc_ap_freeze = False
+    if(request.form.get("oc_ap_other") == None):
+        oc_ap_other = False
+    if(request.form.get("oc_ap_restitution") == None):
+        oc_ap_restitution = False
+    if(request.form.get("oc_pr_charges") == None):
+        oc_pr_charges = False
+    if(request.form.get("oc_pr_legal") == None):
+        oc_pr_legal = False
+    if(request.form.get("oc_self_suff") == None):
+        oc_self_suff = False
+    if(request.form.get("oc_cp_arrest") == None):
+        oc_cp_arrest = False
+    if(request.form.get("oc_cp_hospital") == None):
+        oc_cp_hospital = False
+    
+    # figure out the associated client ID of the referral_id
+    cursor.execute("SELECT * FROM outcome INNER JOIN cases ON cases.referral_id = outcome.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
+    data = cursor.fetchone()
+
+    if data == None:
+        return "There is no data sorry"
+
+    if request.method == "POST":
+        request.form.getlist("previous_abuse_no")
+        cursor.execute("""UPDATE outcome SET oc_csv_probate = (%s), oc_csv_pubg = (%s),
+        oc_csv_ext = (%s), oc_csv_lps = (%s), oc_csv_priv = (%s), oc_csv_name = (%s),
+        oc_csv_temp = (%s), oc_sa  = (%s), oc_ev_geri = (%s), oc_ev_neuro = (%s), oc_ev_mental = (%s), oc_ev_law = (%s),
+        oc_ss_support = (%s), oc_ss_compAPS = (%s), oc_ss_civil = (%s), oc_ap_freeze = (%s), oc_ap_other = (%s), oc_ap_restitution = (%s),
+        oc_pr_charges = (%s), oc_pr_legal = (%s), oc_self_suff = (%s), oc_cp_arrest = (%s), oc_cp_hospital = (%s), oc_ro = (%s), oc_ro_name = (%s)  WHERE referral_id = """ + str(referral_id),
+         (oc_csv_probate,oc_csv_pubg,request.form.get("oc_csv_ext"), oc_csv_lps, request.form.get("oc_csv_priv"), 
+         request.form.get("oc_csv_name"),oc_csv_temp, oc_sa,oc_ev_geri, oc_ev_neuro, oc_ev_mental, oc_ev_law, 
+         oc_ss_support,oc_ss_compAPS,oc_ss_civil,oc_ap_freeze, oc_ap_other,
+         oc_ap_restitution,oc_pr_charges,oc_pr_legal,oc_self_suff, oc_cp_arrest, oc_cp_hospital, request.form.get("oc_ro"), request.form.get("oc_ro_name")))
+        conn.commit()
+
+    cursor.execute("SELECT * FROM outcome INNER JOIN cases on outcome.referral_id = cases.referral_id WHERE outcome.referral_id = " + str(referral_id) + ";")
+    data = cursor.fetchone()
+
+    
+    content["oc_cp_arrest"] = data[1]
+    content["oc_cp_hospital"] = data[2]
+    content["oc_ev_neuro"] = data[3]
+    content["oc_ev_mental"] = data[4]
+    content["oc_ev_law"] = data[5]
+    content["oc_ss_support"] = data[6]
+    content["oc_ss_compAPS"] = data[7]
+    content["oc_ss_civil"] = data[8]
+    content["oc_ap_freeze"] = data[9]
+    content["oc_ap_other"] = data[10]
+    content["oc_ap_restitution"] = data[11]
+    content["oc_pr_charges"] = data[12]
+    content["oc_pr_legal"] = data[13]
+    content["oc_narrative"] = data[14]
+    content["oc_csv_probate"] = data[15]
+    content["oc_csv_lps"] = data[16]
+    content["oc_csv_temp"] = data[17]
+    content["oc_csv_pubg"] = data[18]
+    content["oc_csv_priv"] = data[19]
+    content["oc_csv_ext"] = data[20]
+    content["oc_csv_name"] = data[21]
+    content["oc_sa"] = data[22]
+    content["oc_ro"] = data[23]
+    content["oc_ro_name"] = data[24]
+    content["oc_ev_geri"] = data[25]
+    content["oc_self_suff"] = data[26]
+    return render_template("centerOutcomes.html", **content)
 
 @app.route('/test', methods =["GET", "POST"])
 def get_abuser_info_from_db():
