@@ -15,17 +15,17 @@
       <div><input type="checkbox" name="oc_csv_probate" {% if oc_csv_probate == 1 %} checked {% endif %}> <label>Probate Conservatorship</label></div>
       <div> <label>Public Guardian</label> <input type="checkbox" name="oc_csv_pubg" {% if oc_csv_pubg == 1 %} checked {% endif %}></div>
       <div><label>Extent of Conservatorship</label> <select name="oc_csv_ext">
-            <option value="1" {% if oc_csv_ext == '1' %} selected {% endif %}>Volvo</option>
-            <option value="2" {% if oc_csv_ext == '2' %} selected {% endif %}>Saab</option>
-            <option value="3" {% if oc_csv_ext == '3' %} selected {% endif %}>Mercedes</option>
-            <option value="4" {% if oc_csv_ext == '4' %} selected {% endif %}>Audi</option>
+            <option value="1" {% if oc_csv_ext == '1' %} selected {% endif %}></option>
+            <option value="2" {% if oc_csv_ext == '2' %} selected {% endif %}>Person & Estate</option>
+            <option value="3" {% if oc_csv_ext == '3' %} selected {% endif %}>Person Only</option>
+            <option value="4" {% if oc_csv_ext == '4' %} selected {% endif %}>Estate Only</option>
          </select></div>
       <div><input type="checkbox" name="oc_csv_lps" {% if oc_csv_lps == 1 %} checked {% endif %}> <label>LPS Conservatorship</label></div>
       <div><label>Private</label> <select name="oc_csv_priv">
-            <option value="1" {% if oc_csv_priv == '1' %} selected {% endif %}>Volvo</option>
-            <option value="2" {% if oc_csv_priv == '2' %} selected {% endif %}>Saab</option>
-            <option value="3" {% if oc_csv_priv == '3' %} selected {% endif %}>Mercedes</option>
-            <option value="4" {% if oc_csv_priv == '4' %} selected {% endif %}>Audi</option>
+            <option value="1" {% if oc_csv_priv == '1' %} selected {% endif %}></option>
+            <option value="2" {% if oc_csv_priv == '2' %} selected {% endif %}>Family member</option>
+            <option value="3" {% if oc_csv_priv == '3' %} selected {% endif %}>Friend</option>
+            <option value="4" {% if oc_csv_priv == '4' %} selected {% endif %}>Professional</option>
          </select></div>
       <div><label>Name of Conservator</label> <textarea name="oc_csv_name">{{oc_csv_name}}</textarea></div>
       <div><input type="checkbox" name="oc_csv_temp" {% if oc_csv_temp == 1 %} checked {% endif %}> <label>Temporary Conservatorship</label></div>
@@ -75,10 +75,10 @@
    <div class="client_protection">
       <div><input type="checkbox" name="oc_cp_arrest" {% if oc_cp_arrest == 1 %} checked {% endif %}> <label>Arrest of suspected perpetrator</label></div>
       <div> <label>Restraining Order</label> <select name="oc_ro">
-            <option value="1" {% if oc_ro == '1' %} selected {% endif %}>Volvo</option>
-            <option value="2" {% if oc_ro == '2' %} selected {% endif %}>Saab</option>
-            <option value="3" {% if oc_ro == '3' %} selected {% endif %}>Mercedes</option>
-            <option value="4" {% if oc_ro == '4' %} selected {% endif %}>Audi</option>
+            <option value="1" {% if oc_ro == '1' %} selected {% endif %}></option>
+            <option value="2" {% if oc_ro == '2' %} selected {% endif %}>Temporary</option>
+            <option value="3" {% if oc_ro == '3' %} selected {% endif %}>Permanent</option>
+            <option value="4" {% if oc_ro == '4' %} selected {% endif %}>Emergency Protective Order</option>
          </select></div>
       <div><input type="checkbox" name="oc_cp_hospital" {% if oc_cp_hospital == 1 %} checked {% endif %}> <label>Hospitalize (medical,psych)</label></div>
       <div><label>Name of person who RO is for</label> <textarea name="oc_ro_name">{{oc_ro_name}}</textarea></div>
