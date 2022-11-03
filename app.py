@@ -298,10 +298,71 @@ def consulation():
     return render_template('consulation.html', value = variable)
 
 
-@app.route('/notes')
+@app.route('/notes',methods =["GET", "POST"])
 def notes():
-    variable = "check your name"
-    return render_template('notes.html', value = variable)
+    referral_id = 2
+    client_rec_id = random.randint(10, 900)
+    meeting_id = random.randint(10, 900)
+    cursor.execute("SELECT * FROM meeting_notes INNER JOIN cases ON cases.referral_id =meeting_notes.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
+    data = cursor.fetchone()
+    cursor.execute("SELECT * FROM recommendations INNER JOIN cases ON cases.referral_id =recommendations.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
+    data2 = cursor.fetchone()
+    if request.method == "POST":
+
+        presenter = request.form.get("presenter")
+        meeting_date = datetime.strptime(request.form.get("meeting_date"),'%Y-%m-%d')
+        meeting_notes = request.form.get("meeting_notes")
+        goals = request.form.get("goals")
+        action_step = request.form.get("action_step")
+        person_response = request.form.get("person_response")
+        follow_up = datetime.strptime(request.form.get("follow_up"),'%Y-%m-%d')
+        status = request.form.get("status")
+        meeting_narrative = "need to be modified"
+       
+        cur = conn.cursor()
+        sql = "insert into meeting_notes(meeting_id,referral_id,meeting_date,meeting_recs,meeting_goals,Meeting_presenters,meeting_narrative) values (%s,%s,%s,%s,%s,%s,%s)"
+        val = (meeting_id,referral_id,meeting_date,meeting_notes,goals,presenter,meeting_narrative)
+        cur.execute(sql, val)
+        conn.commit()
+        print(cur.rowcount, "record inserted.")
+
+        # for recommendations
+        cur = conn.cursor()
+        sql2 = "insert into recommendations(client_rec_id, referral_id, action_step,person_responsible,followup_date,action_status) values (%s,%s,%s,%s,%s,%s)"
+        val2= (client_rec_id, referral_id, action_step,person_response,follow_up,status)
+        cur.execute(sql2, val2)
+        conn.commit()
+        print(cur.rowcount, "record inserted.")
+
+    cursor.execute("SELECT * FROM meeting_notes INNER JOIN cases ON cases.referral_id = meeting_notes.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
+    data = cursor.fetchone()
+    print(data)
+    cursor.execute("SELECT * FROM recommendations INNER JOIN cases ON cases.referral_id = recommendations.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
+    data2 = cursor.fetchone()
+    print(data2)
+    content = {}
+    content["presenter"] = data[5]
+    content["meeting_date"] = data[2]
+    content["meeting_notes"] = data[6] # narrative
+    content["goals"] = data[4]
+    content["action_step"] = data2[2]
+    content["person_response"] = data2[3]
+    content["follow_up"] = data2[4]
+    content["status"] = data2[5]
+    
+    # print(presenter)
+    # print(meeting_notes)
+    # print(goals)
+    # print(action_step)
+    # print(person_response)
+    # print(follow_up)
+    # print(status)
+    if data == None:
+        return "Sorry your data isn't here"
+    if request.method == "POST":
+        return render_template('notes.html',  **content)
+
+    return render_template('notes.html', **content)
 
 @app.route('/attachments')
 def attachments():
