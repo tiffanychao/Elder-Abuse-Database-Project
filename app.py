@@ -34,10 +34,49 @@ try:
         print("You're connected to database: ", record)
 except Error as e:
     print("Error while connecting to MySQL", e)
-    
-@app.route('/client')
+
+@app.route('/client', methods = ["POST", "GET"])
 def client():
-    return render_template('client.html', sampleInfo = "sampleInfo", exampleCheckbox = "1")
+    referral_id = 1
+    # figure out the associated client ID of the referral_id
+    cursor.execute("SELECT * FROM clients INNER JOIN cases ON cases.referral_id = clients.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
+    data = cursor.fetchone()
+    if data == None:
+        return "There is no data sorry"
+    client_id = data[0]
+    if request.method == "POST":
+        cursor.execute("""UPDATE clients SET cl_name_first = (%s),cl_name_last = (%s), cl_age = (%s) , 
+        cl_DOB = (%s), cl_language = (%s), cl_TransComm = (%s), cl_education = (%s), cl_ethnicity = (%s), 
+        cl_gender = (%s), cl_marital = (%s), cl_address = (%s), cl_city = (%s), 
+        cl_zip = (%s), cl_phone = (%s) WHERE client_id = """ + str(client_id),
+         (request.form["cl_name_first"], request.form["cl_name_last"], 
+         request.form["cl_age"], request.form["cl_DOB"], request.form["cl_language"], request.form["cl_TransComm"],
+         request.form.get('cl_education'), request.form.get("cl_ethnicity"), request.form.get("cl_gender"), 
+         request.form.get("cl_marital"), request.form("cl_address"), request.form("cl_city"), request.form("cl_zip"),
+         request.form("cl_phone")))
+        conn.commit()
+
+    cursor.execute("SELECT * FROM clients INNER JOIN cases on clients.referral_id = cases.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
+    data = cursor.fetchone()
+    content = {}
+    content['cl_name_first'] = data[2]
+    content['cl_name_last'] = data[3]
+    content['cl_age'] = data[5]
+    content['cl_DOB'] = data[6]
+    content['cl_language'] = data[7]
+    content['cl_TransComm'] = data[8]
+    content['cl_education'] = data[9]
+    content['cl_ethnicity'] = data[10]
+    content['cl_gender'] = data[11]
+    content['cl_marital'] = data[12]
+    content['cl_address'] = data[13]
+    content['cl_city'] = data[14]
+    content['cl_zip'] = data[15]
+    content['cl_phone'] = data[16]
+
+    if request.method == "POST":
+        return render_template('client.html', **content)
+    return render_template('client.html', **content)  
 
 @app.route('/client_information', methods = ["POST", "GET"])
 def client_information():
@@ -291,24 +330,20 @@ def example():
 @app.route('/narrative',methods =["GET", "POST"])
 def narrative():
     referral_id = 2
-    cursor.execute("SELECT * FROM outcome INNER JOIN cases ON cases.referral_id = outcome.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
+    cursor.execute("SELECT * FROM meeting_notes INNER JOIN cases ON cases.referral_id = meeting_notes.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
     data = cursor.fetchone()
-    
+    print(data)
     if request.method == "POST":
-        oc_narrative = request.form.get("oc_narrative")
+        meeting_narrative = request.form.get("meeting_narrative")
         cur = conn.cursor()
-        # sql = "insert into outcome(oc_narrative) values (%s)"
-        # val = oc_narrative
-        cursor.execute("""UPDATE outcome SET  oc_narrative = (%s) WHERE referral_id = """ + str(referral_id),
-         (oc_narrative))
-        # cur.execute(sql, val)
+        sql = "insert into meeting_notes(meeting_narrative) values (%s)"
+        val = meeting_narrative
+        cur.execute(sql, val)
         conn.commit()
         print(cur.rowcount, "record inserted.")
-    cursor.execute("SELECT * FROM outcome INNER JOIN cases ON cases.referral_id = outcome.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
-    data = cursor.fetchone()
     content = {}
-    content["oc_narrative"] = data[14]
-    
+    content["meeting_narrative"] = data[6]
+    print(content)
     if data == None:
         return "Sorry your data isn't here"
     if request.method == "POST":
