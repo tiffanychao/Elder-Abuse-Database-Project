@@ -54,13 +54,13 @@
             Physical Functional Status: Appears
         </div>
         <select class="dropdown_design" name="func_status">
-            <option value="1" {% if functional_status == '0' %} selected {% endif %} ></option>
-            <option value="2" {% if functional_status == '1' %} selected {% endif %} >Intact</option>
-            <option value="3" {% if functional_status == '2' %} selected {% endif %}>Mildly Impaired</option>
-            <option value="4" {% if functional_status == '3' %} selected {% endif %}>Moderately Impaired</option>
-            <option value="5" {% if functional_status == '4' %} selected {% endif %}>Severely Impaired</option>
-            <option value="6" {% if functional_status == '5' %} selected {% endif %}>Fluctuating</option>
-            <option value="7" {% if functional_status == '6' %} selected {% endif %}>Unknown</option>
+            <option value="" {% if functional_status == '' %} selected {% endif %} ></option>
+            <option value="Intact" {% if functional_status == 'Intact' %} selected {% endif %} >Intact</option>
+            <option value="Mildly Impaired" {% if functional_status == 'Mildly Impaired' %} selected {% endif %}>Mildly Impaired</option>
+            <option value="Moderately Impaired" {% if functional_status == 'Moderately Impaired' %} selected {% endif %}>Moderately Impaired</option>
+            <option value="Severely Impaired" {% if functional_status == 'Severely Impaired' %} selected {% endif %}>Severely Impaired</option>
+            <option value="Fluctuating" {% if functional_status == 'Fluctuating' %} selected {% endif %}>Fluctuating</option>
+            <option value="Unknown" {% if functional_status == 'Unknown' %} selected {% endif %}>Unknown</option>
         </select>
     </div>
     <!-- Cognitive Functional Status: Appears -->
@@ -69,13 +69,13 @@
             Cognitive Functional Status: Appears
         </div>
         <select  class="dropdown_design" name="cognitive_status", name="cognitive_status">
-            <option value="0" {% if cognitive_status == '0' %} selected {% endif %} ></option>
-            <option value="1" {% if cognitive_status == '1' %} selected {% endif %} >Intact</option>
-            <option value="2" {% if cognitive_status == '2' %} selected {% endif %} >Mildly Impaired</option>
-            <option value="3" {% if cognitive_status == '3' %} selected {% endif %}>Moderately Imparied</option>
-            <option value="4" {% if cognitive_status == '4' %} selected {% endif %}>Severely Impaired</option>
-            <option value="5" {% if cognitive_status == '5' %} selected {% endif %}>Fluctuating</option>
-            <option value="6" {% if cognitive_status == '6' %} selected {% endif %}>Unknown</option>
+            <option value="" {% if cognitive_status == '' %} selected {% endif %} ></option>
+            <option value="Intact" {% if cognitive_status == 'Intact' %} selected {% endif %} >Intact</option>
+            <option value="Mildly Impaired" {% if cognitive_status == 'Mildly Impaired' %} selected {% endif %} >Mildly Impaired</option>
+            <option value="Moderately Imparied" {% if cognitive_status == 'Moderately Imparied' %} selected {% endif %}>Moderately Imparied</option>
+            <option value="Severely Impaired" {% if cognitive_status == 'Severely Impaired' %} selected {% endif %}>Severely Impaired</option>
+            <option value="Fluctuating" {% if cognitive_status == 'Fluctuating' %} selected {% endif %}>Fluctuating</option>
+            <option value="Unknown" {% if cognitive_status == 'Unknown' %} selected {% endif %}>Unknown</option>
         </select>
     </div>
     <!-- Living Setting -->
@@ -84,13 +84,13 @@
             Living Setting
         </div>
         <select  class="dropdown_design" name="living_setting">
-            <option value="1" {% if living_setting == '0' %} selected {% endif %} ></option>
-            <option value="1" {% if living_setting == '1' %} selected {% endif %} >Assisted Living/ Board & Care</option>
-            <option value="2" {% if living_setting == '2' %} selected {% endif %} >Skilled Nursing Facility</option>
-            <option value="3" {% if living_setting == '3' %} selected {% endif %}>Hospital</option>
-            <option value="4" {% if living_setting == '4' %} selected {% endif %}>Non-licensed Facility</option>
-            <option value="5" {% if living_setting == '5' %} selected {% endif %}>Home - Own</option>
-            <option value="6" {% if living_setting == '6' %} selected {% endif %}>Home - Rent</option>
+            <option value="" {% if living_setting == '' %} selected {% endif %} ></option>
+            <option value="Assisted Living/ Board & Care" {% if living_setting == 'Assisted Living/ Board & Care' %} selected {% endif %} >Assisted Living/ Board & Care</option>
+            <option value="Skilled Nursing Facility" {% if living_setting == 'Skilled Nursing Facility' %} selected {% endif %} >Skilled Nursing Facility</option>
+            <option value="Hospital" {% if living_setting == 'Hospital' %} selected {% endif %}>Hospital</option>
+            <option value="Non-licensed Facility" {% if living_setting == 'Non-licensed Facility' %} selected {% endif %}>Non-licensed Facility</option>
+            <option value="Home - Own" {% if living_setting == 'Home - Own' %} selected {% endif %}>Home - Own</option>
+            <option value="Home - Rent" {% if living_setting == 'Home - Rent' %} selected {% endif %}>Home - Rent</option>
         </select>
     </div>
     <!-- Lives With -->
@@ -99,12 +99,12 @@
             Lives With
         </div>
         <select class="dropdown_design" name="lives_with">
-            <option value="1" {% if lives_with == '0' %} selected {% endif %} ></option>
-            <option value="1" {% if lives_with == '1' %} selected {% endif %} >Alone</option>
-            <option value="2" {% if lives_with == '2' %} selected {% endif %} >Spouse</option>
-            <option value="3" {% if lives_with == '3' %} selected {% endif %}>Children</option>
-            <option value="4" {% if lives_with == '4' %} selected {% endif %}>Other family</option>
-            <option value="5" {% if lives_with == '5' %} selected {% endif %}>non-family(describe)</option>
+            <option value="" {% if lives_with == '' %} selected {% endif %} ></option>
+            <option value="Alone" {% if lives_with == 'Alone' %} selected {% endif %} >Alone</option>
+            <option value="Spouse" {% if lives_with == 'Spouse' %} selected {% endif %} >Spouse</option>
+            <option value="Children" {% if lives_with == 'Children' %} selected {% endif %}>Children</option>
+            <option value="Other family" {% if lives_with == 'Other family' %} selected {% endif %}>Other family</option>
+            
         </select>
     </div>
     <!-- Other(describe) -->
