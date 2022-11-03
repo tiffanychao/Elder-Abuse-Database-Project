@@ -37,7 +37,7 @@ except Error as e:
 
 @app.route('/client', methods = ["POST", "GET"])
 def client():
-    referral_id = 1
+    referral_id = 3
     # figure out the associated client ID of the referral_id
     cursor.execute("SELECT * FROM clients INNER JOIN cases ON cases.referral_id = clients.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
     data = cursor.fetchone()
@@ -58,6 +58,7 @@ def client():
 
     cursor.execute("SELECT * FROM clients INNER JOIN cases on clients.referral_id = cases.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
     data = cursor.fetchone()
+    print(data)
     content = {}
     content['cl_name_first'] = data[2]
     content['cl_name_last'] = data[3]
