@@ -12,16 +12,11 @@
       border-collapse: collapse;
       width: 100%;
     }
-    
     #notes td, #notes th {
       border: 1px solid #ddd;
       padding: 8px;
     }
-    
     #notes tr:nth-child(even){background-color: white;}
-    
-    
-    
     #notes th {
       padding-top: 12px;
       padding-bottom: 12px;
@@ -30,10 +25,13 @@
       background-color: white;;
       color:black;
     }
-    </style>
+</style>
+<div class="client_information_banner_container">
+    <div class="client_information_banner">Section - Notes</div>
+</div>
 <!--  Notes-->
+<form method="POST">
 <div class="client_information_container">
-    
     <div class="text_with_input_container">
         <div>
            Meeting/Case Notes
@@ -42,18 +40,15 @@
         </div>
         <br>
         <br>
-    
-    
     <br>
-
     <table id="notes">
         <tr>
-          <th >Presenter/Update by <input type="text" id="fname" name="fname"></th>
-          <th>Date <input type="text" id="fname" name="fname"></th>
+          <th >Presenter/Update by <input type="text" id="presenter" name="presenter" value={{presenter}}></th>
+          <th>Date <input type="text" id="meeting_date" name="meeting_date" value = {{meeting_date}}></th>
           
         </tr>
         <tr>
-          <td colspan="2"><textarea name="w3review" rows="10" cols="100"></textarea >
+          <td colspan="2"><textarea name="meeting_notes" rows="10" cols="100" >{{meeting_notes}}</textarea >
           </td>
         </tr>
       </table>
@@ -69,7 +64,7 @@
 
         <table id="notes">
             <tr>
-              <th ><textarea name="w3review" rows="3" cols="100"></textarea ></th>
+              <th ><textarea name="goals" rows="3" cols="100" >{{goals}}</textarea ></th>
             </tr>
           </table>
     </div>
@@ -83,18 +78,28 @@
         <br>
         <table id="notes">
             <tr>
-              <th >Action Step</th>
+              <th>Action Step</th>
               <th>Person Responsible</th>
               <th>Follow up Date</th>
               <th>Status</th>
             </tr>
             <tr>
-              <th ><textarea name="w3review" rows="3" cols="22"></textarea ></th>
-              <th><textarea name="w3review" rows="3" cols="22"></textarea ></th>
-              <th><textarea name="w3review" rows="3" cols="22"></textarea ></th>
-              <th><textarea name="w3review" rows="3" cols="22"></textarea ></th>
+              <th ><textarea name="action_step" rows="3" cols="22" >{{action_step}}</textarea ></th>
+              <th><textarea name="person_response" rows="3" cols="22" >{{person_response}}</textarea ></th>
+              <th><textarea name="follow_up" rows="3" cols="22">{{follow_up}}</textarea ></th>
+              <th><textarea name="status" rows="3" cols="22" >{{status}}</textarea ></th>
             </tr>
           </table>
-    </div>
+
+    </div>  
+          <!--  button -->
+          <div class="button_container">
+            <div class="center">
+                <input class="blue_button" type="submit" value="Save" >
+            </div>
+          </div>
 </div>
+
+</form>
+
 {% endblock %}
