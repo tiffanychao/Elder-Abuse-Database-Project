@@ -321,62 +321,75 @@ def consulation():
 @app.route('/notes',methods =["GET", "POST"])
 def notes():
     referral_id = 2
-    client_rec_id = random.randint(10, 900)
-    meeting_id = random.randint(10, 900)
+    # meeting_notes
     cursor.execute("SELECT * FROM meeting_notes INNER JOIN cases ON cases.referral_id =meeting_notes.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
     data = cursor.fetchone()
+    meeting_id = data[0]
+    # goals
+    cursor.execute("SELECT * FROM goals INNER JOIN cases ON cases.referral_id =goals.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
+    data1 = cursor.fetchone()
+    client_goals_id = data1[0]
+    # recommendations
     cursor.execute("SELECT * FROM recommendations INNER JOIN cases ON cases.referral_id =recommendations.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
     data2 = cursor.fetchone()
-    if request.method == "POST":
+    client_rec_id  = data2[0]
+    
 
+    if request.method == "POST":
+        # meeting notes
         presenter = request.form.get("presenter")
         meeting_date = datetime.strptime(request.form.get("meeting_date"),'%Y-%m-%d')
         meeting_notes = request.form.get("meeting_notes")
-        goals = request.form.get("goals")
+        meeting_recs = ""
+        fake_goals = ""
+        # goals
+        goal = request.form.get("goals")
+        # recommendations
         action_step = request.form.get("action_step")
         person_response = request.form.get("person_response")
         follow_up = datetime.strptime(request.form.get("follow_up"),'%Y-%m-%d')
-        status = request.form.get("status")
-        meeting_narrative = "need to be modified"
-       
+        action_status = request.form.get("status")
+        
+        # meeting notes insertion
         cur = conn.cursor()
-        sql = "insert into meeting_notes(meeting_id,referral_id,meeting_date,meeting_recs,meeting_goals,Meeting_presenters,meeting_narrative) values (%s,%s,%s,%s,%s,%s,%s)"
-        val = (meeting_id,referral_id,meeting_date,meeting_notes,goals,presenter,meeting_narrative)
-        cur.execute(sql, val)
+        cursor.execute("""UPDATE meeting_notes SET meeting_date = (%s),meeting_recs = (%s), meeting_goals = (%s) , 
+        Meeting_presenters = (%s), meeting_narrative = (%s) WHERE meeting_id = """ + str(meeting_id),(meeting_date, meeting_recs,fake_goals,presenter,meeting_notes))
+
         conn.commit()
         print(cur.rowcount, "record inserted.")
-
+        # for Goals - goals table
+        cur = conn.cursor()
+        cursor.execute("""UPDATE goals SET goal = (%s) WHERE client_goals_id = """ + str(client_goals_id),(goal))
+        conn.commit()
+        print(cur.rowcount, "record inserted.")       
         # for recommendations
         cur = conn.cursor()
-        sql2 = "insert into recommendations(client_rec_id, referral_id, action_step,person_responsible,followup_date,action_status) values (%s,%s,%s,%s,%s,%s)"
-        val2= (client_rec_id, referral_id, action_step,person_response,follow_up,status)
-        cur.execute(sql2, val2)
+        cursor.execute("""UPDATE recommendations SET  action_step = (%s), person_responsible = (%s), followup_date = (%s), action_status = (%s) WHERE client_rec_id = """ + str(client_rec_id),(action_step,person_response,follow_up,action_status))
         conn.commit()
         print(cur.rowcount, "record inserted.")
 
+    # meeeting_notes
     cursor.execute("SELECT * FROM meeting_notes INNER JOIN cases ON cases.referral_id = meeting_notes.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
     data = cursor.fetchone()
-    print(data)
+    
+    # recommendations
     cursor.execute("SELECT * FROM recommendations INNER JOIN cases ON cases.referral_id = recommendations.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
     data2 = cursor.fetchone()
-    print(data2)
+    
+    # goal
+    cursor.execute("SELECT * FROM goals INNER JOIN cases ON cases.referral_id = goals.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
+    data3 = cursor.fetchone()
+    
     content = {}
     content["presenter"] = data[5]
     content["meeting_date"] = data[2]
-    content["meeting_notes"] = data[6] # narrative
-    content["goals"] = data[4]
-    content["action_step"] = data2[2]
+    content["meeting_notes"] = data[6] # meeting_narrative
+    content["goals"] = data3[2]# goals.goal
+    content["action_step"] = data2[2] 
     content["person_response"] = data2[3]
     content["follow_up"] = data2[4]
     content["status"] = data2[5]
-    
-    # print(presenter)
-    # print(meeting_notes)
-    # print(goals)
-    # print(action_step)
-    # print(person_response)
-    # print(follow_up)
-    # print(status)
+
     if data == None:
         return "Sorry your data isn't here"
     if request.method == "POST":
