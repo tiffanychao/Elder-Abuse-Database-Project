@@ -84,6 +84,7 @@ tr:hover:nth-child(odd) {
     cursor: pointer;
 }
 
+
 tbody tr:nth-child(odd){
     background-color: #adcbff;
     color: #fff;

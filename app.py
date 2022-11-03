@@ -313,16 +313,31 @@ def search_cases():
     # deal with the data
     #
     
-    table_list = SQL_for_search_cases()
+    table_list = search_cases_from_database()
     v_num = len(table_list)
     return render_template('searchCases.html',number = v_num, result = table_list) 
 
-def SQL_for_search_cases():
-    result =  [dict(link="https://www.google.com/",id="1234", name="John Doe4"),
-                dict(link="https://www.google.com/",id="1235", name="John Doe5"),
-                dict(link="https://www.google.com/",id="1236", name="John Doe6"),
-                dict(link="https://www.google.com/",id="1237", name="John Doe7"),
-                ]
+def search_cases_from_database():
+    # result =  [dict(link="https://www.google.com/",id="1234", name="John Doe4"),
+    #             dict(link="https://www.google.com/",id="1235", name="John Doe5"),
+    #             dict(link="https://www.google.com/",id="1236", name="John Doe6"),
+    #             dict(link="https://www.google.com/",id="1237", name="John Doe7"),
+    #             ]
+    
+    basic_sql = 'SELECT clients.referral_id,case_number.case_number,clients.cl_name_first,clients.cl_name_last,cases.case_date FROM clients, case_number,cases Where clients.referral_id = case_number.referral_id AND case_number.referral_id = cases.referral_id'
+    cursor.execute(basic_sql)
+    data = cursor.fetchall()
+    result = []
+    for item in data:
+        dic = dict()
+        dic["link"] = ""+str(item[0])
+        dic["referral_id"] = item[0]
+        dic["case_number"] = item[1]
+        dic["cl_name_first"] = item[2]
+        dic["cl_name_last"] = item[3]
+        dic["case_date"] = item[4]
+        result.append(dic)
+    print (result)
     return result
 
 @app.route('/')

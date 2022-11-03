@@ -77,23 +77,30 @@
         </div>
         <br>
         <div>
-            
+        
+        <div class = "outer_of_header">
             <!-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"/> -->
 
             <table class="table table-hover">
               <tbody>
+                <td>Case No</td>
+                <td>Client First</td>
+                <td>Client Last</td>
+                <td>Case Date</td>
                 {% for r in result %}
                     <tr onclick="window.open('{{r.link}}' + location.search) ">
                         
-                        <td>{{r.id}}</td>
-                        <td>{{r.name}}</td>
+                        <td>{{r.case_number}}</td>
+                        <td>{{r.cl_name_first}}</td>
+                        <td>{{r.cl_name_last}}</td>
+                        <td>{{r.case_date}}</td>
                         
                     </tr>
                 {% endfor %}
         
               </tbody>
             </table>
-
+        </div>
             <!-- <output name = "suspectname" class="text_output_design">{{result}}</output> -->
         </div>
         
