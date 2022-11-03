@@ -285,11 +285,28 @@ def example():
     variable = "check your name"
     return render_template('example.html', value = variable)
 
-@app.route('/narrative')
+@app.route('/narrative',methods =["GET", "POST"])
 def narrative():
-    variable = "check your name"
-    return render_template('narrative.html', value = variable)
-
+    referral_id = 2
+    cursor.execute("SELECT * FROM meeting_notes INNER JOIN cases ON cases.referral_id = meeting_notes.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
+    data = cursor.fetchone()
+    print(data)
+    if request.method == "POST":
+        meeting_narrative = request.form.get("meeting_narrative")
+        cur = conn.cursor()
+        sql = "insert into meeting_notes(meeting_narrative) values (%s)"
+        val = meeting_narrative
+        cur.execute(sql, val)
+        conn.commit()
+        print(cur.rowcount, "record inserted.")
+    content = {}
+    content["meeting_narrative"] = data[6]
+    print(content)
+    if data == None:
+        return "Sorry your data isn't here"
+    if request.method == "POST":
+        return render_template('narrative.html', **content)
+    return render_template('narrative.html', **content)
 
 
 @app.route('/consulation')
