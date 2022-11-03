@@ -6,7 +6,7 @@ import os #provides ways to access the Operating System and allows us to read th
 from mysql.connector import Error
 import mysql.connector
 from datetime import datetime
-import random
+
 load_dotenv()  # take environment variables from .env.
 
 
@@ -352,10 +352,104 @@ def narrative():
     return render_template('narrative.html', **content)
 
 
-@app.route('/consulation')
+@app.route('/consultation', methods =["GET", "POST"])
 def consulation():
-    variable = "check your name"
-    return render_template('consulation.html', value = variable)
+    referral_id = 2
+    cursor.execute("SELECT * FROM consultation_information INNER JOIN cases ON cases.referral_id = consultation_information.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
+    data = cursor.fetchone()
+    consultation_id = data[0]
+    
+    #
+    Services = True
+    GENESIS = True
+    DA = True
+    Regional_center = True
+    Corner = True
+    Law_enforcement = True
+    Attorney = True
+    Psychologist = True
+    Medical_Practitioner = True
+    Ombudsman = True
+    Public_Guardian = True
+    Description_other = True
+
+    if(request.form.get("Services") == None):
+        Services = False
+    if(request.form.get("GENESIS") == None):
+        GENESIS = False
+    if(request.form.get("DA") == None):
+        DA = False
+    if(request.form.get("Regional_center") == None):
+        Regional_center = False
+    if(request.form.get("Corner") == None):
+        Corner = False
+    if(request.form.get("Law_enforcement") == None):
+        Law_enforcement = False
+    if(request.form.get("Attorney") == None):
+        Attorney = False
+    if(request.form.get("Psychologist") == None):
+        Psychologist = False
+    if(request.form.get("Medical_Practitioner") == None):
+        Medical_Practitioner = False
+    if(request.form.get("Ombudsman") == None):
+        Ombudsman = False
+    if(request.form.get("Public_Guardian") == None):
+        Public_Guardian = False
+    if(request.form.get("Description_other") == None):
+        Description_other = False
+    if request.method == "POST":
+        Services = bool(request.form.get("Services"))
+        GENESIS = bool(request.form.get("GENESIS"))
+        DA = bool(request.form.get("DA"))
+        Regional_center = bool(request.form.get("Regional_center"))
+        Corner = bool(request.form.get("Corner"))
+        Law_enforcement = bool(request.form.get("Law_enforcement"))
+        Attorney = bool(request.form.get("Attorney"))
+        Psychologist = bool(request.form.get("Psychologist"))
+        Medical_Practitioner = bool(request.form.get("Medical_Practitioner")) #physician
+        Ombudsman = bool(request.form.get("Ombudsman"))
+        Public_Guardian = bool(request.form.get("Public_Guardian"))
+        Other = bool(request.form.get("Other"))
+        Description_other = request.form.get("Description_other")
+        Reason = request.form.get("Reason")
+        
+
+        
+        cursor.execute("""UPDATE consultation_information SET consult_aps = (%s), consult_genesis = (%s),
+        consult_district_att = (%s), consult_regional = (%s), consult_coroner = (%s), consult_law_enf = (%s),
+        consult_att_oth = (%s), consult_psychologist  = (%s), consult_physician = (%s), consult_ombudsman = (%s), consult_pub_guard = (%s), consult_other = (%s),
+        consult_other_desc = (%s), consult_reason = (%s)  WHERE referral_id = """ + str(referral_id),
+         (Services, GENESIS, DA, Regional_center, Corner, Law_enforcement, Attorney, Psychologist, 
+         Medical_Practitioner, Ombudsman, Public_Guardian, Other, Description_other,Reason))
+        conn.commit()
+        print(cursor.rowcount, "record inserted.")
+    
+    cursor.execute("SELECT * FROM consultation_information INNER JOIN cases on consultation_information.referral_id = cases.referral_id WHERE consultation_information.referral_id = " + str(referral_id) + ";")
+    data = cursor.fetchone()
+    print(data)
+    
+    content = {}
+    content["Services"] = data[2]
+    content["GENESIS"] = data[3]
+    content["DA"] = data[4]
+    content["Regional_center"] = data[5]
+    content["Coroner"] = data[6]
+    content["Law_enforcement"] = data[7]
+    content["Attorney"] = data[8]
+    content["Psychologist"] = data[9]
+    content["Medical_Practitioner"] = data[10]
+    content["Ombudsman"] = data[11]
+    content["Public_Guardian"] = data[12]
+    content["Other"] = data[13]
+    content["Description_other"] = data[14]
+    content["Reason"] = data[15]
+    
+    if data == None:
+        return "Sorry your data isn't here"
+    if request.method == "POST":
+        return render_template('consultation.html', **content)
+
+    return render_template('consultation.html', **content)
 
 
 @app.route('/notes',methods =["GET", "POST"])
