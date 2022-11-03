@@ -257,31 +257,40 @@ def center_outcomes():
     return render_template("centerOutcomes.html", **content)
 
 @app.route('/test', methods =["GET", "POST"])
-def get_abuser_info_from_db():
+def get_referral_info_from_db(id):
     # size 10
     Dic = dict()
-    Dic["referCaseNum"] = "12345"
-    Dic["firstName"] = "Jorge"
-    Dic["lastName"] = "Sole"
-    Dic["FCTeamMember"] = "APS"
-    Dic["fcTeamOther"] = ""
-    Dic["email"] = "jsole@hs.uci.edu"
-    Dic["officePhone"] = "(714)456-8586"
-    Dic["officeTax"] = "(714)456-7933"
-    Dic["mobilePhone"] = ""
-    Dic["supervisorName"] = "Jacklyn Schult"
+    referral_id = id;
+    cursor.execute(" SELECT * FROM referring_agency WHERE referral_id =  " + str(referral_id) + ";")
+    data = cursor.fetchone()
+    Dic["referCaseNum"] = data[1]
+    Dic["firstName"] = data[2]
+    Dic["lastName"] = data[3]
+    Dic["FCTeamMember"] = data[5]
+    Dic["fcTeamOther"] = data[6]
+    Dic["email"] = data[7]
+    Dic["officePhone"] = data[8]
+    Dic["officeTax"] = data[9]
+    Dic["mobilePhone"] = data[10]
+    Dic["supervisorName"] = data[11]
  
     return Dic
 
 @app.route('/referring_agency',methods =["GET", "POST"])
 def referring_agency():
+    referral_id = 1
+    
     if request.method == "POST":
-        data1 = request.form.get("ReferCaseNum")
-        data2 = request.form.get("firstName")
-        print(data1 + data2)
-        return  data1 
-    dictInfo = get_abuser_info_from_db()
+ 
+        cursor.execute("""UPDATE referring_agency SET ra_fname = (%s),ra_lname = (%s),ra_fc_team = (%s),ra_fc_other = (%s), ra_email = (%s), ra_ph_office = (%s),ra_fx_office = (%s),ra_ph_mobile = (%s), ra_supervisor_name = (%s)   WHERE referral_id = """ + str(referral_id),
+         (request.form["FirstName"], request.form["LastName"], 
+         request.form["FCTeamMember"], request.form["FCTeamOther"], request.form["Email"], 
+         request.form.get('OfficePhone'), request.form.get("OfficeTax"), request.form.get("MobilePhone"), 
+         request.form.get("SupervisorName")  ))
+        conn.commit()
+    dictInfo = get_referral_info_from_db(referral_id)
     return render_template('referringAgency.html', **dictInfo)
+
 
 @app.route('/case_summary',methods =["GET", "POST"])
 def case_summary():

@@ -47,15 +47,16 @@
             FCTeamMember
         </div>
         <select name="FCTeamMember" id="FCTeamMember">
-            <option value="Select">Select</option>
-            <option value="APS">.APS</option>
-            <option value="LawEnforcement">Law Enforcement</option>
-            <option value="DA">D.A.</option>
-            <option value="CivilAttorney">Civil Attorney</option>
-            <option value="Ombudsman">Ombudsman</option>
-            <option value="Coroner">Coroner/ME</option>
-            <option value="MedicalPractitioner">Medical Practitioner</option>
-            <option value="MentalHP">Mental Health Practitioner</option>
+            <!-- <option value="2" {% if oc_csv_ext == '2' %} selected {% endif %}>Person & Estate</option> -->
+            <option {% if FCTeamMember == 'Select' %} selected {% endif %} value="Select" >Select</option>
+            <option {% if FCTeamMember == 'APS' %} selected {% endif %} value="APS">.APS</option>
+            <option {% if FCTeamMember == 'LawEnforcement' %} selected {% endif %} value="LawEnforcement">Law Enforcement</option>
+            <option {% if FCTeamMember == 'DA' %} selected {% endif %} value="DA">D.A.</option>
+            <option {% if FCTeamMember == 'CivilAttorney' %} selected {% endif %} value="CivilAttorney">Civil Attorney</option>
+            <option {% if FCTeamMember == 'Ombudsman' %} selected {% endif %} value="Ombudsman">Ombudsman</option>
+            <option {% if FCTeamMember == 'Coroner' %} selected {% endif %} value="Coroner">Coroner/ME</option>
+            <option {% if FCTeamMember == 'MedicalPractitioner' %} selected {% endif %} value="MedicalPractitioner">Medical Practitioner</option>
+            <option {% if FCTeamMember == 'MentalHP' %} selected {% endif %} value="MentalHP">Mental Health Practitioner</option>
     </select><br>
     </div>
     <!-- Cognitive Functional Status: Appears -->
@@ -107,7 +108,7 @@
     <div class="text_with_input_container">
         <div>           
         </div>
-        <button type="submit">Add Data</button>
+        <button type="submit">Update Data</button>
 </form>
 
 </div>
