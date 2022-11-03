@@ -1,0 +1,126 @@
+{% extends "framework.html" %}
+{% block title %}Index{% endblock %}
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="../static/consultation.css">
+<link rel="stylesheet" href="../static/framework.css">
+{% endblock %}
+{% block content %}
+<div class="client_information_banner_container">
+    <div class="client_information_banner">Section - Consultation</div>
+</div>
+<form method="POST">
+<div class="consultation_container">
+    <!-- Consulation information -->
+    <div >
+        <table>
+            <tr >
+                <td>     
+                    <label class = "checkbox-inline">
+                        <input type = "checkbox" name = "Services"{% if Services ==1 %} checked {% endif %}>Adult/Protective Services
+                    </label>
+                </td>
+                <td>
+                    <label class = "checkbox-inline">
+                        <input type = "checkbox" name = "GENESIS" {% if GENESIS ==1 %} checked {% endif %}>GENESIS
+                     </label>
+                </td>
+                <td>
+                    <label class = "checkbox-inline">
+                        <input type = "checkbox" name = "DA" {% if DA ==1 %} checked {% endif %}>D.A.
+                     </label>
+                </td>
+                <td>
+                    <label class = "checkbox-inline">
+                        <input type = "checkbox" name = "Regional_center" {% if Regional_center ==1 %} checked {% endif %}>Regional center
+                     </label>
+                </td>
+            </tr>
+
+            <tr>
+                <td>     
+                <label class = "checkbox-inline">
+                    <input type = "checkbox" name = "Corner" {% if Corner ==1 %} checked {% endif %}>Corner/ME
+                 </label>
+                </td>
+                <td>
+                    <label class = "checkbox-inline">
+                        <input type = "checkbox" name = "Law_enforcement" {% if Law_enforcement ==1 %} checked {% endif %}>Law Enforcement
+                     </label>
+                </td>
+                <td>
+                    <label class = "checkbox-inline">
+                        <input type = "checkbox" name = "Attorney" {% if Attorney ==1 %} checked {% endif %}>Attorney other
+                     </label>
+                </td>
+                <td>
+                    <label class = "checkbox-inline">
+                        <input type = "checkbox" name = "Psychologist" {% if Psychologist ==1 %} checked {% endif %}>Psychologist
+                     </label>
+                </td>
+            </tr>
+            <tr>
+                <td>     
+                <label class = "checkbox-inline">
+                    <input type = "checkbox" name = "Medical_Practitioner" {% if Medical_Practitioner == 1 %} checked {% endif %}>Medical Practitioner
+                 </label>
+                </td>
+                <td>
+                    <label class = "checkbox-inline">
+                        <input type = "checkbox" name = "Ombudsman" {% if Ombudsman ==1 %} checked {% endif %}>Ombudsman
+                     </label>
+                </td>
+                <td>
+                    <label class = "checkbox-inline">
+                        <input type = "checkbox" name = "Public_Guardian" {% if Public_Guardian ==1 %} checked {% endif %}>Public Guardian
+                     </label>
+                </td>
+
+            </tr>
+        </table>
+        
+
+    </div>
+    <br>
+
+    <!--  Other(Describe) -->
+    <div class="text_with_input_container">
+        <div>
+            <label class = "checkbox-inline">
+                <input type = "checkbox" name = "Other" {% if Other ==1 %} checked {% endif %}>Other(Describe)
+             </label>
+            
+        </div>
+    </div>
+    <div>
+        <textarea name="Description_other" rows="3" cols="50" class="text_input_design">{{Description_other}}</textarea>
+    </div>
+    <br>
+    <!-- Reason case was Submitted for Consulation -->
+    <div class="text_with_input_container">
+        <div>
+            Reason case was Submitted for Consulation
+        </div>
+    </div>
+    <div class="text_with_input_container">
+        <select name="Reason" class="dropdown_design" >
+        <option value="" {% if Reason == '' %} selected {% endif %} ></option>
+        <option value="Medical_Consultation" {% if Reason == 'Medical_Consultation' %} selected {% endif %}>Medical Consultation</option>
+        <option value="Psychological_Consultation" {% if Reason == 'Psychological_Consultation' %} selected {% endif %}>Psychological Consultation</option>
+        <option value="Record_Review"{% if Reason == 'Record_Revie' %} selected {% endif %}>Record Review</option>
+        <option value="Contact_Client_Physician"{% if Reason == 'Contact_Client_Physician' %} selected {% endif %}>Contact Client's Physician</option>
+        <option value="Case_Recommendation"{% if Reason == 'Case_Recommendatio' %} selected {% endif %}>Case Recommendation</option>
+        <option value="Prosecution"{% if Reason == 'Medical Consultation' %} selected {% endif %}>Prosecution</option>
+        <option value="Case_Study"{% if Reason == 'Case_Study' %} selected {% endif %}>Case Study</option>
+        </select>
+    </div>
+    <div class="button_container">
+        <div class="center">
+            <input class="blue_button" type="submit" value="Save" >
+        </div>
+    </div>
+</div>
+
+</form>
+
+{% endblock %}
