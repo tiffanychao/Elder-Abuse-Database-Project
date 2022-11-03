@@ -3,7 +3,10 @@ app = Flask(__name__)
 from flaskext.mysql import MySQL
 from dotenv import load_dotenv
 import os #provides ways to access the Operating System and allows us to read the environment variables
-
+from mysql.connector import Error
+import mysql.connector
+from datetime import datetime
+import random
 load_dotenv()  # take environment variables from .env.
 
 
