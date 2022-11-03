@@ -331,20 +331,21 @@ def example():
 @app.route('/narrative',methods =["GET", "POST"])
 def narrative():
     referral_id = 2
-    cursor.execute("SELECT * FROM meeting_notes INNER JOIN cases ON cases.referral_id = meeting_notes.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
+    cursor.execute("SELECT * FROM outcome INNER JOIN cases ON cases.referral_id = outcome.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
     data = cursor.fetchone()
-    print(data)
+    
     if request.method == "POST":
-        meeting_narrative = request.form.get("meeting_narrative")
-        cur = conn.cursor()
-        sql = "insert into meeting_notes(meeting_narrative) values (%s)"
-        val = meeting_narrative
-        cur.execute(sql, val)
+        oc_narrative = request.form.get("oc_narrative")
+        cursor.execute("""UPDATE outcome SET  oc_narrative = (%s) WHERE referral_id = """ + str(referral_id),
+         (oc_narrative))
+
         conn.commit()
-        print(cur.rowcount, "record inserted.")
+        
+    cursor.execute("SELECT * FROM outcome INNER JOIN cases ON cases.referral_id = outcome.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
+    data = cursor.fetchone()
     content = {}
-    content["meeting_narrative"] = data[6]
-    print(content)
+    content["oc_narrative"] = data[14]
+
     if data == None:
         return "Sorry your data isn't here"
     if request.method == "POST":
