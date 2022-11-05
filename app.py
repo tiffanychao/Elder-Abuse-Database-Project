@@ -292,7 +292,7 @@ def referring_agency():
 
 
 def get_case_summary_from_db(id):
-    // search to get
+    #  search to get
     dic = dict()
     dic["name"] = "Mr Darcy"
     dic["presenter"] = "John Doe"
