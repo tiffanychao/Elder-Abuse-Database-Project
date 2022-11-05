@@ -262,16 +262,17 @@ def get_referral_info_from_db(referral_id):
     Dic = dict()
     cursor.execute(" SELECT * FROM referring_agency WHERE referral_id =  " + str(referral_id) + ";")
     data = cursor.fetchone()
-    Dic["referCaseNum"] = data[1]
-    Dic["firstName"] = data[2]
-    Dic["lastName"] = data[3]
-    Dic["FCTeamMember"] = data[5]
-    Dic["fcTeamOther"] = data[6]
-    Dic["email"] = data[7]
-    Dic["officePhone"] = data[8]
-    Dic["officeTax"] = data[9]
-    Dic["mobilePhone"] = data[10]
-    Dic["supervisorName"] = data[11]
+    if data != None :
+        Dic["referCaseNum"] = data[1]
+        Dic["firstName"] = data[2]
+        Dic["lastName"] = data[3]
+        Dic["FCTeamMember"] = data[5]
+        Dic["fcTeamOther"] = data[6]
+        Dic["email"] = data[7]
+        Dic["officePhone"] = data[8]
+        Dic["officeTax"] = data[9]
+        Dic["mobilePhone"] = data[10]
+        Dic["supervisorName"] = data[11]
  
     return Dic
 
