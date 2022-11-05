@@ -13,12 +13,7 @@
     grid-template-columns: 1000px 200px;
     padding-top: 10px; 
 }
-.table{
-  
-    padding-top: 10px; 
-    border-style: solid;
-    border-color: coral;
-}
+
 .text_with_input_container{
     display: grid;
     grid-template-columns: 150px 200px;
@@ -48,8 +43,16 @@
     float: left;
     width: 500px;
     /* padding: 10px; */
-  }
-  
+}
+
+.column_search {
+    width: 90%;
+    /* padding: 10px; */
+}
+.column_button {
+    width: 10%;
+    /* padding: 10px; */
+}
   /* Clear floats after the columns */
 .row:after {
     content: "";
@@ -74,12 +77,12 @@
 tbody td{
     padding: 8px;
 }
-tr:hover { 
+table.table_record tr:hover { 
     background: #cccccc; 
     cursor: pointer;
 }
 
-tr:hover:nth-child(odd) { 
+table.table_record tr:hover:nth-child(odd) { 
     background: #cccccc; 
     cursor: pointer;
 }
@@ -90,13 +93,36 @@ tbody tr:nth-child(odd){
     color: #fff;
 }
 
- td a { 
+/* td a { 
     display: block; 
     border: 1px solid black;
     padding: 16px; 
- }
-table {
+ }  */
+ /* .table{
+  
+    padding-top: 10px; 
+    border-style: solid;
+    border-color: coral;
+} */
+td {
+    height : 25px;
+}
+.table_record {
      width:100%;
      margin-bottom:1rem;
-     color:#212529
-    }
+     color:#212529;
+     padding-top: 10px; 
+     border-style: solid;
+     border-color: coral;
+}
+.table_button {
+    width:100px;
+    margin-bottom:1rem;
+    padding-top: 10px; 
+    border-color: coral;
+    border-style: solid;
+    color:#212529;
+
+}
+
+

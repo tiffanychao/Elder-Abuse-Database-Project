@@ -3,9 +3,9 @@ app = Flask(__name__)
 from flaskext.mysql import MySQL
 from dotenv import load_dotenv
 import os #provides ways to access the Operating System and allows us to read the environment variables
-from mysql.connector import Error
-import mysql.connector
-from datetime import datetime
+# from mysql.connector import Error
+# import mysql.connector
+# from datetime import datetime
 
 load_dotenv()  # take environment variables from .env.
 
@@ -260,7 +260,7 @@ def center_outcomes():
 def get_referral_info_from_db(id):
     # size 10
     Dic = dict()
-    referral_id = id;
+    referral_id = id
     cursor.execute(" SELECT * FROM referring_agency WHERE referral_id =  " + str(referral_id) + ";")
     data = cursor.fetchone()
     Dic["referCaseNum"] = data[1]
@@ -309,13 +309,15 @@ def case_summary():
 def search_cases():
     if request.method == "POST":
        
-        return  data1 
+        print (request.form.get("btn"))
     # deal with the data
     #
     
     table_list = search_cases_from_database()
     v_num = len(table_list)
     return render_template('searchCases.html',number = v_num, result = table_list) 
+
+
 
 def search_cases_from_database():
     # result =  [dict(link="https://www.google.com/",id="1234", name="John Doe4"),
@@ -337,7 +339,7 @@ def search_cases_from_database():
         dic["cl_name_last"] = item[3]
         dic["case_date"] = item[4]
         result.append(dic)
-    print (result)
+    # print (result)
     return result
 
 @app.route('/')
