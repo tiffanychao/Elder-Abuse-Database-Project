@@ -17,55 +17,55 @@
         <div>
             First Name
         </div>
-        <input name = "LastName" value="{{cl_name_first}}" class="text_input_design">
+        <input name = "cl_name_first" value="{{cl_name_first}}" class="text_input_design">
     </div>
      <!-- Last Name -->
      <div class="text_with_input_container">
         <div>
             Last Name
         </div>
-        <input name = "LastName" value="{{cl_name_last}}" class="text_input_design">
+        <input name = "cl_name_last" value="{{cl_name_last}}" class="text_input_design">
     </div>
     <!-- Age -->
     <div class="text_with_input_container">
         <div>
             Age
         </div>
-        <input name = "LastName" value="{{cl_age}}" class="text_input_design">
+        <input name = "cl_age" value="{{cl_age}}" class="text_input_design">
     </div>
     <!-- Date of Birth -->
     <div class="text_with_input_container">
         <div>
             Date of Birth
         </div>
-        <input name = "Dob" value="{{cl_DOB}}" class="text_input_design">
+        <input name = "cl_DOB" value="{{cl_DOB}}" class="text_input_design">
     </div>
     <!-- Language -->
     <div class="text_with_input_container">
         <div>
             Language
         </div>
-        <input name = "Language" value="{{cl_language}}" class="text_input_design">
+        <input name = "cl_language" value="{{cl_language}}" class="text_input_design">
     </div>
     <!-- Translation / Communication Needs -->
     <div class="text_with_input_container">
         <div>
             Translation / Communication Needs
         </div>
-        <textarea rows="3" class="text_input_design">{{cl_TransComm}}</textarea>
+        <textarea rows="3" class="text_input_design" name = "cl_TransComm">{{cl_TransComm}}</textarea>
     </div>
     <!-- Level of Education -->
     <div class="text_with_input_container">
         <div>
             Level of Education
         </div>
-        <select name="selectName" class="dropdown_design">
-            <option value="unknown">unknown</option>
-            <option value="Less than high school">Less than high school</option>
-            <option value="High school graduate">High school graduate</option>
-            <option value="Some college/trade school">Some college/trade school</option>
-            <option value="College graduate">College graduate</option>
-            <option value="Advanced degree">Advanced degree</option>
+        <select name="cl_education" class="dropdown_design">
+            <option {% if cl_education == 'unknown' %} selected {% endif %} value="unknown">unknown</option>
+            <option {% if cl_education == 'Less than high school' %} selected {% endif %} value="Less than high school">Less than high school</option>
+            <option {% if cl_education == 'High school graduate' %} selected {% endif %} value="High school graduate">High school graduate.</option>
+            <option {% if cl_education == 'Some college/trade school' %} selected {% endif %} value="Some college/trade school">Some college/trade school</option>
+            <option {% if cl_education == 'College graduate' %} selected {% endif %} value="College graduate">College graduate</option>
+            <option {% if cl_education == 'Advanced degree' %} selected {% endif %} value="Advanced degree">Advanced degree</option>
         </select>
     </div>
     <!-- Ethnicity -->
@@ -74,12 +74,12 @@
             Ethnicity
         </div>
         <select name="selectName" class="dropdown_design">
-            <option value="African American">African American</option>
-            <option value="American Indian/Native Alaskan">American Indian/Native Alaskan</option>
-            <option value="Asian/Pacific Islander">Asian/Pacific Islander</option>
-            <option value="Caucasian, non-Hispanic">Caucasian, non-Hispanic</option>
-            <option value="Hispanic">Hispanic</option>
-            <option value="Other">Other</option>
+            <option value="African American" {% if cl_ethnicity == 'African American' %} selected {% endif %} >African American</option>
+            <option value="American Indian/Native Alaskan" {% if cl_ethnicity == 'American Indian/Native Alaskan' %} selected {% endif %} >American Indian/Native Alaskan</option>
+            <option value="Asian/Pacific Islander" {% if cl_ethnicity == 'Asian/Pacific Islander' %} selected {% endif %} >Asian/Pacific Islander</option>
+            <option value="Caucasian, non-Hispanic" {% if cl_ethnicity == 'Caucasian, non-Hispanic' %} selected {% endif %}>Caucasian, non-Hispanic</option>
+            <option value="Hispanic" {% if cl_ethnicity == 'Hispanic' %} selected {% endif %}>Hispanic</option>
+            <option value="Other" {% if cl_ethnicity == 'Other' %} selected {% endif %}>Other</option>
         </select>
     </div>
     <!-- Gender -->
@@ -87,11 +87,11 @@
         <div>
             Gender
         </div>
-        <select name="selectName" class="dropdown_design">
-            <option value="Female">Female</option>
-            <option value="Male">Male</option>
-            <option value="Transgendered">Transgendered</option>
-            <option value="Unknown">Unknown</option>
+        <select name="cl_gender" class="dropdown_design">
+            <option {% if cl_gender == 'Female' %} selected {% endif %} value="Female">Female</option>
+            <option {% if cl_gender == 'Male' %} selected {% endif %} value="Male">Male</option>
+            <option {% if cl_gender== 'Transgendered' %} selected {% endif %} value="Transgendered">Transgendered</option>
+            <option {% if cl_gender == 'Unknown' %} selected {% endif %} value="Unknown">Unknown</option>
         </select>
     </div>
     <!-- Marital Status -->
@@ -99,12 +99,12 @@
         <div>
             Marital Status
         </div>
-        <select name="selectName" class="dropdown_design">
-            <option value="Divorced">Divorced</option>
-            <option value="Domestic Partnership">Domestic Partnership</option>
-            <option value="Married">Married</option>
-            <option value="Seperated">Seperated</option>
-            <option value="Widowed">Widowed</option>
+        <select name="cl_marital" class="dropdown_design">
+            <option {% if cl_marital == 'Divorced' %} selected {% endif %} value="Divorced">Divorced</option>
+            <option {% if cl_marital == 'Domestic Partnership' %} selected {% endif %} value="Domestic Partnership">Domestic Partnership</option>
+            <option {% if cl_marital == 'Married' %} selected {% endif %} value="Married">Married</option>
+            <option {% if cl_marital == 'Seperated' %} selected {% endif %} value="Seperated">Seperated</option>
+            <option {% if cl_marital == 'Widowed' %} selected {% endif %} value="Widowed">Widowed</option>
         </select>
     </div>
     <!-- Address -->
@@ -112,28 +112,28 @@
         <div>
             Address
         </div>
-        <input name = "Address" value="{{cl_address}}" class="text_input_design">
+        <input name = "cl_address" value="{{cl_address}}" class="text_input_design">
     </div>
     <!-- City -->
     <div class="text_with_input_container">
         <div>
             City
         </div>
-        <input name = "City" value="{{cl_city}}" class="text_input_design">
+        <input name = "cl_city" value="{{cl_city}}" class="text_input_design">
     </div>
     <!-- Zip -->
     <div class="text_with_input_container">
         <div>
             Zip
         </div>
-        <input name = "Zip" value="{{cl_zip}}" class="text_input_design">
+        <input name = "cl_zip" value="{{cl_zip}}" class="text_input_design">
     </div>
     <!-- Telephone -->
     <div class="text_with_input_container">
         <div>
             Telephone
         </div>
-        <input name = "Telephone" value="{{cl_phone}}" class="text_input_design">
+        <input name = "cl_phone" value="{{cl_phone}}" class="text_input_design">
     </div>
     <br>
     <div class="text_with_input_container">
