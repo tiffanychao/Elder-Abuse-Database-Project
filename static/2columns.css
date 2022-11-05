@@ -23,5 +23,12 @@
     padding: 80px 140px 0px 120px;
 }
 
-
-
+@media only screen and (max-width: 1300px) {
+    .client_information_container{
+        position: relative;
+        right: 120px;
+    }
+    .client_information_banner{
+        font-size: 30px;
+    }
+}

@@ -10,58 +10,147 @@
 <div class = "centerOnPrintedPage">
     
     <div class="container" >
-        <div class="text_with_input_container">
+        
+        <div class="text_with_output_container_1000">
             <div class = "text_header">
                 Case Summary - {{name}}
             </div>
         </div>
         <div class = "noPrint">
-            <div class="text_with_input_container">
+            <div class="text_with_output_container_1000">
                 <p align="right">
                     <button onclick="window.print();" class = "button"  >Print</button>
                   </p>
                 </div>
         </div>
         
+        <div class = "section">
+            <div class="text_with_output_container_1000">
+                <div>
+                    Suspect First Name, Last Name
+                </div>
+                <br>
+                <br>
+                    <output name = "suspectname" class="text_output_design">{{name}}</output>
+            </div>
+        </div>
         
-        <div class="text_with_input_container">
-            <div>
-                Suspect First Name, Last Name
+
+        <div class = "section">
+            <div class="text_with_output_container_25p">
+                <div>
+                    Presenter
+                </div>
+                <output name = "presenter" class="text_output_design">{{presenter}}</output>
+                <div></div>
+                <div>
+                    Date
+                </div>
+                <output name = "Date" class="text_output_design">{{date}}</output>
             </div>
-            <br>
-            <br>
-                <output name = "suspectname" class="text_output_design">{{name}}</output>
+            <hr class="line">
+
+            <div class="text_with_output_container_1000">
+                <div>
+                    Meeting/Case Notes
+                </div>
+               <br>
+               <table class="table">
+                <tbody>
+                
+                  {% for note in notes %}         
+                      <tr>                        
+                          <td>{{note}}</td>
+                      </tr>
+                  {% endfor %}
+          
+                </tbody>
+              </table>
+
+                <!-- <output name = "notes" class="text_output_design">{{notes}}</output> -->
+            </div>
         </div>
     
-        <div class="text_with_input_container">
-            <div>
-                Meeting/Case Notes
+        <div class = "section">
+            <div class="text_with_output_container_1000">
+                <div>
+                    Goal Description
+                </div>
+                <br>
+                <table class="table">
+                <tbody>
+                
+                  {% for g in goal %}         
+                      <tr>                        
+                          <td>{{g}}</td>
+                      </tr>
+                  {% endfor %}
+          
+                </tbody>
+              </table>
+                 
             </div>
-            <br>
-            <br> 
-            <output name = "notes" class="text_output_design">{{notes}}</output>
         </div>
     
-        <div class="text_with_input_container">
-            <div>
-                Goal Description
+        
+        <div class = "section">
+            <div class="text_with_output_container_1000">
+                <div>
+                    Recommendations
+                </div>
+                
+                <br>
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <td>
+                        <div class="text_with_output_container_25p">
+                            <div>
+                                Presenter
+                            </div>
+                            <output name = "presenter" class="text_output_design">{{presenter}}</output>
+                            <div></div>
+                            <div>
+                                Date
+                            </div>
+                            <output name = "Date" class="text_output_design">{{date}}</output>
+                        </div>
+                    </td>
+                    </tr>
+
+                      {% for r in rcmd %}         
+                          <tr>       
+                              <td>
+                                <div class = "text_with_output_container_rcmd">
+                                    <div>
+                                        Action Step
+                                    </div>
+                                    <output class = "text_output_design">{{r.ActionStep}}</output>
+                                    <div></div>
+                                    <div>Followup Date</div>
+                                    <output class = "text_output_design">{{r.followupDate}}</output>
+                                </div>
+                                <div class = "text_with_output_container_rcmd">
+                                  <div>
+                                      Person Responsible
+                                  </div>
+                                  <output class = "text_output_design">{{r.PersonResponsilbe}}</output>
+                                    <div></div>
+                                  <div>Status</div>
+                                  <output class = "text_output_design">{{r.status}}</output>
+                                 </div>
+                              </td>
+                              
+                              
+                          </tr>
+                      {% endfor %}
+              
+                    </tbody>
+                  </table>
+          
             </div>
-            <br>
-            <br>
-                <output name = "goaldescri" class="text_output_design">{{goal}}</output>      
         </div>
-    
-        <div class="text_with_input_container">
-            <div>
-                Recommendations
-            </div>
-            <br>
-            <br>
-            <output name = "rcmd" class="text_output_design">{{rcmd}}</output> 
-        </div>
-        <br>
-        <br>
-        <br>
+
         
     </div>
 </div>

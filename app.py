@@ -257,10 +257,9 @@ def center_outcomes():
     return render_template("centerOutcomes.html", **content)
 
 @app.route('/test', methods =["GET", "POST"])
-def get_referral_info_from_db(id):
+def get_referral_info_from_db(referral_id):
     # size 10
     Dic = dict()
-    referral_id = id
     cursor.execute(" SELECT * FROM referring_agency WHERE referral_id =  " + str(referral_id) + ";")
     data = cursor.fetchone()
     Dic["referCaseNum"] = data[1]
@@ -292,6 +291,36 @@ def referring_agency():
     return render_template('referringAgency.html', **dictInfo)
 
 
+def get_case_summary_from_db(id):
+    // search to get
+    dic = dict()
+    dic["name"] = "Mr Darcy"
+    dic["presenter"] = "John Doe"
+    dic["date"] = "2022-04-01"
+    notesarr = []
+    notesarr.append ("notes000")
+    notesarr.append ("notes111")
+    dic["notes"] = notesarr
+    goalarr = []
+    goalarr.append("Goal 1: goal1111")
+    goalarr.append("Goal 2: goal2222")
+    dic["goal"] = goalarr
+    rcmdlist = []
+    dicrcmd = dict()
+    dicrcmd['ActionStep'] = 'work on goal 1'
+    dicrcmd['PersonResponsilbe'] = 'Jorge L sole'
+    dicrcmd['followupDate'] = '2022-01-01'
+    dicrcmd['status'] = 'ukm'
+    rcmdlist.append(dicrcmd)
+    dicrcmd = dict()
+    dicrcmd['ActionStep'] = 'work on goal 1'
+    dicrcmd['PersonResponsilbe'] = 'Jorge L sole'
+    dicrcmd['followupDate'] = '2022-01-01'
+    dicrcmd['status'] = 'ukm'
+    rcmdlist.append(dicrcmd)
+    dic["rcmd"] = rcmdlist
+    return dic
+    
 @app.route('/case_summary',methods =["GET", "POST"])
 def case_summary():
     if request.method == "POST":
@@ -300,22 +329,29 @@ def case_summary():
     # deal with the data
     #
     v_name = "John Doe"
-    v_notes = "In the early 19th century,<br> the Bennet family live at their Longbourn estate,<br> situated near the village of Meryton in Hertfordshire, <br>England. Mrs. Bennet's greatest desire is to marry off her five daughters in order to secure their futures. The arrival of Mr. Bingley, a rich bachelor who rents the neighbouring Netherfield estate, gives her hope that one of her daughters might contract an advantageous marriage, because It is a truth universally acknowledged, that a single man in possession of a good fortune, must be in want of a wife."
-    v_goal = "Mr. Collins, the heir to the Longbourn estate, visits the Bennet family with the intention of finding a wife among the five girls under the advice of his patroness Lady Catherine de Bourgh, also revealed to be Mr. Darcy's aunt. He decides to pursue Elizabeth. The Bennet family meet the charming army officer George Wickham, <br>who tells Elizabeth in confidence Mr. Darcy's horrible past actions in his regards. Elizabeth, blinded by her prejudice toward Mr. Darcy, believes him."
-    v_rcmd = "Elizabeth dances with Mr. Darcy at a ball, where Mrs. Bennet hints loudly that she expects Jane and Bingley to become engaged. Elizabeth rejects Mr. Collins' marriage proposal, to her mother's fury and her father's relief. Mr. Collins instead proposes to Charlotte Lucas, a friend of<br>Elizabeth. Having heard Mrs. Bennet's words at the ball and disapproving of the marriage, Mr. Darcy joins Mr. Bingley in a trip to London and, with the help of his sisters, convinces him not to return to Netherfield. A heartbroken Jane visits her Aunt and Uncle Gardiner in London to<br>raise her spirits, while Elizabeth's hatred for Mr. Darcy grows as she suspects he was responsible for Mr Bingley's departure."
-    return render_template('caseSummary.html',name = v_name,notes = v_notes, goal = v_goal, rcmd = v_rcmd) 
+    
+    dic = get_case_summary_from_db(1)
+    # print(dic['notes'])
+    return render_template('caseSummary.html',**dic) 
 
 @app.route('/search_cases',methods =["GET", "POST"])
 def search_cases():
+    select_type = ''
+    firstName = ''
+    lastName = ''
     if request.method == "POST":
        
         print (request.form.get("btn"))
-    # deal with the data
-    #
     
-    table_list = search_cases_from_database()
-    v_num = len(table_list)
-    return render_template('searchCases.html',number = v_num, result = table_list) 
+    dic = dict()
+    dic['firstName'] = firstName
+    
+    infolist = search_cases_from_database()
+    v_num = len(infolist)
+    dic = dict()
+    dic['number'] = v_num
+    dic['result'] = infolist
+    return render_template('searchCases.html',**dic) 
 
 
 
