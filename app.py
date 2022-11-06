@@ -141,7 +141,39 @@ def abuser():
 
 @app.route('/abuse_info')
 def abuse_info():
-    return render_template('abuse_info.html')
+    referral_id = 1
+     # figure out the associated abuse_id of the referral_id
+    cursor.execute("SELECT * FROM abuse_information INNER JOIN cases ON cases.referral_id = abuse_information.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
+    data = cursor.fetchone()
+    if data == None:
+        return "There is no data sorry"
+    abuse_id = data[0]
+    content = {}
+    content['ad_InvAgncies'] = data[2] 
+    content['ad_RptingParty'] = data[3]
+    content['ad_Others'] = data[4]
+    content['ad_Abandon'] = data[5]
+    content['ad_Abduction'] = data[6]   
+    content['ad_Emotional'] = data[7] 
+    content['ad_FinanRIEst'] = data[8] 
+    content['ad_FinanOth'] = data[9] 
+    content['ad_FinanLoss'] = data[10] 
+    content['ad_Isolation'] = data[11] 
+    content['ad_Isolation'] = data[12]
+    content['ad_Sexual'] = data[13]  
+    content['ad_SelfNeglec'] = data[14] 
+    content['ad_NeglectOth'] = data[15] 
+    content['ad_PhyAssault'] = data[16] 
+    content['ad_PhyChemRst'] = data[17] 
+    content['ad_PhyCnstDpr'] = data[18] 
+    content['ad_PhyMedicat'] = data[19] 
+    content['ad_UndueInflu'] = data[20] 
+    content['ad_Other'] = data[21] 
+    content['ad_Narrative'] = data[22] 
+
+    print('--------')
+    print(abuse_id)
+    return render_template('abuse_info.html', **content)
 
 
 
