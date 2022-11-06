@@ -1,0 +1,38 @@
+.abuse_info_container{
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.first_container{
+    display: grid;
+    grid-template-columns: 300px 800px ;
+    row-gap: 5px;
+    padding: 20px 0 0 20px;
+}
+
+.first_container_element{
+    padding: 10px;
+}
+
+
+.types_of_abuse_container{
+    display: grid;
+    grid-template-columns: 300px 300px 300px 300px;
+    padding: 10px 0 0 20px;
+    row-gap: 4px;
+}
+
+.types_of_abuse_overall_container{
+    padding: 20px;
+}
+
+#NarrativeContainer{
+    justify-content: center;
+    padding: 20px 0px 0 10px ;
+}
+
+#narrative_header{
+    padding: 0px 0 10px 10px;
+    font-weight: bold;
+}

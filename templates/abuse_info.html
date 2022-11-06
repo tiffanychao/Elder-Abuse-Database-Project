@@ -1,0 +1,49 @@
+{% extends "framework.html" %}
+{% block title %}Index{% endblock %}
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="../static/abuse_info.css">
+<link rel="stylesheet" href="../static/framework.css">
+{% endblock %}
+{% block content %}
+<div class="abuse_info_container">
+    <div class="first_container">
+        <div class="first_container_element"><label style="font-weight: bold;">Other Agencies Involved</label></div> <textarea></textarea>
+        <div class="first_container_element"><label style="font-weight: bold;">Reporting Party</label></div><select name="oc_ro">
+            <option value="1">Volvo</option>
+            <option value="2">Saab</option>
+            <option value="3">Mercedes</option>
+            <option value="4">Audi</option>
+        </select>
+        <div class="first_container_element"><label style="font-weight: bold;">Others With Knowledge of Abuse</label></div> <textarea rows="7"></textarea>
+    </div>
+
+    <div class="types_of_abuse_overall_container">
+        <div style="font-weight:bold">Types of Abuse (Check all that apply)</div>
+    <div class="types_of_abuse_container">
+        <div><input type="checkbox"> <label>Abandonment</label></div>
+        <div><input type="checkbox"> <label>Financial - Other</label></div>
+        <div><input type="checkbox"> <label>Self-Neglect</label></div>
+        <div> <div><input type="checkbox"> <label>Physical - Constraint or Deprevation</label></div></div>
+        <div> <div><input type="checkbox"> <label>Abduction</label></div></div>
+        <div> <div><label> Self-Neglect </label><input> </div></div>
+        <div> <div><input type="checkbox"> <label>Neglect by Others</label></div></div>
+        <div> <div><input type="checkbox"> <label>Physical - Medication</label></div></div>
+        <div> <div><input type="checkbox"> <label>Emotional</label></div></div>
+        <div> <div><input type="checkbox"> <label>Isolation</label></div></div>
+        <div> <div><input type="checkbox"> <label>Physical - Assault/Battery</label></div></div>
+        <div> <div><input type="checkbox"> <label>Undue Influence</label></div></div>
+        <div> <div><input type="checkbox"> <label>Financial - Real Estate</label></div></div>
+        <div> <div><input type="checkbox"> <label>Sexual</label></div></div>
+        <div> <div><input type="checkbox"> <label>Physical - Chemical Restraint</label></div></div>
+        <div> <div><input type="checkbox"> <label>Other</label></div></div>
+        
+    </div>
+</div>
+    <div id="NarrativeContainer">
+        <div id="narrative_header">Narrative (From Referral)</div>
+        <div style="padding: 0 0 40px 10px;">
+        <textarea rows="25" cols="145" ></textarea></div>
+    </div>
+</div>
+{% endblock %}

@@ -139,6 +139,12 @@ def client_information():
 def abuser():
     return render_template('abuser.html', sampleInfo = "sampleInfo", exampleCheckbox = "1")
 
+@app.route('/abuse_info')
+def abuse_info():
+    return render_template('abuse_info.html')
+
+
+
 @app.route('/center_outcomes', methods = ["POST", "GET"])
 def center_outcomes():
     content = {}
