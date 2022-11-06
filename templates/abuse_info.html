@@ -6,9 +6,10 @@
 <link rel="stylesheet" href="../static/framework.css">
 {% endblock %}
 {% block content %}
+<form method="POST">
 <div class="abuse_info_container">
     <div class="first_container">
-        <div class="first_container_element"><label style="font-weight: bold;">Other Agencies Involved</label></div> <textarea></textarea>
+        <div class="first_container_element"><label style="font-weight: bold;">Other Agencies Involved</label></div> <textarea name="ad_InvAgencies">{{ad_InvAgencies}}</textarea>
         <div class="first_container_element"><label style="font-weight: bold;">Reporting Party</label></div><select name="oc_ro">
             <option value="1">Volvo</option>
             <option value="2">Saab</option>
@@ -46,4 +47,6 @@
         <textarea rows="25" cols="145" ></textarea></div>
     </div>
 </div>
+<button>this goes here</button>
+</form>
 {% endblock %}
