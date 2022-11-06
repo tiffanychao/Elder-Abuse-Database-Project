@@ -139,7 +139,7 @@ def client_information():
 def abuser():
     return render_template('abuser.html', sampleInfo = "sampleInfo", exampleCheckbox = "1")
 
-@app.route('/abuse_info')
+@app.route('/abuse_info', methods = ["POST", "GET"])
 def abuse_info():
     referral_id = 1
      # figure out the associated abuse_id of the referral_id
@@ -148,8 +148,15 @@ def abuse_info():
     if data == None:
         return "There is no data sorry"
     abuse_id = data[0]
+    if request.method == "POST":
+        cursor.execute("""UPDATE abuse_information SET ad_InvAgencies = (%s) WHERE abuser_id = """ + str(abuse_id),
+            (request.form.get('ad_InvAgencies')))
+        conn.commit()
+        
+    cursor.execute("SELECT * FROM abuse_information INNER JOIN cases ON cases.referral_id = abuse_information.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
+    data = cursor.fetchone()
     content = {}
-    content['ad_InvAgncies'] = data[2] 
+    content['ad_InvAgencies'] = data[2] 
     content['ad_RptingParty'] = data[3]
     content['ad_Others'] = data[4]
     content['ad_Abandon'] = data[5]
