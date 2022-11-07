@@ -142,6 +142,51 @@ def abuser():
 @app.route('/abuse_info', methods = ["POST", "GET"])
 def abuse_info():
     referral_id = 1
+    ad_Abandon = True
+    ad_Abduction = True
+    ad_Emotional = True
+    ad_FinanRlEst = True
+    ad_FinanOth = True
+    ad_Isolation = True
+    ad_Sexual = True
+    ad_SelfNeglec = True
+    ad_NeglectOth = True
+    ad_PhyAssault = True
+    ad_PhyChemRst = True
+    ad_PhyCnstDpr = True
+    ad_PhyMedicat = True
+    ad_UndueInflu = True
+    ad_Other = True
+    if(request.form.get('ad_Abandon') == None):
+        ad_Abandon = False
+    if(request.form.get('ad_Abduction')== None):
+        ad_Abduction = False
+    if(request.form.get('ad_Emotional') == None):
+        ad_Emotional = False
+    if(request.form.get('ad_FinanRlEst') == None):
+        ad_FinanRlEst = False
+    if(request.form.get('ad_FinanOth') == None):
+        ad_FinanOth = False
+    if(request.form.get('ad_Isolation') == None):
+        ad_Isolation = False
+    if(request.form.get('ad_Sexual') == None):
+        ad_Sexual = False
+    if(request.form.get('ad_SelfNeglec') == None):
+        ad_SelfNeglec = False
+    if(request.form.get('ad_NeglectOth') == None):
+        ad_NeglectOth = False
+    if(request.form.get('ad_PhyAssault') == None):
+        ad_PhyAssault = False
+    if(request.form.get('ad_PhyChemRst') == None):
+        ad_PhyChemRst = False
+    if(request.form.get('ad_PhyCnstDpr') == None):
+        ad_PhyCnstDpr = False
+    if(request.form.get('ad_PhyMedicat') == None):
+        ad_PhyMedicat = False
+    if(request.form.get('ad_UndueInflu') == None):
+        ad_UndueInflu = False
+    if(request.form.get('ad_Other') == None):
+        ad_Other = False
      # figure out the associated abuse_id of the referral_id
     cursor.execute("SELECT * FROM abuse_information INNER JOIN cases ON cases.referral_id = abuse_information.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
     data = cursor.fetchone()
@@ -149,10 +194,14 @@ def abuse_info():
         return "There is no data sorry"
     abuse_id = data[0]
     if request.method == "POST":
-        cursor.execute("""UPDATE abuse_information SET ad_InvAgencies = (%s) WHERE abuser_id = """ + str(abuse_id),
-            (request.form.get('ad_InvAgencies')))
+        cursor.execute("""UPDATE abuse_information SET ad_InvAgencies = (%s), ad_RptingParty = (%s), ad_Others = (%s), ad_Abandon = (%s),
+         ad_Abduction = (%s), ad_Emotional = (%s), ad_FinanRlEst = (%s), ad_FinanOth = (%s), ad_FinanLoss = (%s), ad_Isolation= (%s), ad_Sexual = (%s), ad_SelfNeglec = (%s), 
+         ad_NeglectOth = (%s), ad_PhyAssault = (%s), ad_PhyChemRst =(%s), ad_PhyCnstDpr = (%s), ad_PhyMedicat = (%s), ad_UndueInflu = (%s), ad_Other = (%s), ad_Narrative = (%s) WHERE abuser_id = """ + str(abuse_id),
+            (request.form.get('ad_InvAgencies'), request.form.get('ad_RptingParty'), request.form.get('ad_Others'),ad_Abandon,ad_Abduction,
+            ad_Emotional,ad_FinanRlEst,ad_FinanOth,request.form.get('ad_FinanLoss'), ad_Isolation, ad_Sexual, ad_SelfNeglec, ad_NeglectOth,ad_PhyAssault, ad_PhyChemRst, 
+            ad_PhyCnstDpr, ad_PhyMedicat, ad_UndueInflu, ad_Other, request.form.get('ad_Narrative') ))
         conn.commit()
-        
+
     cursor.execute("SELECT * FROM abuse_information INNER JOIN cases ON cases.referral_id = abuse_information.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
     data = cursor.fetchone()
     content = {}
@@ -162,24 +211,23 @@ def abuse_info():
     content['ad_Abandon'] = data[5]
     content['ad_Abduction'] = data[6]   
     content['ad_Emotional'] = data[7] 
-    content['ad_FinanRIEst'] = data[8] 
+    content['ad_FinanRlEst'] = data[8] 
     content['ad_FinanOth'] = data[9] 
     content['ad_FinanLoss'] = data[10] 
     content['ad_Isolation'] = data[11] 
-    content['ad_Isolation'] = data[12]
-    content['ad_Sexual'] = data[13]  
-    content['ad_SelfNeglec'] = data[14] 
-    content['ad_NeglectOth'] = data[15] 
-    content['ad_PhyAssault'] = data[16] 
-    content['ad_PhyChemRst'] = data[17] 
-    content['ad_PhyCnstDpr'] = data[18] 
-    content['ad_PhyMedicat'] = data[19] 
-    content['ad_UndueInflu'] = data[20] 
-    content['ad_Other'] = data[21] 
-    content['ad_Narrative'] = data[22] 
+    content['ad_Sexual'] = data[12]  
+    content['ad_SelfNeglec'] = data[13] 
+    content['ad_NeglectOth'] = data[14] 
+    content['ad_PhyAssault'] = data[15] 
+    content['ad_PhyChemRst'] = data[16] 
+    content['ad_PhyCnstDpr'] = data[17] 
+    content['ad_PhyMedicat'] = data[18] 
+    content['ad_UndueInflu'] = data[19] 
+    content['ad_Other'] = data[20] 
+    content['ad_Narrative'] = data[21] 
 
     print('--------')
-    print(abuse_id)
+    print(content)
     return render_template('abuse_info.html', **content)
 
 
