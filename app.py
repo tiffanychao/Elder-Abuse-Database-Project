@@ -18,8 +18,8 @@ app.config['MYSQL_DATABASE_HOST'] = os.getenv("DatabaseHost")
 mysql.init_app(app)
 
 
-conn = mysql.connect()
-cursor = conn.cursor()
+# conn = mysql.connect()
+# cursor = conn.cursor()
 
 # check whether DB is connected
 try:
