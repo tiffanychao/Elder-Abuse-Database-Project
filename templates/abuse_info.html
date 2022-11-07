@@ -10,41 +10,41 @@
 <div class="abuse_info_container">
     <div class="first_container">
         <div class="first_container_element"><label style="font-weight: bold;">Other Agencies Involved</label></div> <textarea name="ad_InvAgencies">{{ad_InvAgencies}}</textarea>
-        <div class="first_container_element"><label style="font-weight: bold;">Reporting Party</label></div><select name="oc_ro">
-            <option value="1">Volvo</option>
-            <option value="2">Saab</option>
-            <option value="3">Mercedes</option>
-            <option value="4">Audi</option>
+        <div class="first_container_element"><label style="font-weight: bold;">Reporting Party</label></div><select name="ad_RptingParty">
+            <option value="1" {% if ad_RptingParty == '1' %} selected {% endif %}>Volvo</option>
+            <option value="2" {% if ad_RptingParty == '2' %} selected {% endif %}>Saab</option>
+            <option value="3" {% if ad_RptingParty == '3' %} selected {% endif %}>Mercedes</option>
+            <option value="4" {% if ad_RptingParty == '4' %} selected {% endif %}>Audi</option>
         </select>
-        <div class="first_container_element"><label style="font-weight: bold;">Others With Knowledge of Abuse</label></div> <textarea rows="7"></textarea>
+        <div class="first_container_element"><label style="font-weight: bold;">Others With Knowledge of Abuse</label></div> <textarea name="ad_Others" rows="7">{{ad_Others}}</textarea>
     </div>
 
     <div class="types_of_abuse_overall_container">
         <div style="font-weight:bold">Types of Abuse (Check all that apply)</div>
     <div class="types_of_abuse_container">
-        <div><input type="checkbox"> <label>Abandonment</label></div>
-        <div><input type="checkbox"> <label>Financial - Other</label></div>
-        <div><input type="checkbox"> <label>Self-Neglect</label></div>
-        <div> <div><input type="checkbox"> <label>Physical - Constraint or Deprevation</label></div></div>
-        <div> <div><input type="checkbox"> <label>Abduction</label></div></div>
-        <div> <div><label> Self-Neglect </label><input> </div></div>
-        <div> <div><input type="checkbox"> <label>Neglect by Others</label></div></div>
-        <div> <div><input type="checkbox"> <label>Physical - Medication</label></div></div>
-        <div> <div><input type="checkbox"> <label>Emotional</label></div></div>
-        <div> <div><input type="checkbox"> <label>Isolation</label></div></div>
-        <div> <div><input type="checkbox"> <label>Physical - Assault/Battery</label></div></div>
-        <div> <div><input type="checkbox"> <label>Undue Influence</label></div></div>
-        <div> <div><input type="checkbox"> <label>Financial - Real Estate</label></div></div>
-        <div> <div><input type="checkbox"> <label>Sexual</label></div></div>
-        <div> <div><input type="checkbox"> <label>Physical - Chemical Restraint</label></div></div>
-        <div> <div><input type="checkbox"> <label>Other</label></div></div>
+        <div><input type="checkbox" name="ad_Abandon" {% if ad_Abandon == 1 %} checked {% endif %}> <label>Abandonment</label></div>
+        <div><input type="checkbox" name="ad_FinanOth" {% if ad_FinanOth == 1 %} checked {% endif %}> <label>Financial - Other</label></div>
+        <div><input type="checkbox" name="ad_SelfNeglec" {% if ad_SelfNeglec == 1 %} checked {% endif %}> <label>Self-Neglect</label></div>
+        <div> <div><input type="checkbox" name="ad_PhyCnstDpr" {% if ad_PhyCnstDpr == 1 %} checked {% endif %}> <label>Physical - Constraint or Deprevation</label></div></div>
+        <div> <div><input type="checkbox" name="ad_Abduction" {% if ad_Abduction == 1 %} checked {% endif %}> <label>Abduction</label></div></div>
+        <div> <div><label> Est. loss $ </label><input name="ad_FinanLoss" value={{ad_FinanLoss}}> </div></div>
+        <div> <div><input type="checkbox" name="ad_NeglectOth" {% if ad_NeglectOth == 1 %} checked {% endif %}> <label>Neglect by Others</label></div></div>
+        <div> <div><input type="checkbox" name="ad_PhyMedicat" {% if ad_PhyMedicat == 1 %} checked {% endif %}> <label>Physical - Medication</label></div></div>
+        <div> <div><input type="checkbox" name="ad_Emotional" {% if ad_Emotional == 1 %} checked {% endif %}> <label>Emotional</label></div></div>
+        <div> <div><input type="checkbox" name="ad_Isolation" {% if ad_Isolation == 1 %} checked {% endif %}> <label>Isolation</label></div></div>
+        <div> <div><input type="checkbox" name="ad_PhyAssault"  {% if ad_PhyAssault == 1 %} checked {% endif %}> <label>Physical - Assault/Battery</label></div></div>
+        <div> <div><input type="checkbox" name="ad_UndueInflu" {% if ad_UndueInflu == 1 %} checked {% endif %}> <label>Under Influence</label></div></div>
+        <div> <div><input type="checkbox" name="ad_FinanRlEst" {% if ad_FinanRlEst == 1 %} checked {% endif %}> <label>Financial - Real Estate</label></div></div>
+        <div> <div><input type="checkbox" name="ad_Sexual" {% if ad_Sexual == 1 %} checked {% endif %}> <label>Sexual</label></div></div>
+        <div> <div><input type="checkbox" name="ad_PhyChemRst" {% if ad_PhyChemRst == 1 %} checked {% endif %}> <label>Physical - Chemical Restraint</label></div></div>
+        <div> <div><input type="checkbox" name="ad_Other" {% if ad_Other == 1 %} checked {% endif %}> <label>Other</label></div></div>
         
     </div>
 </div>
     <div id="NarrativeContainer">
         <div id="narrative_header">Narrative (From Referral)</div>
         <div style="padding: 0 0 40px 10px;">
-        <textarea rows="25" cols="145" ></textarea></div>
+        <textarea rows="25" cols="145" name="ad_Narrative" >{{ad_Narrative}}</textarea></div>
     </div>
 </div>
 <button>this goes here</button>
