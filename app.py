@@ -135,9 +135,50 @@ def client_information():
         return render_template('clientInformation.html', **content)
     return render_template('clientInformation.html', **content)
 
-@app.route('/abuser')
+@app.route('/abuser', methods = ["POST", "GET"])
 def abuser():
-    return render_template('abuser.html', sampleInfo = "sampleInfo", exampleCheckbox = "1")
+    referral_id = 1
+    # figure out the associated client ID of the referral_id
+    cursor.execute("SELECT * FROM suspects INNER JOIN cases ON cases.referral_id = suspects.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
+    data = cursor.fetchone()
+    if data == None:
+        return "There is no data sorry"
+    su_id = data[0]
+    
+    content = {}
+    content['su_name_first'] = data[2]
+    content['su_name_last'] = data[3]
+    content['su_organization'] = data[4]
+    content['su_age'] = data[6]
+    content['su_DOB'] = data[7]
+    content['su_ethnicity'] = data[8]
+    content['su_gender'] = data[9]
+    content['su_language'] = data[10]
+    content['su_TransComm'] = data[11]
+    content['su_PrimCrGvYES'] = data[12]
+    content['su_PrimCrGvNO'] = data[13]
+    content['su_LivesWthYES'] = data[14]
+    content['su_relationship'] = data[15]
+    content['su_LivesWthNO'] = data[16]
+    content['su_mental_ill'] = data[17]
+    content['su_mental_ill_desc'] = data[18]
+    content['su_AdAlchlYES'] = data[19]
+    content['su_AdAlchlNO'] = data[20]
+    content['su_AdAlchlUNK'] = data[21]
+    content['su_AdDrugsYES'] = data[22]
+    content['su_AdDrugsNO'] = data[23]
+    content['su_AdDrugsUNK'] = data[24]
+    content['su_AdPrepYES'] = data[25]
+    content['su_AdPrepNO'] = data[26]
+    content['su_AdPrepUNK'] = data[27]
+    content['su_AdOther'] = data[28]
+    content['su_address'] = data[29]
+    content['su_city'] = data[30]
+    content['su_zip'] = data[31]
+    content['su_phone'] = data[32]
+
+    return render_template('abuser.html', **content)
+
 
 @app.route('/abuse_info', methods = ["POST", "GET"])
 def abuse_info():
