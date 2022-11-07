@@ -6,40 +6,45 @@
 <link rel="stylesheet" href="../static/framework.css">
 {% endblock %}
 {% block content %}
+<!-- Client Banner -->
+<div class="client_information_banner_container">
+    <div class="client_information_banner">Section 4 - Abuser Basic Info</div>
+    </div>
+    <form method="POST">
 <div class="client_information_container">
     <!-- First Name -->
     <div class="text_with_input_container">
         <div>
             First Name
         </div>
-        <input value="{{sampleInfo}}" class="text_input_design">
+        <input name = su_name_first value="{{su_name_first}}" class="text_input_design">
     </div>
      <!-- Last Name -->
      <div class="text_with_input_container">
         <div>
             Last Name
         </div>
-        <input value="{{sampleInfo}}" class="text_input_design">
+        <input name = su_name_last value="{{su_name_last}}" class="text_input_design">
     </div>
     <!-- Organization -->
     <div class="text_with_input_container">
         <div>
             Organization
         </div>
-        <input class="text_input_design">
+        <input name = su_organization value="{{su_organization}}" class="text_input_design">
     </div>
     <!-- Relationship to Client -->
     <div class="text_with_input_container">
         <div>
             Relationship to Client
         </div>
-        <select name="selectName" class="dropdown_design">
-            <option value="Spouse/Significant Other">Spouse/Significant Other</option>
-            <option value="Child(Son)">Child(Son)</option>
-            <option value="Child(Daughter)">Child(Daughter)</option>
-            <option value="Other Family">Other Family</option>
-            <option value="Non-family but well-known to clinet">Non-family but well-known to clinet</option>
-            <option value="Stanger">Stanger</option>
+        <select name="su_relationship" class="dropdown_design">
+            <option {% if su_relationship == 'Spouse/Significant Other' %} selected {% endif %} value="Spouse/Significant Other">Spouse/Significant Other</option>
+            <option {% if su_relationship == 'Child(Son)' %} selected {% endif %} value="Child(Son)">Child(Son)</option>
+            <option {% if su_relationship == 'Child(Daughter)' %} selected {% endif %} value="Child(Daughter)">Child(Daughter)</option>
+            <option {% if su_relationship == 'Other Family' %} selected {% endif %} value="Other Family">Other Family</option>
+            <option {% if su_relationship == 'Non-family but well-known to clinet' %} selected {% endif %} value="Non-family but well-known to clinet">Non-family but well-known to clinet</option>
+            <option {% if su_relationship == 'Stranger' %} selected {% endif %} value="Stranger">Stranger</option>
         </select>
     </div>
      <!-- Primary Caregiver -->
@@ -50,10 +55,10 @@
         <div class="container">
             <form>
                 <label class="radio-inline">
-                  <input type="radio" name="optradio" checked>Yes
+                  <input type="checkbox" name="su_PrimCrGvYES" value="su_PrimCrGvYES" {% if su_PrimCrGvYES == 1 %} checked {% endif %}>YES
                 </label>
                 <label class="radio-inline">
-                  <input type="radio" name="optradio">No
+                  <input type="checkbox" name="su_PrimCrGvNO" value="su_PrimCrGvNO" {% if su_PrimCrGvNO == 1 %} checked {% endif %}>NO
                 </label>
               </form>
         </div>
@@ -66,10 +71,10 @@
         <div class="container">
             <form>
                 <label class="radio-inline">
-                  <input type="radio" name="optradio" checked>Yes
+                    <input type="checkbox" name="su_LivesWthYES" value="su_LivesWthYES" {% if su_PrimCrGvYES == 1 %} checked {% endif %}>YES
                 </label>
                 <label class="radio-inline">
-                  <input type="radio" name="optradio">No
+                    <input type="checkbox" name="su_LivesWthNO" value="su_LivesWthNO" {% if su_PrimCrGvNO == 1 %} checked {% endif %}>NO
                 </label>
               </form>
         </div>
@@ -79,11 +84,11 @@
         <div>
             Mental Illness
         </div>
-        <select name="selectName" class="dropdown_design">
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>
-            <option value="Suspected - Undiagnosed">Suspected - Undiagnosed</option>
-            <option value="Unknown">Unknown</option>
+        <select name="su_mental_ill" class="dropdown_design">
+            <option {% if su_mental_ill == 'Yes' %} selected {% endif %} value="Yes">Yes</option>
+            <option {% if su_mental_ill == 'No' %} selected {% endif %} value="No">No</option>
+            <option {% if su_mental_ill == 'Suspected - Undiagnosed' %} selected {% endif %} value="Suspected - Undiagnosed">Suspected - Undiagnosed</option>
+            <option {% if su_mental_ill == 'Unknown' %} selected {% endif %} value="Unknown">Unknown</option>
         </select>
     </div>
      <!-- If Yes (Describle) -->
@@ -91,61 +96,61 @@
         <div>
             If Yes (Describle)
         </div>
-        <input class="text_input_design">
+        <input name = su_mental_ill_desc value="{{su_mental_ill_desc}}" class="text_input_design">
     </div>
-    <!-- Addition - Alcohol -->
+    <!-- Addiction - Alcohol -->
     <div class="text_with_input_container">
         <div>
-            Live with Client
+            Addiction - Alcohol
         </div>
         <div class="container">
             <form>
                 <label class="radio-inline">
-                  <input type="radio" name="optradio" checked>Yes
+                    <input type="checkbox" name="su_AdAlchlYES" value="su_AdAlchlYES" {% if su_AdAlchlYES == 1 %} checked {% endif %}>YES
                 </label>
                 <label class="radio-inline">
-                  <input type="radio" name="optradio">No
+                    <input type="checkbox" name="su_AdAlchlNO" value="su_AdAlchlNO" {% if su_AdAlchlNO == 1 %} checked {% endif %}>NO
                 </label>
                 <label class="radio-inline">
-                    <input type="radio" name="optradio">Unknown
+                    <input type="checkbox" name="su_AdAlchlUNK" value="su_AdAlchlUNK" {% if su_AdAlchlUNK == 1 %} checked {% endif %}>Unknown
                   </label>
               </form>
         </div>
     </div>
-     <!-- Addition - Prescription -->
+     <!-- Addiction - Prescription -->
      <div class="text_with_input_container">
         <div>
-            Addition - Prescription
+            Addiction - Prescription
         </div>
         <div class="container">
             <form>
                 <label class="radio-inline">
-                  <input type="radio" name="optradio" checked>Yes
+                    <input type="checkbox" name="su_AdPrepYES" value="su_AdPrepYES" {% if su_AdPrepYES == 1 %} checked {% endif %}>YES
                 </label>
                 <label class="radio-inline">
-                  <input type="radio" name="optradio">No
+                    <input type="checkbox" name="su_AdPrepNO" value="su_AdPrepNO" {% if su_AdPrepNO == 1 %} checked {% endif %}>NO
                 </label>
                 <label class="radio-inline">
-                    <input type="radio" name="optradio">Unknown
+                    <input type="checkbox" name="su_AdPrepUNK" value="su_AdPrepUNK" {% if su_AdPrepUNK == 1 %} checked {% endif %}>Unknown
                   </label>
               </form>
         </div>
     </div>
-    <!-- Addition - Illicit Drugs -->
+    <!-- Addiction - Illicit Drugs -->
     <div class="text_with_input_container">
         <div>
-            Addition - Illicit Drugs
+            Addiction - Illicit Drugs
         </div>
         <div class="container">
             <form>
                 <label class="radio-inline">
-                  <input type="radio" name="optradio" checked>Yes
+                    <input type="checkbox" name="su_AdDrugsYES" value="su_AdDrugsYES" {% if su_AdDrugsYES == 1 %} checked {% endif %}>YES
                 </label>
                 <label class="radio-inline">
-                  <input type="radio" name="optradio">No
+                    <input type="checkbox" name="su_AdDrugsNO" value="su_AdDrugsNO" {% if su_AdDrugsYES == 1 %} checked {% endif %}>NO
                 </label>
                 <label class="radio-inline">
-                    <input type="radio" name="optradio">Unknown
+                    <input type="checkbox" name="su_AdDrugsUNK" value="su_AdDrugsUNK" {% if su_AdDrugsUNK == 1 %} checked {% endif %}>Unknown
                   </label>
               </form>
         </div>
@@ -155,32 +160,32 @@
         <div>
             Addiction - Other
         </div>
-        <input class="text_input_design">
+        <input name = su_AdOther value="{{su_AdOther}}" class="text_input_design">
     </div>
     <!-- Age/Decade of Life -->
     <div class="text_with_input_container">
         <div>
             Age/Decade of Life
         </div>
-        <input class="text_input_design">
+        <input name = su_age value="{{su_age}}" class="text_input_design">
     </div>
     <!-- Date of Birth -->
     <div class="text_with_input_container">
         <div>
             Date of Birth
         </div>
-        <input class="text_input_design">
+        <input name = su_DOB value="{{su_DOB}}" class="text_input_design">
     </div>
      <!-- Gender -->
      <div class="text_with_input_container">
         <div>
             Gender
         </div>
-        <select name="selectName" class="dropdown_design">
-            <option value="Female">Female</option>
-            <option value="Male">Male</option>
-            <option value="Transgendered">Transgendered</option>
-            <option value="Unknown">Unknown</option>
+        <select name="su_gender" class="dropdown_design">
+            <option {% if su_gender == 'Female' %} selected {% endif %} value="Female">Female</option>
+            <option {% if su_gender == 'Male' %} selected {% endif %} value="Male">Male</option>
+            <option {% if su_gender == 'Transgendered' %} selected {% endif %} value="Transgendered">Transgendered</option>
+            <option {% if su_gender == 'Unknown' %} selected {% endif %} value="Unknown">Unknown</option>
         </select>
     </div>
      <!-- Ethnicity -->
@@ -188,13 +193,13 @@
         <div>
             Ethnicity
         </div>
-        <select name="selectName" class="dropdown_design">
-            <option value="African American">African American</option>
-            <option value="American Indian/Native Alaskan">American Indian/Native Alaskan</option>
-            <option value="Asian/Pacific Islander">Asian/Pacific Islander</option>
-            <option value="Caucasian, non-Hispanic">Caucasian, non-Hispanic</option>
-            <option value="Hispanic">Hispanic</option>
-            <option value="Other">Other</option>
+        <select name="su_ethnicity" class="dropdown_design">
+            <option value="African American" {% if su_ethnicity == 'African American' %} selected {% endif %} >African American</option>
+            <option value="American Indian/Native Alaskan" {% if su_ethnicity == 'American Indian/Native Alaskan' %} selected {% endif %} >American Indian/Native Alaskan</option>
+            <option value="Asian/Pacific Islander" {% if su_ethnicity == 'Asian/Pacific Islander' %} selected {% endif %} >Asian/Pacific Islander</option>
+            <option value="Caucasian, non-Hispanic" {% if su_ethnicity == 'Caucasian, non-Hispanic' %} selected {% endif %}>Caucasian, non-Hispanic</option>
+            <option value="Hispanic" {% if su_ethnicity == 'Hispanic' %} selected {% endif %}>Hispanic</option>
+            <option value="Other" {% if su_ethnicity == 'Other' %} selected {% endif %}>Other</option>
         </select>
     </div>
     <!-- Language -->
@@ -202,43 +207,50 @@
         <div>
             Language
         </div>
-        <input class="text_input_design">
+        <input cname = "su_language" value="{{su_language}}" class="text_input_design">
     </div>
     <!-- Translation / Communication Needs -->
     <div class="text_with_input_container">
         <div>
             Translation / Communication Needs
         </div>
-        <textarea rows="3" class="text_input_design"></textarea>
+        <textarea rows="3" class="text_input_design" name = "su_TransComm">{{su_TransComm}}</textarea>
     </div>
     <!-- Address -->
     <div class="text_with_input_container">
         <div>
             Address
         </div>
-        <input class="text_input_design">
+        <input name = "su_address" value="{{su_address}}" class="text_input_design">
     </div>
     <!-- City -->
     <div class="text_with_input_container">
         <div>
             City
         </div>
-        <input class="text_input_design">
+        <input name = "su_city" value="{{su_city}}" class="text_input_design">
     </div>
     <!-- Zip -->
     <div class="text_with_input_container">
         <div>
             Zip
         </div>
-        <input class="text_input_design">
+        <input cname = "su_zip" value="{{su_zip}}" class="text_input_design">
     </div>
     <!-- Phone -->
     <div class="text_with_input_container">
         <div>
             Phone
         </div>
-        <input class="text_input_design">
+        <input cname = "su_phone" value="{{su_phone}}" class="text_input_design">
     </div>
+    <!-- Submit -->
+    <br>
+    <div class="text_with_input_container">
+        <div>           
+        </div>
+        <button type="submit">Save Data</button>
+</form>
 </div>
 </div>
 {% endblock %}

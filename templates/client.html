@@ -62,7 +62,7 @@
         <select name="cl_education" class="dropdown_design">
             <option {% if cl_education == 'unknown' %} selected {% endif %} value="unknown">unknown</option>
             <option {% if cl_education == 'Less than high school' %} selected {% endif %} value="Less than high school">Less than high school</option>
-            <option {% if cl_education == 'High school graduate' %} selected {% endif %} value="High school graduate">High school graduate.</option>
+            <option {% if cl_education == 'High school graduate' %} selected {% endif %} value="High school graduate">High school graduate</option>
             <option {% if cl_education == 'Some college/trade school' %} selected {% endif %} value="Some college/trade school">Some college/trade school</option>
             <option {% if cl_education == 'College graduate' %} selected {% endif %} value="College graduate">College graduate</option>
             <option {% if cl_education == 'Advanced degree' %} selected {% endif %} value="Advanced degree">Advanced degree</option>
@@ -135,11 +135,12 @@
         </div>
         <input name = "cl_phone" value="{{cl_phone}}" class="text_input_design">
     </div>
+    <!-- Submit -->
     <br>
     <div class="text_with_input_container">
         <div>           
         </div>
-        <button type="submit">Add Data</button>
+        <button type="submit">Save Data</button>
 </form>
 </div>
 </div>
