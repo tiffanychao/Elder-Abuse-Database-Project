@@ -3,9 +3,9 @@ app = Flask(__name__)
 from flaskext.mysql import MySQL
 from dotenv import load_dotenv
 import os #provides ways to access the Operating System and allows us to read the environment variables
-# from mysql.connector import Error
-# import mysql.connector
-# from datetime import datetime
+from mysql.connector import Error
+import mysql.connector
+from datetime import datetime
 
 load_dotenv()  # take environment variables from .env.
 
@@ -18,8 +18,8 @@ app.config['MYSQL_DATABASE_HOST'] = os.getenv("DatabaseHost")
 mysql.init_app(app)
 
 
-# conn = mysql.connect()
-# cursor = conn.cursor()
+conn = mysql.connect()
+cursor = conn.cursor()
 
 # check whether DB is connected
 try:
@@ -52,8 +52,8 @@ def client():
          (request.form["cl_name_first"], request.form["cl_name_last"], 
          request.form["cl_age"], request.form["cl_DOB"], request.form["cl_language"], request.form["cl_TransComm"],
          request.form.get('cl_education'), request.form.get("cl_ethnicity"), request.form.get("cl_gender"), 
-         request.form.get("cl_marital"), request.form("cl_address"), request.form("cl_city"), request.form("cl_zip"),
-         request.form("cl_phone")))
+         request.form.get("cl_marital"), request.form.get("cl_address"), request.form.get("cl_city"), 
+         request.form.get("cl_zip"),request.form.get("cl_phone")))
         conn.commit()
 
     cursor.execute("SELECT * FROM clients INNER JOIN cases on clients.referral_id = cases.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
