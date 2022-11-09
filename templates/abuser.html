@@ -71,10 +71,10 @@
         <div class="container">
             <form>
                 <label class="radio-inline">
-                    <input type="checkbox" name="su_LivesWthYES" value="su_LivesWthYES" {% if su_PrimCrGvYES == 1 %} checked {% endif %}>YES
+                    <input type="checkbox" name="su_LivesWthYES" value="su_LivesWthYES" {% if su_LivesWthYES == 1 %} checked {% endif %}>YES
                 </label>
                 <label class="radio-inline">
-                    <input type="checkbox" name="su_LivesWthNO" value="su_LivesWthNO" {% if su_PrimCrGvNO == 1 %} checked {% endif %}>NO
+                    <input type="checkbox" name="su_LivesWthNO" value="su_LivesWthNO" {% if su_LivesWthNO == 1 %} checked {% endif %}>NO
                 </label>
               </form>
         </div>
@@ -207,7 +207,7 @@
         <div>
             Language
         </div>
-        <input cname = "su_language" value="{{su_language}}" class="text_input_design">
+        <input name = "su_language" value="{{su_language}}" class="text_input_design">
     </div>
     <!-- Translation / Communication Needs -->
     <div class="text_with_input_container">
@@ -235,14 +235,14 @@
         <div>
             Zip
         </div>
-        <input cname = "su_zip" value="{{su_zip}}" class="text_input_design">
+        <input name = "su_zip" value="{{su_zip}}" class="text_input_design">
     </div>
     <!-- Phone -->
     <div class="text_with_input_container">
         <div>
             Phone
         </div>
-        <input cname = "su_phone" value="{{su_phone}}" class="text_input_design">
+        <input name = "su_phone" value="{{su_phone}}" class="text_input_design">
     </div>
     <!-- Submit -->
     <br>

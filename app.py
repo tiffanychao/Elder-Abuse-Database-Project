@@ -6,7 +6,7 @@ import os #provides ways to access the Operating System and allows us to read th
 from mysql.connector import Error
 import mysql.connector
 from datetime import datetime
-import pandas as pd
+#import pandas as pd
 import pathlib
 load_dotenv()  # take environment variables from .env.
 
@@ -139,13 +139,76 @@ def client_information():
 @app.route('/abuser', methods = ["POST", "GET"])
 def abuser():
     referral_id = 1
+    su_PrimCrGvYES = True
+    su_PrimCrGvNO = True
+    su_LivesWthYES = True
+    su_LivesWthNO = True
+    su_AdAlchlYES = True
+    su_AdAlchlNO = True
+    su_AdAlchlUNK = True
+    su_AdDrugsYES = True
+    su_AdDrugsNO = True
+    su_AdDrugsUNK = True
+    su_AdPrepYES = True
+    su_AdPrepNO = True
+    su_AdPrepUNK = True
+    if(request.form.get('su_PrimCrGvYES') == None):
+        su_PrimCrGvYES = False
+    if(request.form.get('su_PrimCrGvNO')== None):
+        su_PrimCrGvNO = False
+    if(request.form.get('su_LivesWthYES') == None):
+        su_LivesWthYES = False
+    if(request.form.get('su_LivesWthNO') == None):
+        su_LivesWthNO = False
+    if(request.form.get('su_AdAlchlYES') == None):
+       su_AdAlchlYES = False
+    if(request.form.get('su_AdAlchlNO') == None):
+        su_AdAlchlNO = False
+    if(request.form.get('su_AdAlchlUNK') == None):
+        su_AdAlchlUNK = False
+    if(request.form.get('su_AdDrugsYES') == None):
+        su_AdDrugsYES = False
+    if(request.form.get('su_AdDrugsNO') == None):
+        su_AdDrugsNO = False
+    if(request.form.get('su_AdDrugsUNK') == None):
+        su_AdDrugsUNK = False
+    if(request.form.get('su_AdPrepYES') == None):
+        su_AdPrepYES = False
+    if(request.form.get('su_AdPrepNO') == None):
+        su_AdPrepNO = False
+    if(request.form.get('su_AdPrepUNK') == None):
+        su_AdPrepUNK = False
+
     # figure out the associated client ID of the referral_id
     cursor.execute("SELECT * FROM suspects INNER JOIN cases ON cases.referral_id = suspects.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
     data = cursor.fetchone()
     if data == None:
         return "There is no data sorry"
     su_id = data[0]
+    if request.method == "POST":
+        cursor.execute("""UPDATE suspects SET su_name_first = (%s),su_name_last = (%s), su_organization = (%s), 
+        su_age = (%s), su_DOB = (%s), su_ethnicity = (%s), su_gender = (%s), su_language = (%s), 
+        su_TransComm = (%s), su_PrimCrGvYES = (%s), su_PrimCrGvNO = (%s), su_LivesWthYES = (%s), 
+        su_relationship = (%s), su_LivesWthNO = (%s), su_mental_ill = (%s), su_mental_ill_desc = (%s),
+        su_AdAlchlYES = (%s), su_AdAlchlNO = (%s), su_AdAlchlUNK = (%s), su_AdDrugsYES = (%s),
+        su_AdDrugsNO = (%s), su_AdDrugsUNK = (%s), su_AdPrepYES = (%s), su_AdPrepNO = (%s),
+        su_AdPrepUNK = (%s), su_AdOther = (%s), su_address = (%s), su_city = (%s), su_zip = (%s),
+        su_phone = (%s) WHERE su_id = """ + str(su_id),
+         (request.form["su_name_first"], request.form["su_name_last"], 
+         request.form["su_organization"], request.form["su_age"], request.form["su_DOB"], request.form.get("su_ethnicity"),
+         request.form.get('su_gender'), request.form.get("su_language"), request.form.get("su_TransComm"), 
+         su_PrimCrGvYES, su_PrimCrGvNO, su_LivesWthYES, request.form.get("su_relationship"), 
+         su_LivesWthNO,request.form.get("su_mental_ill"), request.form.get("su_mental_ill_desc"),  
+         su_AdAlchlYES, su_AdAlchlNO, su_AdAlchlUNK, 
+         su_AdDrugsYES,su_AdDrugsNO, su_AdDrugsUNK, 
+         su_AdPrepYES, su_AdPrepNO, su_AdPrepUNK, 
+         request.form.get("su_AdOther"),request.form.get("su_address"), request.form.get("su_city"),
+         request.form.get("su_zip"),request.form.get("su_phone")))
+        conn.commit()
     
+    cursor.execute("SELECT * FROM suspects INNER JOIN cases on cases.referral_id = suspects.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
+    data = cursor.fetchone()
+    print(data)   
     content = {}
     content['su_name_first'] = data[2]
     content['su_name_last'] = data[3]
