@@ -1,0 +1,22 @@
+{% extends "framework.html" %}
+{% block title %}Index{% endblock %}
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="../static/notes.css">
+<link rel="stylesheet" href="../static/framework.css">
+{% endblock %}
+{% block content %}
+
+<!--  Click choose file to upload-->
+<div class="client_information_container">
+    <div class="text_with_input_container">
+        <h1>File Upload</h1>
+        <form method="POST" action="" enctype="multipart/form-data">
+          <p><input type="file" name="file"></p>
+          <p><input type="submit" value="Submit"></p>
+        </form>
+        <pre>{{content}}</pre>
+    </div> 
+
+</div>
+{% endblock %}

@@ -6,7 +6,7 @@ import os #provides ways to access the Operating System and allows us to read th
 from mysql.connector import Error
 import mysql.connector
 from datetime import datetime
-#import pandas as pd
+import pandas as pd
 import pathlib
 load_dotenv()  # take environment variables from .env.
 
@@ -801,6 +801,25 @@ def attachments():
 
 @app.route('/import_excel',methods =["GET", "POST"])
 def import_excel():
+    if request.method == 'POST':
+        f = request.files['file']
+        file = 'files/' + f.filename
+        file_extension = pathlib.Path(file).suffix
+
+        if not(file_extension.endswith(".xlsx" or ".xls")):
+            content = "NOT EXCEL!!!"
+            return render_template('import_excel.html', content = content)
+        else:
+            f.save((file))
+            print("file uploaded successfully")
+            content = pd.read_excel(file)
+            return render_template('import_excel.html', content = content)
+
+
+    return render_template('import_excel.html')
+
+@app.route('/import_case',methods =["GET", "POST"])
+def import_case():
     if request.method == 'POST':
         f = request.files['file']
         file = 'files/' + f.filename
