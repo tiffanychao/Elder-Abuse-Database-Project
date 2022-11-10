@@ -893,19 +893,19 @@ def import_excel():
 
 @app.route('/import_case',methods =["GET", "POST"])
 def import_case():
-    if request.method == 'POST':
-        f = request.files['file']
-        file = 'files/' + f.filename
-        file_extension = pathlib.Path(file).suffix
+    # if request.method == 'POST':
+    #     f = request.files['file']
+    #     file = 'files/' + f.filename
+    #     file_extension = pathlib.Path(file).suffix
 
-        if not(file_extension.endswith(".xlsx" or ".xls")):
-            content = "NOT EXCEL!!!"
-            return render_template('import_excel.html', content = content)
-        else:
-            f.save((file))
-            print("file uploaded successfully")
-            content = pd.read_excel(file)
-            return render_template('import_excel.html', content = content)
+    #     if not(file_extension.endswith(".xlsx" or ".xls")):
+    #         content = "NOT EXCEL!!!"
+    #         return render_template('import_excel.html', content = content)
+    #     else:
+    #         f.save((file))
+    #         print("file uploaded successfully")
+    #         content = pd.read_excel(file)
+    #         return render_template('import_excel.html', content = content)
 
 
-    return render_template('import_excel.html')
+    return render_template('import_case.html')
