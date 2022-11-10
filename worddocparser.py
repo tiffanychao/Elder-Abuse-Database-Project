@@ -1,6 +1,8 @@
 import sys
 from docx2python import docx2python #the main library that parse the word_doc (it is grabbing a library that I modified to display the right checkboxes)
 import datetime
+# pip install docx2python to install docx2python
+# use command line type in "python3 worddocparser.py [path to docx]" (python3 worddocparser.py 1.docx)
 
 def parse_file(file_path): #main function to open the file and return all the data
     doc = docx2python(file_path) #get the file

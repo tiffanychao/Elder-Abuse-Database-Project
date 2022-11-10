@@ -1,13 +1,15 @@
+import pathlib
 from flask import Flask, render_template, request,flash
 app = Flask(__name__)
 from flaskext.mysql import MySQL
 from dotenv import load_dotenv
 import os #provides ways to access the Operating System and allows us to read the environment variables
-# from mysql.connector import Error
-# import mysql.connector
-# from datetime import datetime
-# import pandas as pd
-# import pathlib
+from mysql.connector import Error
+import mysql.connector
+from datetime import datetime
+import pandas as pd
+import pathlib
+import worddocparser
 load_dotenv()  # take environment variables from .env.
 
 
@@ -1082,19 +1084,21 @@ def import_excel():
 
 @app.route('/import_case',methods =["GET", "POST"])
 def import_case():
-    # if request.method == 'POST':
-    #     f = request.files['file']
-    #     file = 'files/' + f.filename
-    #     file_extension = pathlib.Path(file).suffix
+    if request.method == 'POST':
+        f = request.files['file']
+        file = 'doc_parser/' + f.filename
+        file_extension = pathlib.Path(file).suffix
 
-    #     if not(file_extension.endswith(".xlsx" or ".xls")):
-    #         content = "NOT EXCEL!!!"
-    #         return render_template('import_excel.html', content = content)
-    #     else:
-    #         f.save((file))
-    #         print("file uploaded successfully")
-    #         content = pd.read_excel(file)
-    #         return render_template('import_excel.html', content = content)
+        if not(file_extension.endswith(".docx" or ".doc")):
+            content = "Please choose the standardized word document file to upload a case."
+            print(file + 'is not a docx file')
+            return render_template('import_case.html', content = content)
+        else:
+            f.save((file))
+            print(file)
+            print("file uploaded successfully")
+            content = worddocparser(file)
+            return render_template('import_case.html', content = content)
 
 
     return render_template('import_case.html')
