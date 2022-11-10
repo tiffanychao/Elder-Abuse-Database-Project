@@ -1063,9 +1063,27 @@ def attachments():
     variable = "check your name"
     return render_template('attachments.html', value = variable)
 
-@app.route('/import_case')
+@app.route('/import_case',methods =["GET", "POST"])
 def import_case():
-    return "add temp route for import_case"
+     if request.method == 'POST':
+         f = request.files['file']
+         file = 'files/' + f.filename
+         file_extension = pathlib.Path(file).suffix
+
+         if not(file_extension.endswith(".docx" or ".doc")):
+             content = "Please choose the standardized Micosfot Form to create a new case."
+             return render_template('import_case.html', content = content)
+         else:
+             f.save((file))
+             print("file uploaded successfully")
+             content = "file uploaded successfully : " + file
+             print(worddocparser.docx2python(file).text)
+             return render_template('import_case.html', content = content)
+
+
+     return render_template('import_case.html')
+    
+
 @app.route('/import_excel',methods =["GET", "POST"])
 def import_excel():
     show_results= 0
