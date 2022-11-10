@@ -18,117 +18,197 @@
         <br>
         <br>
 
- 
-        <div class="text_with_input_container">
-            <div>
-                Search By
+        <form action="{{ url_for("search_cases")}}" method="post">
+            <div class="text_with_input_container">
+                <div>
+                    Search By
+                </div>
+                <select name="searchType" id="searchType">
+                    <option {% if searchType == '' %} selected {% endif %} value="" ></option>
+                    <option {% if searchType == 'client' %} selected {% endif %} value="client" >Client</option>
+                    <option {% if searchType == 'presenter' %} selected {% endif %} value="presenter" >Presenter</option>
+                    <option {% if searchType == 'suspect' %} selected {% endif %} value="suspect" >Suspect</option>
+                    
+                </select>
             </div>
-            <select name="searchType" id="searchType">
-                <option {% if searchType == 'default' %} selected {% endif %} value="default" >Default</option>
-                <option {% if searchType == 'op1' %} selected {% endif %} value="op1" >Option 1</option>
-                <option {% if searchType == 'op2' %} selected {% endif %} value="op2" >Option 2</option>
-                <option {% if searchType == 'op3' %} selected {% endif %} value="op3" >Option 3</option>
+    
+    
+            <div class="row">
+                <div class="column">
+                    <div class="text_with_input_container">
+                        <div>
+                            First Name
+                        </div>
+                        <input name = "FirstName" value ="{{firstName}}" class="text_input_design">
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="text_with_input_container">
+                        <div>
+                            Last Name
+                        </div>
+                        <input name = "LastName" value="{{lastName}}" class="text_input_design">
+                        </div>
+                </div>
+            </div>
+    
+            <br>
+            <br>
+            <br>
+            <br>
+            <div class="row">
+                <div class="column">
+                    <div class="text_with_input_container">
+                        <div>
+                            Search Closed Cases
+                        </div>
+                        <div>
+                            <input type="checkbox" name = "closedCased"  class="radio_button_adjust" {% if closedCase == 1 %} checked {% endif %}>
+                        </div>
+                    </div>
+                    <div class="text_with_input_container">
+                        <div>
+                            Number of Records:
+                        </div>
+                        <output name = "suspectname">{{number}}</output>
+                    </div>
+                </div>
+                <div class="column">   
+                    <button class = "button" name = "searchButton" type="submit" >Search SQL</button> 
+                </div>
+            </div>
+            <div class = "outer_of_header">
+                <!-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"/> -->
                 
-            </select>
-        </div>
-
-
-        <div class="row">
-            <div class="column">
-                <div class="text_with_input_container">
-                    <div>
-                        First Name
+                {% if result%}
+                    {% if searchType == 'client' %}
+                    <div class="row">
+                        <div class="column column_search">
+                            <table class="table_record table-hover">
+                                <tbody>
+                                  <td>Case No</td>
+                                  <td>Client First Name</td>
+                                  <td>Client Last Name</td>
+                                  <td>Case Date</td>
+                                  {% for r in result %}
+                                      <tr onclick="window.open('{{r.link}}' + location.search) ">                        
+                                          <td>{{r.case_number}}</td>
+                                          <td>{{r.cl_name_first}}</td>
+                                          <td>{{r.cl_name_last}}</td>
+                                          <td>{{r.case_date}}</td>
+                                          <!-- <td><button >Delete</button></td> -->
+                                      </tr>
+                                  {% endfor %}
+                          
+                                </tbody>
+                              </table>
+                        </div>
+                        <div class="column column_button">
+                           
+                                <table class="table_button">
+                                    <tbody>
+                                      <td></td>
+                                      {% for r in result %}
+                                          <tr >                        
+                                            <td><button type="submit" name = "deleteButton" value="{{r.referral_id}}">Delete</button></td>
+                                              <!-- <td>Delete</td> -->
+                                          </tr>
+                                      {% endfor %}
+                              
+                                    </tbody>
+                                  </table>
+                        </div>
                     </div>
-                    <input name = "FirstName" value ="{{firstName}}" class="text_input_design">
-                </div>
+                    {% elif searchType == 'presenter' %}
+                    <div class="row">
+                        <div class="column column_search">
+                            <table class="table_record table-hover">
+                                <tbody>
+                                  <td>Case No</td>
+                                  <td>Presenter First Name</td>
+                                  <td>Presenter Last Name</td>
+                                  <td>Case Date</td>
+                                  {% for r in result %}
+                                      <tr onclick="window.open('{{r.link}}' + location.search) ">                        
+                                          <td>{{r.case_number}}</td>
+                                          <td>{{r.cl_name_first}}</td>
+                                          <td>{{r.cl_name_last}}</td>
+                                          <td>{{r.case_date}}</td>
+                                          <!-- <td><button >Delete</button></td> -->
+                                      </tr>
+                                  {% endfor %}
+                          
+                                </tbody>
+                              </table>
+                        </div>
+                        <div class="column column_button">
+                           
+                                <table class="table_button">
+                                    <tbody>
+                                      <td></td>
+                                      {% for r in result %}
+                                          <tr >                        
+                                            <td><button type="submit" name = "deleteButton" value="{{r.referral_id}}">Delete</button></td>
+                                              <!-- <td>Delete</td> -->
+                                          </tr>
+                                      {% endfor %}
+                              
+                                    </tbody>
+                                  </table>
+                        </div>
+                    </div>
+                    {% elif searchType == 'suspect' %}
+                    <div class="row">
+                        <div class="column column_search">
+                            <table class="table_record table-hover">
+                                <tbody>
+                                  <td>Case No</td>
+                                  <td>Suspect First Name</td>
+                                  <td>Suspect Last Name</td>
+                                  <td>Case Date</td>
+                                  {% for r in result %}
+                                      <tr onclick="window.open('{{r.link}}' + location.search) ">                        
+                                          <td>{{r.case_number}}</td>
+                                          <td>{{r.cl_name_first}}</td>
+                                          <td>{{r.cl_name_last}}</td>
+                                          <td>{{r.case_date}}</td>
+                                          <!-- <td><button >Delete</button></td> -->
+                                      </tr>
+                                  {% endfor %}
+                          
+                                </tbody>
+                              </table>
+                        </div>
+                        <div class="column column_button">
+                           
+                                <table class="table_button">
+                                    <tbody>
+                                      <td></td>
+                                      {% for r in result %}
+                                          <tr >                        
+                                            <td><button type="submit" name = "deleteButton" value="{{r.referral_id}}">Delete</button></td>
+                                              <!-- <td>Delete</td> -->
+                                          </tr>
+                                      {% endfor %}
+                              
+                                    </tbody>
+                                  </table>
+                        </div>
+                    </div>
+                    {% endif %}
+                
+                {% endif %}
+                
+                
+    
+                
             </div>
-            <div class="column">
-                <div class="text_with_input_container">
-                    <div>
-                        Last Name
-                    </div>
-                    <input name = "LastName" value="{{lastName}}" class="text_input_design">
-                    </div>
-            </div>
-        </div>
-
-        <br>
-        <br>
-        <br>
-        <br>
-        <div class="row">
-            <div class="column">
-                <div class="text_with_input_container">
-                    <div>
-                        Search Closed Cases
-                    </div>
-                    <div>
-                        <input type="checkbox" name = "match" class="radio_button_adjust">
-                    </div>
-                </div>
-                <div class="text_with_input_container">
-                    <div>
-                        Number of Records:
-                    </div>
-                    <output name = "suspectname">{{number}}</output>
-                </div>
-            </div>
-            <div class="column">   
-                <button class = "button"  >Search SQL</button> 
-            </div>
-        </div>
+        </form>
+        
         <br>
         <div>
         
-        <div class = "outer_of_header">
-            <!-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"/> -->
-            
-            {% if result%}
-            <div class="row">
-                <div class="column column_search">
-                    <table class="table_record table-hover">
-                        <tbody>
-                          <td>Case No</td>
-                          <td>Client First Name</td>
-                          <td>Client Last Name</td>
-                          <td>Case Date</td>
-                          {% for r in result %}
-                              <tr onclick="window.open('{{r.link}}' + location.search) ">                        
-                                  <td>{{r.case_number}}</td>
-                                  <td>{{r.cl_name_first}}</td>
-                                  <td>{{r.cl_name_last}}</td>
-                                  <td>{{r.case_date}}</td>
-                                  <!-- <td><button >Delete</button></td> -->
-                              </tr>
-                          {% endfor %}
-                  
-                        </tbody>
-                      </table>
-                </div>
-                <div class="column column_button">
-                    <form action="{{ url_for("search_cases")}}" method="post">
-                        <table class="table_button">
-                            <tbody>
-                              <td></td>
-                              {% for r in result %}
-                                  <tr >                        
-                                    <td><button type="submit" name = "btn" value="{{r.referral_id}}">Delete</button></td>
-                                      <!-- <td>Delete</td> -->
-                                  </tr>
-                              {% endfor %}
-                      
-                            </tbody>
-                          </table>
-                    </form>
-                    
-                </div>
-            </div>
-            {% endif %}
-            
-            
-
-            
-        </div>
+        
         
         </div>
         

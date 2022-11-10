@@ -3,11 +3,11 @@ app = Flask(__name__)
 from flaskext.mysql import MySQL
 from dotenv import load_dotenv
 import os #provides ways to access the Operating System and allows us to read the environment variables
-from mysql.connector import Error
-import mysql.connector
-from datetime import datetime
-import pandas as pd
-import pathlib
+# from mysql.connector import Error
+# import mysql.connector
+# from datetime import datetime
+# import pandas as pd
+# import pathlib
 load_dotenv()  # take environment variables from .env.
 
 
@@ -533,48 +533,121 @@ def case_summary():
     # print(dic['notes'])
     return render_template('caseSummary.html',**dic) 
 
+
+
 @app.route('/search_cases',methods =["GET", "POST"])
 def search_cases():
-    select_type = ''
-    firstName = ''
-    lastName = ''
+    delete_referal_id = -1
+    search_type = ''
+    first_name = ''
+    last_name = ''
+    case_closed = 0
+    query = 0
     if request.method == "POST":
-       
-        print (request.form.get("btn"))
+        if (request.form.get("deleteButton")):
+            delete_referal_id = request.form.get("deleteButton")
+            delete_case(delete_referal_id)
+        
+            
+        search_type = request.form.get("searchType")
+        print(search_type)
+        first_name = request.form.get("FirstName")
+        last_name =  request.form.get("LastName")
+        if (request.form.get("closedCased")):
+            case_closed = 1
+
+        # print(case_closed)
     
     dic = dict()
-    dic['firstName'] = firstName
-    
-    infolist = search_cases_from_database()
+    dic['firstName'] = first_name
+
+   
+    infolist = search_cases_from_database(search_type,first_name,last_name,case_closed)
     v_num = len(infolist)
     dic = dict()
+    dic['searchType'] = search_type
+    dic['firstName'] = first_name
+    dic['lastName'] = last_name
+    dic['closedCase'] = case_closed
     dic['number'] = v_num
     dic['result'] = infolist
     return render_template('searchCases.html',**dic) 
 
+def delete_case(referral_id):
+    delete_sql = "DELETE FROM clients WHERE referral_id = " + str(referral_id)
+    cursor.execute(delete_sql)
+    conn.commit()
+    delete_sql = "DELETE FROM abuse_information WHERE referral_id = " + str(referral_id)
+    cursor.execute(delete_sql)
+    conn.commit()
+    delete_sql = "DELETE FROM attachments WHERE referral_id = " + str(referral_id)
+    cursor.execute(delete_sql)
+    conn.commit()
+    delete_sql = "DELETE FROM case_number WHERE referral_id = " + str(referral_id)
+    cursor.execute(delete_sql)
+    conn.commit()
+    delete_sql = "DELETE FROM cases WHERE referral_id = " + str(referral_id)
+    cursor.execute(delete_sql)
+    conn.commit()
+    delete_sql = "DELETE FROM consultation_information WHERE referral_id = " + str(referral_id)
+    cursor.execute(delete_sql)
+    conn.commit()
+    delete_sql = "DELETE FROM goals WHERE referral_id = " + str(referral_id)
+    cursor.execute(delete_sql)
+    conn.commit()
+    delete_sql = "DELETE FROM meeting WHERE referral_id = " + str(referral_id)
+    cursor.execute(delete_sql)
+    conn.commit()
+    # delete_sql = "DELETE FROM notes WHERE referral_id = " + str(referral_id)
+    # cursor.execute(delete_sql)
+    # conn.commit()
+    delete_sql = "DELETE FROM outcome WHERE referral_id = " + str(referral_id)
+    cursor.execute(delete_sql)
+    conn.commit()
+    delete_sql = "DELETE FROM recommendations WHERE referral_id = " + str(referral_id)
+    cursor.execute(delete_sql)
+    conn.commit()
+    delete_sql = "DELETE FROM referring_agency WHERE referral_id = " + str(referral_id)
+    cursor.execute(delete_sql)
+    conn.commit()
+    delete_sql = "DELETE FROM suspects WHERE referral_id = " + str(referral_id)
+    cursor.execute(delete_sql)
+    conn.commit()
+    
+    return None
 
-
-def search_cases_from_database():
+def search_cases_from_database(type, first_name,last_name, closedCase):
     # result =  [dict(link="https://www.google.com/",id="1234", name="John Doe4"),
     #             dict(link="https://www.google.com/",id="1235", name="John Doe5"),
     #             dict(link="https://www.google.com/",id="1236", name="John Doe6"),
     #             dict(link="https://www.google.com/",id="1237", name="John Doe7"),
     #             ]
-    
-    basic_sql = 'SELECT clients.referral_id,case_number.case_number,clients.cl_name_first,clients.cl_name_last,cases.case_date FROM clients, case_number,cases Where clients.referral_id = case_number.referral_id AND case_number.referral_id = cases.referral_id'
-    cursor.execute(basic_sql)
-    data = cursor.fetchall()
     result = []
-    for item in data:
-        dic = dict()
-        dic["link"] = ""+str(item[0])
-        dic["referral_id"] = item[0]
-        dic["case_number"] = item[1]
-        dic["cl_name_first"] = item[2]
-        dic["cl_name_last"] = item[3]
-        dic["case_date"] = item[4]
-        result.append(dic)
-    # print (result)
+
+    if (type == "client"):
+        basic_sql = 'SELECT DISTINCT clients.referral_id,case_number.case_number,clients.cl_name_first,clients.cl_name_last,cases.case_date,cases.case_closed FROM clients, case_number,cases Where clients.referral_id = case_number.referral_id AND case_number.referral_id = cases.referral_id AND cases.case_closed = ' + str(closedCase)
+        if (first_name):
+            basic_sql += " AND clients.cl_name_first = " + "\"" + first_name + "\" "
+        if (last_name):
+            basic_sql += " AND clients.cl_name_last = " + "\"" + last_name + "\" "
+        cursor.execute(basic_sql)
+        data = cursor.fetchall()
+        
+        for item in data:
+            dic = dict()
+            dic["link"] = "client_information/"+str(item[0])
+            dic["referral_id"] = item[0]
+            dic["case_number"] = item[1]
+            dic["cl_name_first"] = item[2]
+            dic["cl_name_last"] = item[3]
+            dic["case_date"] = item[4]
+            result.append(dic)
+        # print (result)
+    elif (type == "presenter"):
+        print("sql by presenter")
+    else : # suspect
+        print("sql by suspect")
+        
     return result
 
 @app.route('/')
