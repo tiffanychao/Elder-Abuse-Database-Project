@@ -1071,7 +1071,7 @@ def import_case():
          file_extension = pathlib.Path(file).suffix
 
          if not(file_extension.endswith(".docx" or ".doc")):
-             content = "Please choose the standardized Micosfot Form to create a new case."
+             content = "Please choose the standardized Microsoft Form to create a new case."
              return render_template('import_case.html', content = content)
          else:
              f.save((file))

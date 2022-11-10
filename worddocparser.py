@@ -342,6 +342,6 @@ def parse_this(list):
             dicta["ad_RptingParty"] = "Unknown"
     return dicta, dictb #return both
 
-if __name__ == '__main__':
-    doc = docx2python(sys.argv[1])
-    print(doc.text)
+# if __name__ == '__main__':
+#     doc = docx2python(sys.argv[1])
+#     print(doc.text)
