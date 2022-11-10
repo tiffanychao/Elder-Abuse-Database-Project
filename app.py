@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request,flash
 app = Flask(__name__)
 from flaskext.mysql import MySQL
 from dotenv import load_dotenv
@@ -16,6 +16,8 @@ app.config['MYSQL_DATABASE_USER'] = os.getenv("DatabaseUser")
 app.config['MYSQL_DATABASE_PASSWORD'] = os.getenv("DatabasePassword")
 app.config['MYSQL_DATABASE_DB'] = os.getenv("DatabaseDB")
 app.config['MYSQL_DATABASE_HOST'] = os.getenv("DatabaseHost")
+# app.secret_key = 'super secret key'
+# app.config['SESSION_TYPE'] = 'filesystem'
 mysql.init_app(app)
 
 
@@ -623,13 +625,53 @@ def search_cases_from_database(type, first_name,last_name, closedCase):
     #             dict(link="https://www.google.com/",id="1237", name="John Doe7"),
     #             ]
     result = []
-
+    # if (type == ''):
+        # flash(u'Please Select a type', 'error')
     if (type == "client"):
-        basic_sql = 'SELECT DISTINCT clients.referral_id,case_number.case_number,clients.cl_name_first,clients.cl_name_last,cases.case_date,cases.case_closed FROM clients, case_number,cases Where clients.referral_id = case_number.referral_id AND case_number.referral_id = cases.referral_id AND cases.case_closed = ' + str(closedCase)
+        
+        basic_sql = """
+        WITH
+        case_number_clients	AS (
+            SELECT 
+		        clients.referral_id,
+		        clients.cl_name_first,
+                clients.cl_name_last ,
+                case_number.case_number
+	    FROM 
+		    clients 
+	    INNER JOIN case_number 
+        ON
+		    case_number.referral_id = clients.referral_id
+        ),
+        all_cases AS (
+            SELECT
+	        cases.case_date,
+            cases.case_closed,
+            cases.referral_id,
+            case_number_clients.cl_name_first,
+            case_number_clients.cl_name_last,
+            case_number_clients.case_number
+        FROM cases
+        INNER JOIN case_number_clients 
+        ON
+	        case_number_clients.referral_id = cases.referral_id
+        )
+        SELECT
+	        all_cases.referral_id ,
+	        all_cases.case_number,
+            all_cases.cl_name_first,
+            all_cases.cl_name_last,
+            all_cases.case_date,
+            all_cases.case_closed
+        FROM all_cases
+        WHERE
+	    all_cases.case_closed = 
+        """   + str(closedCase)
+
         if (first_name):
-            basic_sql += " AND clients.cl_name_first = " + "\"" + first_name + "\" "
+            basic_sql += " AND all_cases.cl_name_first = " + "\"" + first_name + "\" "
         if (last_name):
-            basic_sql += " AND clients.cl_name_last = " + "\"" + last_name + "\" "
+            basic_sql += " AND all_cases.cl_name_last = " + "\"" + last_name + "\" "
         cursor.execute(basic_sql)
         data = cursor.fetchall()
         
