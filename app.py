@@ -1202,13 +1202,14 @@ def insert_excel():
     client_df.to_sql(name='clients',con = engine ,if_exists = 'append', index = False)
 
     # replace or append?
-    forward_message = "inserting successfully!"
+    forward_message = "Insert successfully!"
 
     clients_res = client_df
     goals_res = goals_df
     rec_res = recommendation_df
     suspect_res = suspect_df
     meeting_res = meeting_df
-    #print(clients_res)
    
-    return render_template('insert_excel.html', forward_message=forward_message, goals_res = goals_res )
+    return render_template('insert_excel.html', forward_message=forward_message, goals_res = goals_res,rec_res = rec_res ,
+     suspect_res = suspect_res, meeting_res = meeting_res, clients_res = clients_res
+     )
