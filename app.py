@@ -591,13 +591,9 @@ def delete_case(referral_id):
     delete_sql = "DELETE FROM goals WHERE referral_id = " + str(referral_id)
     cursor.execute(delete_sql)
     conn.commit()
-    delete_sql = "DELETE FROM meeting WHERE referral_id = " + str(referral_id)
+    delete_sql = "DELETE FROM meeting_notes WHERE referral_id = " + str(referral_id)
     cursor.execute(delete_sql)
     conn.commit()
-    # no referral_id
-    # delete_sql = "DELETE FROM notes WHERE referral_id = " + str(referral_id)
-    # cursor.execute(delete_sql)
-    # conn.commit()
     delete_sql = "DELETE FROM outcome WHERE referral_id = " + str(referral_id)
     cursor.execute(delete_sql)
     conn.commit()
@@ -610,12 +606,13 @@ def delete_case(referral_id):
     delete_sql = "DELETE FROM suspects WHERE referral_id = " + str(referral_id)
     cursor.execute(delete_sql)
     conn.commit()
-    delete_sql = "DELETE FROM cases WHERE referral_id = " + str(referral_id)
-    cursor.execute(delete_sql)
-    conn.commit()
     delete_sql = "DELETE FROM case_number WHERE referral_id = " + str(referral_id)
     cursor.execute(delete_sql)
     conn.commit()
+    delete_sql = "DELETE FROM cases WHERE referral_id = " + str(referral_id)
+    cursor.execute(delete_sql)
+    conn.commit()
+ 
     
     return None
 
@@ -722,10 +719,10 @@ SELECT
     cte_cases.cl_name_last,
     cte_cases.case_date,
     cte_cases.case_closed,
-    meeting.meeting_presenters
+    meeting_notes.meeting_presenters
 FROM cte_cases
-INNER JOIN meeting
-ON cte_cases.referral_id = meeting.referral_id
+INNER JOIN meeting_notes
+ON cte_cases.referral_id = meeting_notes.referral_id
 )
 SELECT
 	cte_all_cases.referral_id ,
