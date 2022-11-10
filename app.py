@@ -1068,6 +1068,7 @@ def import_case():
     return "add temp route for import_case"
 @app.route('/import_excel',methods =["GET", "POST"])
 def import_excel():
+    show_results= 0
     if request.method == 'POST':
         f = request.files['file']
         file = 'files/' + f.filename
@@ -1075,141 +1076,139 @@ def import_excel():
 
         if not(file_extension.endswith(".xlsx") or file_extension.endswith(".xls")):
             content = "NOT EXCEL!!!"
-            return render_template('import_excel.html', content = content)
+            show_results=1
+            return render_template('import_excel.html', content = content, show_results = show_results)
         else:
+            show_results=2
             f.save((file))
-            print("file uploaded successfully")
             content = pd.read_excel(file)
-            return render_template('import_excel.html', content = content)
+            #return render_template('import_excel.html', content = content)
+            engine = create_engine(os.getenv("DatabaseEngine"))
 
-    return render_template('import_excel.html')
+            excel_file = pd.ExcelFile(file)
+            '''
+            test  - meeting_notes (use test table)
+            '''
+            excel_meeting = excel_file.parse(sheet_name="Meeting_Notes")
+            meeting_df = excel_meeting[['referral_id','meeting_date','meeting_narrative','meeting_recs','meeting_goals','meeting_presenters']]
+            meeting_df.to_sql(name = 'meeting_notes', con=engine, if_exists = 'append', index = False)
 
+            '''
+            test - recommendationsv
+            '''
+            excel_recommendation = excel_file.parse(sheet_name = "Recommendations")
+            recommendation_df = excel_recommendation[['referral_id','action_step',	'person_responsible',	'followup_date',	'action_status']]
+            recommendation_df.to_sql(name = 'recommendations', con=engine, if_exists = 'append', index = False)
+            '''
+            test - Goalsv
+            '''
 
-@app.route("/insert_excel/", methods=['POST'])
-def insert_excel():
-    
-    engine = create_engine(os.getenv("DatabaseEngine"))
-
-    excel_file = pd.ExcelFile('./files/test.xls')
-    '''
-    test  - meeting_notes (use test table)
-    '''
-    excel_meeting = excel_file.parse(sheet_name="Meeting_Notes")
-    meeting_df = excel_meeting[['referral_id','meeting_date','meeting_narrative','meeting_recs','meeting_goals','meeting_presenters']]
-    meeting_df.to_sql(name = 'meeting_notes', con=engine, if_exists = 'append', index = False)
-
-    '''
-    test - recommendationsv
-    '''
-    excel_recommendation = excel_file.parse(sheet_name = "Recommendations")
-    recommendation_df = excel_recommendation[['referral_id','action_step',	'person_responsible',	'followup_date',	'action_status']]
-    recommendation_df.to_sql(name = 'recommendations', con=engine, if_exists = 'append', index = False)
-    '''
-    test - Goalsv
-    '''
-
-    excel_goals = excel_file.parse(sheet_name = "Goals")
-    goals_df = excel_goals[['referral_id','goal']]
-    goals_df.to_sql(name = 'goals', con=engine, if_exists = 'append', index = False)
+            excel_goals = excel_file.parse(sheet_name = "Goals")
+            goals_df = excel_goals[['referral_id','goal']]
+            goals_df.to_sql(name = 'goals', con=engine, if_exists = 'append', index = False)
 
 
 
 
-    '''
-    test - Suspectv
-    '''
+            '''
+            test - Suspectv
+            '''
 
 
-    excel_suspect = excel_file.parse(sheet_name = "Suspect")
-    suspect_df = excel_suspect[[
-        'referral_id',
-        'su_name_first',
-        'su_name_last' ,
-        'su_organization',
-        'su_name_list',
-        'su_age',
-        'su_DOB',
-        'su_ethnicity' ,
-        'su_gender' ,
-        'su_language' ,
-        'su_TransComm' ,
-        'su_PrimCrGvYES' ,
-        'su_PrimCrGvNO' ,
-        'su_LivesWthYES' ,
-        'su_relationship' ,
-        'su_LivesWthNO' ,
-        'su_mental_ill' ,
-        'su_mental_ill_desc' ,
-        'su_AdAlchlYES' ,
-        'su_AdAlchlNO' ,
-        'su_AdAlchlUNK' ,
-        'su_AdDrugsYES' ,
-        'su_AdDrugsNO' ,
-        'su_AdDrugsUNK' ,
-        'su_AdPrepYES' ,
-        'su_AdPrepNO' ,
-        'su_AdPrepUNK' ,
-        'su_AdOther' ,
-        'su_address' ,
-        'su_city' ,
-        'su_zip' ,
-        'su_phone' 
-    ]]
-    suspect_df.to_sql(name = 'suspects', con=engine, if_exists = 'append', index = False)
+            excel_suspect = excel_file.parse(sheet_name = "Suspect")
+            suspect_df = excel_suspect[[
+                'referral_id',
+                'su_name_first',
+                'su_name_last' ,
+                'su_organization',
+                'su_name_list',
+                'su_age',
+                'su_DOB',
+                'su_ethnicity' ,
+                'su_gender' ,
+                'su_language' ,
+                'su_TransComm' ,
+                'su_PrimCrGvYES' ,
+                'su_PrimCrGvNO' ,
+                'su_LivesWthYES' ,
+                'su_relationship' ,
+                'su_LivesWthNO' ,
+                'su_mental_ill' ,
+                'su_mental_ill_desc' ,
+                'su_AdAlchlYES' ,
+                'su_AdAlchlNO' ,
+                'su_AdAlchlUNK' ,
+                'su_AdDrugsYES' ,
+                'su_AdDrugsNO' ,
+                'su_AdDrugsUNK' ,
+                'su_AdPrepYES' ,
+                'su_AdPrepNO' ,
+                'su_AdPrepUNK' ,
+                'su_AdOther' ,
+                'su_address' ,
+                'su_city' ,
+                'su_zip' ,
+                'su_phone' 
+            ]]
+            suspect_df.to_sql(name = 'suspects', con=engine, if_exists = 'append', index = False)
 
 
 
-    '''
-    test - Client
-    '''
+            '''
+            test - Client
+            '''
 
 
-    excel_client  = excel_file.parse(sheet_name="Client")
-    client_df = excel_client [[
-        'referral_id' ,
-        'cl_name_first' ,
-        'cl_name_last' ,
-        'cl_name_list' ,
-        'cl_age',
-        'cl_DOB',
-        'cl_language' ,
-        'cl_TransComm' ,
-        'cl_education' ,
-        'cl_ethnicity' ,
-        'cl_gender' ,
-        'cl_marital' ,
-        'cl_address' ,
-        'cl_city' ,
-        'cl_zip' ,
-        'cl_phone' ,
-        'cl_phys_name' ,
-        'cl_phys_ph' ,
-        'cl_insurance' ,
-        'cl_medications' ,
-        'cl_Illnesses' ,
-        'cl_functional_status' ,
-        'cl_cognitive_status' ,
-        'cl_living_setting' ,
-        'cl_lives_with' ,
-        'cl_lives_with_desc' ,
-        'cl_prev_abuse_no' ,
-        'cl_prev_abuse_yes' ,
-        'cl_prev_abuse_desc' ,
-        'cl_multiple_suspects' 
+            excel_client  = excel_file.parse(sheet_name="Client")
+            client_df = excel_client [[
+                'referral_id' ,
+                'cl_name_first' ,
+                'cl_name_last' ,
+                'cl_name_list' ,
+                'cl_age',
+                'cl_DOB',
+                'cl_language' ,
+                'cl_TransComm' ,
+                'cl_education' ,
+                'cl_ethnicity' ,
+                'cl_gender' ,
+                'cl_marital' ,
+                'cl_address' ,
+                'cl_city' ,
+                'cl_zip' ,
+                'cl_phone' ,
+                'cl_phys_name' ,
+                'cl_phys_ph' ,
+                'cl_insurance' ,
+                'cl_medications' ,
+                'cl_Illnesses' ,
+                'cl_functional_status' ,
+                'cl_cognitive_status' ,
+                'cl_living_setting' ,
+                'cl_lives_with' ,
+                'cl_lives_with_desc' ,
+                'cl_prev_abuse_no' ,
+                'cl_prev_abuse_yes' ,
+                'cl_prev_abuse_desc' ,
+                'cl_multiple_suspects' 
 
 
-    ]]
-    client_df.to_sql(name='clients',con = engine ,if_exists = 'append', index = False)
+            ]]
+            client_df.to_sql(name='clients',con = engine ,if_exists = 'append', index = False)
 
-    # replace or append?
-    forward_message = "Insert successfully!"
+            # replace or append?
+            forward_message = "Insert successfully!"
 
-    clients_res = client_df
-    goals_res = goals_df
-    rec_res = recommendation_df
-    suspect_res = suspect_df
-    meeting_res = meeting_df
-   
-    return render_template('insert_excel.html', forward_message=forward_message, goals_res = goals_res,rec_res = rec_res ,
-     suspect_res = suspect_res, meeting_res = meeting_res, clients_res = clients_res
-     )
+            clients_res = client_df
+            goals_res = goals_df
+            rec_res = recommendation_df
+            suspect_res = suspect_df
+            meeting_res = meeting_df
+        
+            return render_template('import_excel.html', forward_message=forward_message, goals_res = goals_res,rec_res = rec_res ,
+            suspect_res = suspect_res, meeting_res = meeting_res, clients_res = clients_res, content = content, show_results = show_results
+            )
+
+    return render_template('import_excel.html',show_results = show_results)
+
+
