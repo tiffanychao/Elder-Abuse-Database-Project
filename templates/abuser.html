@@ -53,14 +53,12 @@
             Primary Caregiver
         </div>
         <div class="container">
-            <form>
                 <label class="radio-inline">
                   <input type="checkbox" name="su_PrimCrGvYES" value="su_PrimCrGvYES" {% if su_PrimCrGvYES == 1 %} checked {% endif %}>YES
                 </label>
                 <label class="radio-inline">
                   <input type="checkbox" name="su_PrimCrGvNO" value="su_PrimCrGvNO" {% if su_PrimCrGvNO == 1 %} checked {% endif %}>NO
-                </label>
-              </form>
+                </label>   
         </div>
     </div>
     <!-- Live with Client -->
@@ -68,18 +66,16 @@
         <div>
             Live with Client
         </div>
-        <div class="container">
-            <form>
+        <div class="container">          
                 <label class="radio-inline">
                     <input type="checkbox" name="su_LivesWthYES" value="su_LivesWthYES" {% if su_LivesWthYES == 1 %} checked {% endif %}>YES
                 </label>
                 <label class="radio-inline">
                     <input type="checkbox" name="su_LivesWthNO" value="su_LivesWthNO" {% if su_LivesWthNO == 1 %} checked {% endif %}>NO
-                </label>
-              </form>
+                </label>  
         </div>
     </div>
-    <!-- Mental Illness -->
+    <!-- Mental Illness --
     <div class="text_with_input_container">
         <div>
             Mental Illness
@@ -103,8 +99,7 @@
         <div>
             Addiction - Alcohol
         </div>
-        <div class="container">
-            <form>
+        <div class="container">   
                 <label class="radio-inline">
                     <input type="checkbox" name="su_AdAlchlYES" value="su_AdAlchlYES" {% if su_AdAlchlYES == 1 %} checked {% endif %}>YES
                 </label>
@@ -114,7 +109,6 @@
                 <label class="radio-inline">
                     <input type="checkbox" name="su_AdAlchlUNK" value="su_AdAlchlUNK" {% if su_AdAlchlUNK == 1 %} checked {% endif %}>Unknown
                   </label>
-              </form>
         </div>
     </div>
      <!-- Addiction - Prescription -->
@@ -123,7 +117,6 @@
             Addiction - Prescription
         </div>
         <div class="container">
-            <form>
                 <label class="radio-inline">
                     <input type="checkbox" name="su_AdPrepYES" value="su_AdPrepYES" {% if su_AdPrepYES == 1 %} checked {% endif %}>YES
                 </label>
@@ -132,8 +125,7 @@
                 </label>
                 <label class="radio-inline">
                     <input type="checkbox" name="su_AdPrepUNK" value="su_AdPrepUNK" {% if su_AdPrepUNK == 1 %} checked {% endif %}>Unknown
-                  </label>
-              </form>
+                  </label> 
         </div>
     </div>
     <!-- Addiction - Illicit Drugs -->
@@ -141,18 +133,16 @@
         <div>
             Addiction - Illicit Drugs
         </div>
-        <div class="container">
-            <form>
+        <div class="container"> 
                 <label class="radio-inline">
                     <input type="checkbox" name="su_AdDrugsYES" value="su_AdDrugsYES" {% if su_AdDrugsYES == 1 %} checked {% endif %}>YES
                 </label>
                 <label class="radio-inline">
-                    <input type="checkbox" name="su_AdDrugsNO" value="su_AdDrugsNO" {% if su_AdDrugsYES == 1 %} checked {% endif %}>NO
+                    <input type="checkbox" name="su_AdDrugsNO" value="su_AdDrugsNO" {% if su_AdDrugsNO == 1 %} checked {% endif %}>NO
                 </label>
                 <label class="radio-inline">
                     <input type="checkbox" name="su_AdDrugsUNK" value="su_AdDrugsUNK" {% if su_AdDrugsUNK == 1 %} checked {% endif %}>Unknown
                   </label>
-              </form>
         </div>
     </div>
      <!-- Addiction - Other -->
