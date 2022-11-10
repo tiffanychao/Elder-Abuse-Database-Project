@@ -585,12 +585,6 @@ def delete_case(referral_id):
     delete_sql = "DELETE FROM attachments WHERE referral_id = " + str(referral_id)
     cursor.execute(delete_sql)
     conn.commit()
-    delete_sql = "DELETE FROM case_number WHERE referral_id = " + str(referral_id)
-    cursor.execute(delete_sql)
-    conn.commit()
-    delete_sql = "DELETE FROM cases WHERE referral_id = " + str(referral_id)
-    cursor.execute(delete_sql)
-    conn.commit()
     delete_sql = "DELETE FROM consultation_information WHERE referral_id = " + str(referral_id)
     cursor.execute(delete_sql)
     conn.commit()
@@ -600,6 +594,7 @@ def delete_case(referral_id):
     delete_sql = "DELETE FROM meeting WHERE referral_id = " + str(referral_id)
     cursor.execute(delete_sql)
     conn.commit()
+    # no referral_id
     # delete_sql = "DELETE FROM notes WHERE referral_id = " + str(referral_id)
     # cursor.execute(delete_sql)
     # conn.commit()
@@ -613,6 +608,12 @@ def delete_case(referral_id):
     cursor.execute(delete_sql)
     conn.commit()
     delete_sql = "DELETE FROM suspects WHERE referral_id = " + str(referral_id)
+    cursor.execute(delete_sql)
+    conn.commit()
+    delete_sql = "DELETE FROM cases WHERE referral_id = " + str(referral_id)
+    cursor.execute(delete_sql)
+    conn.commit()
+    delete_sql = "DELETE FROM case_number WHERE referral_id = " + str(referral_id)
     cursor.execute(delete_sql)
     conn.commit()
     
@@ -686,9 +687,158 @@ def search_cases_from_database(type, first_name,last_name, closedCase):
             result.append(dic)
         # print (result)
     elif (type == "presenter"):
-        print("sql by presenter")
+        basic_sql = """
+WITH
+case_number_clients	AS (
+SELECT 
+		clients.referral_id,
+		clients.cl_name_first,
+        clients.cl_name_last ,
+        case_number.case_number
+	FROM 
+		clients 
+	INNER JOIN case_number 
+    ON
+		case_number.referral_id = clients.referral_id
+),
+cte_cases AS (
+SELECT
+	cases.case_date,
+    cases.case_closed,
+    cases.referral_id,
+    case_number_clients.cl_name_first,
+    case_number_clients.cl_name_last,
+    case_number_clients.case_number
+FROM cases
+INNER JOIN case_number_clients 
+ON
+	case_number_clients.referral_id = cases.referral_id
+),
+cte_all_cases AS (
+SELECT
+	cte_cases.referral_id ,
+	cte_cases.case_number,
+    cte_cases.cl_name_first,
+    cte_cases.cl_name_last,
+    cte_cases.case_date,
+    cte_cases.case_closed,
+    meeting.meeting_presenters
+FROM cte_cases
+INNER JOIN meeting
+ON cte_cases.referral_id = meeting.referral_id
+)
+SELECT
+	cte_all_cases.referral_id ,
+	cte_all_cases.case_number,
+    cte_all_cases.cl_name_first,
+    cte_all_cases.cl_name_last,
+    cte_all_cases.case_date,
+    cte_all_cases.case_closed,
+    cte_all_cases.meeting_presenters
+
+FROM cte_all_cases
+WHERE
+cte_all_cases.case_closed =
+        """  + str(closedCase)
+        full_name = ""
+        if (first_name):
+            full_name += first_name.strip()
+        if (last_name):
+            full_name += " "
+            full_name += last_name.strip()
+        if (full_name):
+            basic_sql += " AND cte_all_cases.meeting_presenters = " + "\"" + full_name + "\" "
+        
+        cursor.execute(basic_sql)
+        data = cursor.fetchall()
+        
+        for item in data:
+            dic = dict()
+            dic["link"] = "client_information/"+str(item[0])
+            dic["referral_id"] = item[0]
+            dic["case_number"] = item[1]
+            dic["cl_name_first"] = item[2]
+            dic["cl_name_last"] = item[3]
+            dic["case_date"] = item[4]
+            arr = item[6].split(' ')
+            arrln = arr[1:]
+            dic["presenter_name_first"] = arr[0]
+            dic["presenter_name_last"] = ' '.join(arrln)
+            result.append(dic)
     else : # suspect
-        print("sql by suspect")
+        basic_sql = """
+WITH
+case_number_clients	AS (
+SELECT 
+		clients.referral_id,
+		clients.cl_name_first,
+        clients.cl_name_last ,
+        case_number.case_number
+	FROM 
+		clients 
+	INNER JOIN case_number 
+    ON
+		case_number.referral_id = clients.referral_id
+),
+cte_cases AS (
+SELECT
+	cases.case_date,
+    cases.case_closed,
+    cases.referral_id,
+    case_number_clients.cl_name_first,
+    case_number_clients.cl_name_last,
+    case_number_clients.case_number
+FROM cases
+INNER JOIN case_number_clients 
+ON
+	case_number_clients.referral_id = cases.referral_id
+),
+cte_all_cases AS (
+SELECT
+	cte_cases.referral_id ,
+	cte_cases.case_number,
+    cte_cases.cl_name_first,
+    cte_cases.cl_name_last,
+    cte_cases.case_date,
+    cte_cases.case_closed,
+    suspects.su_name_first,
+    suspects.su_name_last
+FROM cte_cases
+INNER JOIN suspects
+ON cte_cases.referral_id = suspects.referral_id
+)
+SELECT
+	cte_all_cases.referral_id ,
+	cte_all_cases.case_number,
+    cte_all_cases.cl_name_first,
+    cte_all_cases.cl_name_last,
+    cte_all_cases.case_date,
+    cte_all_cases.case_closed,
+    cte_all_cases.su_name_first,
+    cte_all_cases.su_name_last
+FROM cte_all_cases
+WHERE
+cte_all_cases.case_closed = 
+        """   + str(closedCase)
+
+        if (first_name):
+            basic_sql += " AND cte_all_cases.su_name_first = " + "\"" + first_name + "\" "
+        if (last_name):
+            basic_sql += " AND cte_all_cases.su_name_last = " + "\"" + last_name + "\" "
+        cursor.execute(basic_sql)
+        data = cursor.fetchall()
+        
+        for item in data:
+            dic = dict()
+            dic["link"] = "client_information/"+str(item[0])
+            dic["referral_id"] = item[0]
+            dic["case_number"] = item[1]
+            dic["cl_name_first"] = item[2]
+            dic["cl_name_last"] = item[3]
+            dic["case_date"] = item[4]
+            dic["suspect_name_first"] = item[6]
+            dic["suspect_name_last"] = item[7]
+            result.append(dic)
         
     return result
 
