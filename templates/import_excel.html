@@ -13,15 +13,39 @@
         <h1>File Upload</h1>
         <form method="POST" action="" enctype="multipart/form-data">
           <p><input type="file" name="file"></p>
-          <p><input type="submit" value="Submit"></p>
+          <p><input type="submit" value="Insert"></p>
         </form>
+        {% if show_results == 1 %}
         <pre>{{content}}</pre>
+        {% endif %}
     </div> 
-    <form action="/insert_excel" method="post">
+    <!-- <form action="/insert_excel" method="post">
       <button name="insert_excel" type="submit">Insert</button>
-  </form>
-    
-  
+  </form> -->
 </div>
-
+<div class="client_information_container">
+  <div class="text_with_input_container">
+  <form action="/insert_excel/" method="post">
+    {% if show_results == 2 %}
+      {{ forward_message }} 
+      <br>
+      <h2> GOAL</h2>
+      <br>
+      <pre>{{ goals_res.to_html(classes="table table-striped") | safe }} </pre>
+      <br>
+      <h2>Recommendation</h2>
+      <pre>{{ rec_res.to_html(classes="table table-striped") | safe }} </pre>
+      <h2>Suspect</h2>
+      <br>
+      <pre>{{suspect_res.to_html(classes="table table-striped")|safe }}</pre>
+      <h2>Meeting_Notes</h2>
+      <br>
+      <pre>{{meeting_res.to_html(classes="table table-striped")|safe }}</pre>
+      <h2>Clients</h2>
+      <br>
+      <pre>{{clients_res.to_html(classes="table table-striped")|safe }}</pre>
+  </form>
+  {% endif %}
+  </div>
+</div>
 {% endblock %}
