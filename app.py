@@ -36,9 +36,10 @@ try:
 except Error as e:
     print("Error while connecting to MySQL", e)
 
-@app.route('/client', methods = ["POST", "GET"])
-def client():
-    referral_id = 3
+
+@app.route('/client//<int:referral_id>', methods = ["POST", "GET"])
+def client(referral_id):
+    
     # figure out the associated client ID of the referral_id
     cursor.execute("SELECT * FROM clients INNER JOIN cases ON cases.referral_id = clients.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
     data = cursor.fetchone()
@@ -59,7 +60,7 @@ def client():
 
     cursor.execute("SELECT * FROM clients INNER JOIN cases on clients.referral_id = cases.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
     data = cursor.fetchone()
-    print(data)
+
     content = {}
     content['cl_name_first'] = data[2]
     content['cl_name_last'] = data[3]
@@ -80,8 +81,9 @@ def client():
         return render_template('client.html', **content)
     return render_template('client.html', **content)  
 
-@app.route('/client_information', methods = ["POST", "GET"])
-def client_information():
+
+@app.route('/client_information/<int:referral_id>', methods = ["POST", "GET"])
+def client_information(referral_id):
     prev_abuse_no = True
     prev_abuse_yes = True
     multiple_alleged_suspects = True
@@ -94,8 +96,8 @@ def client_information():
         multiple_alleged_suspects = False
 
 
-    
-    referral_id = 1
+    # if referral_id == None:
+    # referral_id = 1
     # figure out the associated client ID of the referral_id
     cursor.execute("SELECT * FROM clients INNER JOIN cases ON cases.referral_id = clients.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
     data = cursor.fetchone()
@@ -133,8 +135,8 @@ def client_information():
     content['multiple_suspects'] = data[30]
 
     if request.method == "POST":
-        return render_template('clientInformation.html', **content)
-    return render_template('clientInformation.html', **content)
+        return render_template('clientInformation.html',referral_id = referral_id, **content)
+    return render_template('clientInformation.html',referral_id = referral_id, **content)
 
 @app.route('/abuser', methods = ["POST", "GET"])
 def abuser():
@@ -181,9 +183,8 @@ def abuser():
     return render_template('abuser.html', **content)
 
 
-@app.route('/abuse_info', methods = ["POST", "GET"])
-def abuse_info():
-    referral_id = 1
+@app.route('/abuse_info/<int:referral_id>', methods = ["POST", "GET"])
+def abuse_info(referral_id):
     ad_Abandon = True
     ad_Abduction = True
     ad_Emotional = True
@@ -270,14 +271,13 @@ def abuse_info():
 
     print('--------')
     print(content)
-    return render_template('abuse_info.html', **content)
+    return render_template('abuse_info.html',referral_id = referral_id, **content)
 
 
 
-@app.route('/center_outcomes', methods = ["POST", "GET"])
-def center_outcomes():
+@app.route('/center_outcomes/<int:referral_id>', methods = ["POST", "GET"])
+def center_outcomes(referral_id):
     content = {}
-    referral_id = 1
     oc_csv_probate = True
     oc_csv_pubg = True
     oc_csv_lps = True
@@ -389,7 +389,7 @@ def center_outcomes():
     content["oc_ro_name"] = data[24]
     content["oc_ev_geri"] = data[25]
     content["oc_self_suff"] = data[26]
-    return render_template("centerOutcomes.html", **content)
+    return render_template("centerOutcomes.html",referral_id = referral_id, **content)
 
 @app.route('/test', methods =["GET", "POST"])
 def get_referral_info_from_db(referral_id):
@@ -551,9 +551,9 @@ def narrative():
     return render_template('narrative.html', **content)
 
 
-@app.route('/consultation', methods =["GET", "POST"])
-def consulation():
-    referral_id = 2
+@app.route('/consultation/<int:referral_id>', methods =["GET", "POST"])
+def consulation(referral_id):
+
     cursor.execute("SELECT * FROM consultation_information INNER JOIN cases ON cases.referral_id = consultation_information.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
     data = cursor.fetchone()
     consultation_id = data[0]
@@ -621,11 +621,9 @@ def consulation():
          (Services, GENESIS, DA, Regional_center, Corner, Law_enforcement, Attorney, Psychologist, 
          Medical_Practitioner, Ombudsman, Public_Guardian, Other, Description_other,Reason))
         conn.commit()
-        print(cursor.rowcount, "record inserted.")
     
     cursor.execute("SELECT * FROM consultation_information INNER JOIN cases on consultation_information.referral_id = cases.referral_id WHERE consultation_information.referral_id = " + str(referral_id) + ";")
     data = cursor.fetchone()
-    print(data)
     
     content = {}
     content["Services"] = data[2]
@@ -646,9 +644,9 @@ def consulation():
     if data == None:
         return "Sorry your data isn't here"
     if request.method == "POST":
-        return render_template('consultation.html', **content)
+        return render_template('consultation.html',referral_id = referral_id, **content)
 
-    return render_template('consultation.html', **content)
+    return render_template('consultation.html',referral_id = referral_id, **content)
 
 
 @app.route('/notes',methods =["GET", "POST"])
@@ -689,17 +687,16 @@ def notes():
         Meeting_presenters = (%s), meeting_narrative = (%s) WHERE meeting_id = """ + str(meeting_id),(meeting_date, meeting_recs,fake_goals,presenter,meeting_notes))
 
         conn.commit()
-        print(cur.rowcount, "record inserted.")
+
         # for Goals - goals table
         cur = conn.cursor()
         cursor.execute("""UPDATE goals SET goal = (%s) WHERE client_goals_id = """ + str(client_goals_id),(goal))
-        conn.commit()
-        print(cur.rowcount, "record inserted.")       
+        conn.commit()     
         # for recommendations
         cur = conn.cursor()
         cursor.execute("""UPDATE recommendations SET  action_step = (%s), person_responsible = (%s), followup_date = (%s), action_status = (%s) WHERE client_rec_id = """ + str(client_rec_id),(action_step,person_response,follow_up,action_status))
         conn.commit()
-        print(cur.rowcount, "record inserted.")
+
 
     # meeeting_notes
     cursor.execute("SELECT * FROM meeting_notes INNER JOIN cases ON cases.referral_id = meeting_notes.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
