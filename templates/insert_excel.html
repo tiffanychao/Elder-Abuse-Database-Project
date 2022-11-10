@@ -1,0 +1,19 @@
+{% extends "framework.html" %}
+{% block title %}Index{% endblock %}
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="../static/notes.css">
+<link rel="stylesheet" href="../static/framework.css">
+{% endblock %}
+{% block content %}
+<div class="client_information_container">
+    <div class="text_with_input_container">
+    <form action="/insert_excel/" method="post">
+        {{ forward_message }} 
+        <br>
+        <pre>{{ goals_res.to_html(classes="table table-striped") | safe }} </pre>
+        <br>
+    </form>
+    </div>
+</div>
+{% endblock %}
