@@ -11,8 +11,21 @@
     <form action="/insert_excel/" method="post">
         {{ forward_message }} 
         <br>
+        <h2> GOAL</h2>
+        <br>
         <pre>{{ goals_res.to_html(classes="table table-striped") | safe }} </pre>
         <br>
+        <h2>Recommendation</h2>
+        <pre>{{ rec_res.to_html(classes="table table-striped") | safe }} </pre>
+        <h2>Suspect</h2>
+        <br>
+        <pre>{{suspect_res.to_html(classes="table table-striped")|safe }}</pre>
+        <h2>Meeting_Notes</h2>
+        <br>
+        <pre>{{meeting_res.to_html(classes="table table-striped")|safe }}</pre>
+        <h2>Clients</h2>
+        <br>
+        <pre>{{clients_res.to_html(classes="table table-striped")|safe }}</pre>
     </form>
     </div>
 </div>
