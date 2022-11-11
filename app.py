@@ -851,9 +851,8 @@ def example():
     variable = "check your name"
     return render_template('example.html', value = variable)
 
-@app.route('/narrative',methods =["GET", "POST"])
-def narrative():
-    referral_id = 2
+@app.route('/narrative/<int:referral_id>',methods =["GET", "POST"])
+def narrative(referral_id):
     cursor.execute("SELECT * FROM outcome INNER JOIN cases ON cases.referral_id = outcome.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
     data = cursor.fetchone()
     
