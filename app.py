@@ -245,7 +245,7 @@ def abuser(referral_id):
     content['su_zip'] = data[31]
     content['su_phone'] = data[32]
 
-    return render_template('abuser.html', **content)
+    return render_template('abuser.html',referral_id = referral_id, **content)
 
 
 @app.route('/abuse_info/<int:referral_id>', methods = ["POST", "GET"])
@@ -871,8 +871,8 @@ def narrative(referral_id):
     if data == None:
         return "Sorry your data isn't here"
     if request.method == "POST":
-        return render_template('narrative.html', **content)
-    return render_template('narrative.html', **content)
+        return render_template('narrative.html',referral_id = referral_id, **content)
+    return render_template('narrative.html',referral_id = referral_id, **content)
 
 
 @app.route('/consultation/<int:referral_id>', methods =["GET", "POST"])

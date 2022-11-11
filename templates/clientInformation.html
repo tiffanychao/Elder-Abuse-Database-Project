@@ -12,6 +12,7 @@
     <a href = {{ url_for('center_outcomes', referral_id = referral_id) }} class="individual_case_tab">outcome</a>
     <a href = {{ url_for('abuse_info', referral_id = referral_id) }} class="individual_case_tab">abuse info</a>
     <a href = {{ url_for('abuser', referral_id = referral_id) }} class="individual_case_tab">abuser</a>
+    <a href = {{ url_for('narrative', referral_id = referral_id) }} class="individual_case_tab">narrative</a>
 {% endblock %}
 
 {% block content %}
