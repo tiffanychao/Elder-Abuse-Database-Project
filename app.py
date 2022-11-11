@@ -82,8 +82,8 @@ def client(referral_id):
     content['cl_phone'] = data[16]
 
     if request.method == "POST":
-        return render_template('client.html', **content)
-    return render_template('client.html', **content)  
+        return render_template('client.html',referral_id =referral_id, **content)
+    return render_template('client.html',referral_id = referral_id, **content)  
 
 
 @app.route('/client_information/<int:referral_id>', methods = ["POST", "GET"])
