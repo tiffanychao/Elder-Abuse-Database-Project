@@ -7,11 +7,11 @@
 {% endblock %}
 {% block routes %}
 <a href = {{ url_for('consulation', referral_id = referral_id) }} class="individual_case_tab">consultation</a>
-
 <a href = {{ url_for('client', referral_id = referral_id) }} class="individual_case_tab">client </a>
     <a href = {{ url_for('client_information', referral_id = referral_id) }} class="individual_case_tab">client information</a>
     <a href = {{ url_for('center_outcomes', referral_id = referral_id) }} class="individual_case_tab">outcome</a>
     <a href = {{ url_for('abuse_info', referral_id = referral_id) }} class="individual_case_tab">abuse info</a>
+    <a href = {{ url_for('abuser', referral_id = referral_id) }} class="individual_case_tab">abuser</a>
 {% endblock %}
 
 {% block content %}

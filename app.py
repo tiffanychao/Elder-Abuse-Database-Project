@@ -37,12 +37,12 @@ except Error as e:
     print("Error while connecting to MySQL", e)
 
 
-@app.route('/client//<int:referral_id>', methods = ["POST", "GET"])
-def client(referral_id):
-    
+@app.route('/client/<int:referral_id>', methods = ["POST", "GET"])
+def client(referral_id):  
     # figure out the associated client ID of the referral_id
     cursor.execute("SELECT * FROM clients INNER JOIN cases ON cases.referral_id = clients.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
     data = cursor.fetchone()
+    print(data)
     if data == None:
         return "There is no data sorry"
     client_id = data[0]
@@ -138,9 +138,8 @@ def client_information(referral_id):
         return render_template('clientInformation.html',referral_id = referral_id, **content)
     return render_template('clientInformation.html',referral_id = referral_id, **content)
 
-@app.route('/abuser', methods = ["POST", "GET"])
-def abuser():
-    referral_id = 1
+@app.route('/abuser/<int:referral_id>', methods = ["POST", "GET"])
+def abuser(referral_id):
     # figure out the associated client ID of the referral_id
     cursor.execute("SELECT * FROM suspects INNER JOIN cases ON cases.referral_id = suspects.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
     data = cursor.fetchone()
@@ -649,9 +648,8 @@ def consulation(referral_id):
     return render_template('consultation.html',referral_id = referral_id, **content)
 
 
-@app.route('/notes',methods =["GET", "POST"])
-def notes():
-    referral_id = 2
+@app.route('/notes/<int:referral_id>',methods =["GET", "POST"])
+def notes(referral_id):
     # meeting_notes
     cursor.execute("SELECT * FROM meeting_notes INNER JOIN cases ON cases.referral_id =meeting_notes.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
     data = cursor.fetchone()
