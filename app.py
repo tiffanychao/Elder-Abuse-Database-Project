@@ -9,7 +9,6 @@ import mysql.connector
 from datetime import datetime
 import pandas as pd
 import pathlib
-from sqlalchemy import create_engine
 import worddocparser
 load_dotenv()  # take environment variables from .env.
 
@@ -145,7 +144,6 @@ def client_information(referral_id):
 
 @app.route('/abuser/<int:referral_id>', methods = ["POST", "GET"])
 def abuser(referral_id):
-referral_id = 1
     su_PrimCrGvYES = True
     su_PrimCrGvNO = True
     su_LivesWthYES = True
