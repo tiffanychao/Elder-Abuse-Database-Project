@@ -4,13 +4,13 @@ app = Flask(__name__)
 from flaskext.mysql import MySQL
 from dotenv import load_dotenv
 import os #provides ways to access the Operating System and allows us to read the environment variables
-from mysql.connector import Error
-import mysql.connector
-from datetime import datetime
-import pandas as pd
-import pathlib
-import worddocparser
-load_dotenv()  # take environment variables from .env.
+# from mysql.connector import Error
+# import mysql.connector
+# from datetime import datetime
+# import pandas as pd
+# import pathlib
+# import worddocparser
+# load_dotenv()  # take environment variables from .env.
 
 
 mysql = MySQL()
@@ -476,9 +476,9 @@ def get_referral_info_from_db(referral_id):
  
     return Dic
 
-@app.route('/referring_agency',methods =["GET", "POST"])
-def referring_agency():
-    referral_id = 1
+@app.route('/referring_agency/<referral_id>',methods =["GET", "POST"])
+def referring_agency(referral_id):
+    # referral_id = 1
     
     if request.method == "POST":
  
@@ -489,6 +489,7 @@ def referring_agency():
          request.form.get("SupervisorName")  ))
         conn.commit()
     dictInfo = get_referral_info_from_db(referral_id)
+    dictInfo['referral_id'] = referral_id
     return render_template('referringAgency.html', **dictInfo)
 
 
@@ -522,8 +523,8 @@ def get_case_summary_from_db(id):
     dic["rcmd"] = rcmdlist
     return dic
     
-@app.route('/case_summary',methods =["GET", "POST"])
-def case_summary():
+@app.route('/case_summary/<referral_id>',methods =["GET", "POST"])
+def case_summary(referral_id):
     if request.method == "POST":
        
         return  data1 
@@ -531,7 +532,8 @@ def case_summary():
     #
     v_name = "John Doe"
     
-    dic = get_case_summary_from_db(1)
+    dic = get_case_summary_from_db(referral_id)
+    dic['referral_id'] = referral_id
     # print(dic['notes'])
     return render_template('caseSummary.html',**dic) 
 
