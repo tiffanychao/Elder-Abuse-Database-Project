@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 import os #provides ways to access the Operating System and allows us to read the environment variables
 # from mysql.connector import Error
 # import mysql.connector
-# from datetime import datetime
+from datetime import datetime
 # import pandas as pd
 # import pathlib
 # import worddocparser
@@ -1048,9 +1048,9 @@ def notes(referral_id):
     if data == None:
         return "Sorry your data isn't here"
     if request.method == "POST":
-        return render_template('notes.html',  **content)
+        return render_template('notes.html',referral_id = referral_id,  **content)
 
-    return render_template('notes.html', **content)
+    return render_template('notes.html',referral_id = referral_id, **content)
 
 @app.route('/attachments')
 def attachments():
