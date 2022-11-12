@@ -457,28 +457,7 @@ def center_outcomes(referral_id):
     content["oc_self_suff"] = data[26]
     return render_template("centerOutcomes.html",referral_id = referral_id, **content)
 
-@app.route('/test', methods =["GET", "POST"])
-def get_referral_info_from_db(referral_id):
-    # size 10
-    Dic = dict()
-    cursor.execute(" SELECT * FROM referring_agency WHERE referral_id =  " + str(referral_id) + ";")
-    data = cursor.fetchone()
-    if data != None :
-        Dic["referCaseNum"] = data[1]
-        Dic["firstName"] = data[2]
-        Dic["lastName"] = data[3]
-        Dic["FCTeamMember"] = data[5]
-        Dic["fcTeamOther"] = data[6]
-        Dic["email"] = data[7]
-        Dic["officePhone"] = data[8]
-        Dic["officeTax"] = data[9]
-        Dic["mobilePhone"] = data[10]
-        Dic["supervisorName"] = data[11]
- 
-    return Dic
 
-
-      
 
 @app.route('/referring_agency/<referral_id>',methods =["GET", "POST"])
 def referring_agency(referral_id):

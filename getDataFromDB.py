@@ -1,3 +1,29 @@
+from flask import Flask
+app = Flask(__name__)
+import os #provides ways to access the Operating System and allows us to read the environment variables
+from flaskext.mysql import MySQL
+mysql = MySQL()
+app.config['MYSQL_DATABASE_USER'] = os.getenv("DatabaseUser")
+app.config['MYSQL_DATABASE_PASSWORD'] = os.getenv("DatabasePassword")
+app.config['MYSQL_DATABASE_DB'] = os.getenv("DatabaseDB")
+app.config['MYSQL_DATABASE_HOST'] = os.getenv("DatabaseHost")
+# app.secret_key = 'super secret key'
+# app.config['SESSION_TYPE'] = 'filesystem'
+mysql.init_app(app)
+# check whether DB is connected
+try:
+    conn = mysql.connect()
+    if conn:
+        db_Info = conn.get_server_info()
+        print("Connected to MySQL Server version ", db_Info)
+        cursor = conn.cursor()
+        cursor.execute("select database();")
+        
+        record = cursor.fetchone()
+        print("You're connected to database: ", record)
+except Error as e:
+    print("Error while connecting to MySQL", e)
+
 def get_case_summary_from_db(id):
     #  search to get
     dic = dict()
@@ -68,6 +94,7 @@ def delete_case(referral_id):
  
     
     return None
+
 def search_cases_from_database(type, first_name,last_name, closedCase):
     # result =  [dict(link="https://www.google.com/",id="1234", name="John Doe4"),
     #             dict(link="https://www.google.com/",id="1235", name="John Doe5"),
@@ -290,3 +317,22 @@ cte_all_cases.case_closed =
             result.append(dic)
         
     return result
+
+def get_referral_info_from_db(referral_id):
+    # size 10
+    Dic = dict()
+    cursor.execute(" SELECT * FROM referring_agency WHERE referral_id =  " + str(referral_id) + ";")
+    data = cursor.fetchone()
+    if data != None :
+        Dic["referCaseNum"] = data[1]
+        Dic["firstName"] = data[2]
+        Dic["lastName"] = data[3]
+        Dic["FCTeamMember"] = data[5]
+        Dic["fcTeamOther"] = data[6]
+        Dic["email"] = data[7]
+        Dic["officePhone"] = data[8]
+        Dic["officeTax"] = data[9]
+        Dic["mobilePhone"] = data[10]
+        Dic["supervisorName"] = data[11]
+ 
+    return Dic
