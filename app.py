@@ -3,6 +3,7 @@ from flask import Flask, render_template, request,flash
 app = Flask(__name__)
 from flaskext.mysql import MySQL
 from dotenv import load_dotenv
+from getDataFromDB import *
 import os #provides ways to access the Operating System and allows us to read the environment variables
 # from mysql.connector import Error
 # import mysql.connector
@@ -476,6 +477,10 @@ def get_referral_info_from_db(referral_id):
  
     return Dic
 
+def getCaseStatus(referral_id):
+    dic = get_case_summary_from_db(referral_id)
+      
+
 @app.route('/referring_agency/<referral_id>',methods =["GET", "POST"])
 def referring_agency(referral_id):
     # referral_id = 1
@@ -490,38 +495,11 @@ def referring_agency(referral_id):
         conn.commit()
     dictInfo = get_referral_info_from_db(referral_id)
     dictInfo['referral_id'] = referral_id
+    dictInfo['searchCase'] = True
     return render_template('referringAgency.html', **dictInfo)
 
 
-def get_case_summary_from_db(id):
-    #  search to get
-    dic = dict()
-    dic["name"] = "Mr Darcy"
-    dic["presenter"] = "John Doe"
-    dic["date"] = "2022-04-01"
-    notesarr = []
-    notesarr.append ("notes000")
-    notesarr.append ("notes111")
-    dic["notes"] = notesarr
-    goalarr = []
-    goalarr.append("Goal 1: goal1111")
-    goalarr.append("Goal 2: goal2222")
-    dic["goal"] = goalarr
-    rcmdlist = []
-    dicrcmd = dict()
-    dicrcmd['ActionStep'] = 'work on goal 1'
-    dicrcmd['PersonResponsilbe'] = 'Jorge L sole'
-    dicrcmd['followupDate'] = '2022-01-01'
-    dicrcmd['status'] = 'ukm'
-    rcmdlist.append(dicrcmd)
-    dicrcmd = dict()
-    dicrcmd['ActionStep'] = 'work on goal 1'
-    dicrcmd['PersonResponsilbe'] = 'Jorge L sole'
-    dicrcmd['followupDate'] = '2022-01-01'
-    dicrcmd['status'] = 'ukm'
-    rcmdlist.append(dicrcmd)
-    dic["rcmd"] = rcmdlist
-    return dic
+
     
 @app.route('/case_summary/<referral_id>',methods =["GET", "POST"])
 def case_summary(referral_id):
@@ -535,6 +513,7 @@ def case_summary(referral_id):
     dic = get_case_summary_from_db(referral_id)
     dic['referral_id'] = referral_id
     # print(dic['notes'])
+    print ("123")
     return render_template('caseSummary.html',**dic) 
 
 
@@ -575,6 +554,7 @@ def search_cases():
     dic['closedCase'] = case_closed
     dic['number'] = v_num
     dic['result'] = infolist
+    
     return render_template('searchCases.html',**dic) 
 
 def delete_case(referral_id):
@@ -843,7 +823,7 @@ cte_all_cases.case_closed =
 
 @app.route('/')
 def homepage():
-    return render_template('homepage.html')
+    return render_template('homepage.html',referral_id = -1, searchCase = False)
 
 
 

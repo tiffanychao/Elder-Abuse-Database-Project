@@ -22,7 +22,12 @@
                 <div class="referral_information_bar">
                     <div class="referral_information">Referral Information</div>
                     <div>
-                        <a href=case_summary ><button class="case_summary_button" >Case Summary</button></a>
+                        {% if searchCase %}
+                            <a href={{ url_for('case_summary', referral_id = referral_id) }}  ><button class="case_summary_button" >Case Summary</button></a>
+                        {% else %}
+                            <button class="case_summary_button" >Case Summary</button>
+                        {% endif %}
+                        
                         <button class="save_record_button">Save Records</button>
                     </div>
                 </div>
