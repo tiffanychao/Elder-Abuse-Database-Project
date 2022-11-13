@@ -37,10 +37,11 @@
     <div class="text_with_input_container">
         <div>
             Click choose file to upload
-            <form action="/action_page.php">
-                <input type="file" id="myFile" name="filename">
-                <input type="submit" value="Upload" name="submit">
+            <form method="POST" action="" enctype="multipart/form-data">
+              <p><input type="file" name="file"></p>
+              <p><input type="submit" value="Upload" name="submit"></p>
             </form>
+            <pre>{{content}}</pre>
         </div>
         <br>
         <br>
