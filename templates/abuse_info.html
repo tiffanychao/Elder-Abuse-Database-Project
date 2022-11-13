@@ -5,16 +5,28 @@
 <link rel="stylesheet" href="../static/abuse_info.css">
 <link rel="stylesheet" href="../static/framework.css">
 {% endblock %}
+
+{% block routes %}
+<a href = {{ url_for('consulation', referral_id = referral_id) }} class="individual_case_tab">consultation</a>
+<a href = {{ url_for('client', referral_id = referral_id) }} class="individual_case_tab">client </a>
+    <a href = {{ url_for('client_information', referral_id = referral_id) }} class="individual_case_tab">client information</a>
+    <a href = {{ url_for('center_outcomes', referral_id = referral_id) }} class="individual_case_tab">outcome</a>
+    <a href = {{ url_for('abuse_info', referral_id = referral_id) }} class="individual_case_tab">abuse info</a>
+    <a href = {{ url_for('abuser', referral_id = referral_id) }} class="individual_case_tab">abuser</a>
+    <a href = {{ url_for('narrative', referral_id = referral_id) }} class="individual_case_tab">narrative</a>
+    <a href = {{ url_for('notes', referral_id = referral_id) }} class="individual_case_tab">notes</a>
+{% endblock %}
 {% block content %}
 <form method="POST">
 <div class="abuse_info_container">
     <div class="first_container">
         <div class="first_container_element"><label style="font-weight: bold;">Other Agencies Involved</label></div> <textarea name="ad_InvAgencies">{{ad_InvAgencies}}</textarea>
         <div class="first_container_element"><label style="font-weight: bold;">Reporting Party</label></div><select name="ad_RptingParty">
-            <option value="1" {% if ad_RptingParty == '1' %} selected {% endif %}>Volvo</option>
-            <option value="2" {% if ad_RptingParty == '2' %} selected {% endif %}>Saab</option>
-            <option value="3" {% if ad_RptingParty == '3' %} selected {% endif %}>Mercedes</option>
-            <option value="4" {% if ad_RptingParty == '4' %} selected {% endif %}>Audi</option>
+            <option value="" {% if ad_RptingParty == '' %} selected {% endif %}></option>
+            <option value="Community partner" {% if ad_RptingParty == 'Community partner' %} selected {% endif %}>Community partner</option>
+            <option value="Family/Friend" {% if ad_RptingParty == 'Family/Friend' %} selected {% endif %}>Family/Friend</option>
+            <option value="Financial Institution" {% if ad_RptingParty == 'Financial Institution' %} selected {% endif %}>Financial Institution</option>
+            <option value="Unknown" {% if ad_RptingParty == 'Unknown' %} selected {% endif %}>Unknown</option>
         </select>
         <div class="first_container_element"><label style="font-weight: bold;">Others With Knowledge of Abuse</label></div> <textarea name="ad_Others" rows="7">{{ad_Others}}</textarea>
     </div>

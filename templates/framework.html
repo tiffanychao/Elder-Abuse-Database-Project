@@ -22,7 +22,12 @@
                 <div class="referral_information_bar">
                     <div class="referral_information">Referral Information</div>
                     <div>
-                        <a href=case_summary ><button class="case_summary_button" >Case Summary</button></a>
+                        {% if searchCase %}
+                            <a href={{ url_for('case_summary', referral_id = referral_id) }}  ><button class="case_summary_button" >Case Summary</button></a>
+                        {% else %}
+                            <button class="case_summary_button" >Case Summary</button>
+                        {% endif %}
+                        
                         <button class="save_record_button">Save Records</button>
                     </div>
                 </div>
@@ -59,16 +64,9 @@
             </div>
             <div class = "noPrint">
                 <div class="case_tabs">
-                    <a href="{{ url_for('consulation') }}" class="individual_case_tab">Consultation</a>
-                    <a href="{{ url_for('referring_agency') }}" class="individual_case_tab">Referring Agency</a>
-                    <a href="{{ url_for('client') }}" class="individual_case_tab">Client</a>
-                    <a href="{{ url_for('client_information') }}" class="individual_case_tab">Client Info </a>
-                    <a href="{{ url_for('abuser') }}" class="individual_case_tab">Abuser(s) </a>
-                    <a href="{{ url_for('abuse_info') }}" class="individual_case_tab">Abuser Info </a>
-                    <a href="{{ url_for('notes') }}" class="individual_case_tab">Notes </a>
-                    <a href="{{ url_for('narrative') }}" class="individual_case_tab">Narrative </a>
-                    <a href="{{ url_for('center_outcomes') }}" class="individual_case_tab">Outcome </a>
-                    <a href="{{ url_for('attachments') }}" class="individual_case_tab">Attachments </a>
+                    
+                    {% block routes %}{% endblock %}
+    
                 </div>
             </div>
             

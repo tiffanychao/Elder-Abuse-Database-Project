@@ -3,15 +3,15 @@ from flask import Flask, render_template, request,flash
 app = Flask(__name__)
 from flaskext.mysql import MySQL
 from dotenv import load_dotenv
+from getDataFromDB import *
 import os #provides ways to access the Operating System and allows us to read the environment variables
-from mysql.connector import Error
-import mysql.connector
+# from mysql.connector import Error
+# import mysql.connector
 from datetime import datetime
-import pandas as pd
-import pathlib
-from sqlalchemy import create_engine
-import worddocparser
-load_dotenv()  # take environment variables from .env.
+# import pandas as pd
+# import pathlib
+# import worddocparser
+# load_dotenv()  # take environment variables from .env.
 
 
 mysql = MySQL()
@@ -41,12 +41,13 @@ try:
 except Error as e:
     print("Error while connecting to MySQL", e)
 
-@app.route('/client', methods = ["POST", "GET"])
-def client():
-    referral_id = 3
+
+@app.route('/client/<int:referral_id>', methods = ["POST", "GET"])
+def client(referral_id):  
     # figure out the associated client ID of the referral_id
     cursor.execute("SELECT * FROM clients INNER JOIN cases ON cases.referral_id = clients.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
     data = cursor.fetchone()
+    print(data)
     if data == None:
         return "There is no data sorry"
     client_id = data[0]
@@ -64,7 +65,7 @@ def client():
 
     cursor.execute("SELECT * FROM clients INNER JOIN cases on clients.referral_id = cases.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
     data = cursor.fetchone()
-    print(data)
+
     content = {}
     content['cl_name_first'] = data[2]
     content['cl_name_last'] = data[3]
@@ -82,11 +83,12 @@ def client():
     content['cl_phone'] = data[16]
 
     if request.method == "POST":
-        return render_template('client.html', **content)
-    return render_template('client.html', **content)  
+        return render_template('client.html',referral_id =referral_id, **content)
+    return render_template('client.html',referral_id = referral_id, **content)  
 
-@app.route('/client_information', methods = ["POST", "GET"])
-def client_information():
+
+@app.route('/client_information/<int:referral_id>', methods = ["POST", "GET"])
+def client_information(referral_id):
     prev_abuse_no = True
     prev_abuse_yes = True
     multiple_alleged_suspects = True
@@ -99,8 +101,8 @@ def client_information():
         multiple_alleged_suspects = False
 
 
-    
-    referral_id = 1
+    # if referral_id == None:
+    # referral_id = 1
     # figure out the associated client ID of the referral_id
     cursor.execute("SELECT * FROM clients INNER JOIN cases ON cases.referral_id = clients.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
     data = cursor.fetchone()
@@ -138,12 +140,11 @@ def client_information():
     content['multiple_suspects'] = data[30]
 
     if request.method == "POST":
-        return render_template('clientInformation.html', **content)
-    return render_template('clientInformation.html', **content)
+        return render_template('clientInformation.html',referral_id = referral_id, **content)
+    return render_template('clientInformation.html',referral_id = referral_id, **content)
 
-@app.route('/abuser', methods = ["POST", "GET"])
-def abuser():
-    referral_id = 1
+@app.route('/abuser/<int:referral_id>', methods = ["POST", "GET"])
+def abuser(referral_id):
     su_PrimCrGvYES = True
     su_PrimCrGvNO = True
     su_LivesWthYES = True
@@ -183,7 +184,6 @@ def abuser():
         su_AdPrepNO = False
     if(request.form.get('su_AdPrepUNK') == None):
         su_AdPrepUNK = False
-
     # figure out the associated client ID of the referral_id
     cursor.execute("SELECT * FROM suspects INNER JOIN cases ON cases.referral_id = suspects.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
     data = cursor.fetchone()
@@ -246,12 +246,11 @@ def abuser():
     content['su_zip'] = data[31]
     content['su_phone'] = data[32]
 
-    return render_template('abuser.html', **content)
+    return render_template('abuser.html',referral_id = referral_id, **content)
 
 
-@app.route('/abuse_info', methods = ["POST", "GET"])
-def abuse_info():
-    referral_id = 1
+@app.route('/abuse_info/<int:referral_id>', methods = ["POST", "GET"])
+def abuse_info(referral_id):
     ad_Abandon = True
     ad_Abduction = True
     ad_Emotional = True
@@ -338,14 +337,13 @@ def abuse_info():
 
     print('--------')
     print(content)
-    return render_template('abuse_info.html', **content)
+    return render_template('abuse_info.html',referral_id = referral_id, **content)
 
 
 
-@app.route('/center_outcomes', methods = ["POST", "GET"])
-def center_outcomes():
+@app.route('/center_outcomes/<int:referral_id>', methods = ["POST", "GET"])
+def center_outcomes(referral_id):
     content = {}
-    referral_id = 1
     oc_csv_probate = True
     oc_csv_pubg = True
     oc_csv_lps = True
@@ -457,31 +455,13 @@ def center_outcomes():
     content["oc_ro_name"] = data[24]
     content["oc_ev_geri"] = data[25]
     content["oc_self_suff"] = data[26]
-    return render_template("centerOutcomes.html", **content)
+    return render_template("centerOutcomes.html",referral_id = referral_id, **content)
 
-@app.route('/test', methods =["GET", "POST"])
-def get_referral_info_from_db(referral_id):
-    # size 10
-    Dic = dict()
-    cursor.execute(" SELECT * FROM referring_agency WHERE referral_id =  " + str(referral_id) + ";")
-    data = cursor.fetchone()
-    if data != None :
-        Dic["referCaseNum"] = data[1]
-        Dic["firstName"] = data[2]
-        Dic["lastName"] = data[3]
-        Dic["FCTeamMember"] = data[5]
-        Dic["fcTeamOther"] = data[6]
-        Dic["email"] = data[7]
-        Dic["officePhone"] = data[8]
-        Dic["officeTax"] = data[9]
-        Dic["mobilePhone"] = data[10]
-        Dic["supervisorName"] = data[11]
- 
-    return Dic
 
-@app.route('/referring_agency',methods =["GET", "POST"])
-def referring_agency():
-    referral_id = 1
+
+@app.route('/referring_agency/<referral_id>',methods =["GET", "POST"])
+def referring_agency(referral_id):
+    # referral_id = 1
     
     if request.method == "POST":
  
@@ -492,41 +472,15 @@ def referring_agency():
          request.form.get("SupervisorName")  ))
         conn.commit()
     dictInfo = get_referral_info_from_db(referral_id)
+    dictInfo['referral_id'] = referral_id
+    dictInfo['searchCase'] = True
     return render_template('referringAgency.html', **dictInfo)
 
 
-def get_case_summary_from_db(id):
-    #  search to get
-    dic = dict()
-    dic["name"] = "Mr Darcy"
-    dic["presenter"] = "John Doe"
-    dic["date"] = "2022-04-01"
-    notesarr = []
-    notesarr.append ("notes000")
-    notesarr.append ("notes111")
-    dic["notes"] = notesarr
-    goalarr = []
-    goalarr.append("Goal 1: goal1111")
-    goalarr.append("Goal 2: goal2222")
-    dic["goal"] = goalarr
-    rcmdlist = []
-    dicrcmd = dict()
-    dicrcmd['ActionStep'] = 'work on goal 1'
-    dicrcmd['PersonResponsilbe'] = 'Jorge L sole'
-    dicrcmd['followupDate'] = '2022-01-01'
-    dicrcmd['status'] = 'ukm'
-    rcmdlist.append(dicrcmd)
-    dicrcmd = dict()
-    dicrcmd['ActionStep'] = 'work on goal 1'
-    dicrcmd['PersonResponsilbe'] = 'Jorge L sole'
-    dicrcmd['followupDate'] = '2022-01-01'
-    dicrcmd['status'] = 'ukm'
-    rcmdlist.append(dicrcmd)
-    dic["rcmd"] = rcmdlist
-    return dic
+
     
-@app.route('/case_summary',methods =["GET", "POST"])
-def case_summary():
+@app.route('/case_summary/<referral_id>',methods =["GET", "POST"])
+def case_summary(referral_id):
     if request.method == "POST":
        
         return  data1 
@@ -534,8 +488,10 @@ def case_summary():
     #
     v_name = "John Doe"
     
-    dic = get_case_summary_from_db(1)
+    dic = get_case_summary_from_db(referral_id)
+    dic['referral_id'] = referral_id
     # print(dic['notes'])
+    print ("123")
     return render_template('caseSummary.html',**dic) 
 
 
@@ -576,275 +532,16 @@ def search_cases():
     dic['closedCase'] = case_closed
     dic['number'] = v_num
     dic['result'] = infolist
+    
     return render_template('searchCases.html',**dic) 
 
-def delete_case(referral_id):
-    delete_sql = "DELETE FROM clients WHERE referral_id = " + str(referral_id)
-    cursor.execute(delete_sql)
-    conn.commit()
-    delete_sql = "DELETE FROM abuse_information WHERE referral_id = " + str(referral_id)
-    cursor.execute(delete_sql)
-    conn.commit()
-    delete_sql = "DELETE FROM attachments WHERE referral_id = " + str(referral_id)
-    cursor.execute(delete_sql)
-    conn.commit()
-    delete_sql = "DELETE FROM consultation_information WHERE referral_id = " + str(referral_id)
-    cursor.execute(delete_sql)
-    conn.commit()
-    delete_sql = "DELETE FROM goals WHERE referral_id = " + str(referral_id)
-    cursor.execute(delete_sql)
-    conn.commit()
-    delete_sql = "DELETE FROM meeting_notes WHERE referral_id = " + str(referral_id)
-    cursor.execute(delete_sql)
-    conn.commit()
-    delete_sql = "DELETE FROM outcome WHERE referral_id = " + str(referral_id)
-    cursor.execute(delete_sql)
-    conn.commit()
-    delete_sql = "DELETE FROM recommendations WHERE referral_id = " + str(referral_id)
-    cursor.execute(delete_sql)
-    conn.commit()
-    delete_sql = "DELETE FROM referring_agency WHERE referral_id = " + str(referral_id)
-    cursor.execute(delete_sql)
-    conn.commit()
-    delete_sql = "DELETE FROM suspects WHERE referral_id = " + str(referral_id)
-    cursor.execute(delete_sql)
-    conn.commit()
-    delete_sql = "DELETE FROM case_number WHERE referral_id = " + str(referral_id)
-    cursor.execute(delete_sql)
-    conn.commit()
-    delete_sql = "DELETE FROM cases WHERE referral_id = " + str(referral_id)
-    cursor.execute(delete_sql)
-    conn.commit()
- 
-    
-    return None
 
-def search_cases_from_database(type, first_name,last_name, closedCase):
-    # result =  [dict(link="https://www.google.com/",id="1234", name="John Doe4"),
-    #             dict(link="https://www.google.com/",id="1235", name="John Doe5"),
-    #             dict(link="https://www.google.com/",id="1236", name="John Doe6"),
-    #             dict(link="https://www.google.com/",id="1237", name="John Doe7"),
-    #             ]
-    result = []
-    # if (type == ''):
-        # flash(u'Please Select a type', 'error')
-    if (type == "client"):
-        
-        basic_sql = """
-        WITH
-        case_number_clients	AS (
-            SELECT 
-		        clients.referral_id,
-		        clients.cl_name_first,
-                clients.cl_name_last ,
-                case_number.case_number
-	    FROM 
-		    clients 
-	    INNER JOIN case_number 
-        ON
-		    case_number.referral_id = clients.referral_id
-        ),
-        all_cases AS (
-            SELECT
-	        cases.case_date,
-            cases.case_closed,
-            cases.referral_id,
-            case_number_clients.cl_name_first,
-            case_number_clients.cl_name_last,
-            case_number_clients.case_number
-        FROM cases
-        INNER JOIN case_number_clients 
-        ON
-	        case_number_clients.referral_id = cases.referral_id
-        )
-        SELECT
-	        all_cases.referral_id ,
-	        all_cases.case_number,
-            all_cases.cl_name_first,
-            all_cases.cl_name_last,
-            all_cases.case_date,
-            all_cases.case_closed
-        FROM all_cases
-        WHERE
-	    all_cases.case_closed = 
-        """   + str(closedCase)
 
-        if (first_name):
-            basic_sql += " AND all_cases.cl_name_first = " + "\"" + first_name + "\" "
-        if (last_name):
-            basic_sql += " AND all_cases.cl_name_last = " + "\"" + last_name + "\" "
-        cursor.execute(basic_sql)
-        data = cursor.fetchall()
-        
-        for item in data:
-            dic = dict()
-            dic["link"] = "client_information/"+str(item[0])
-            dic["referral_id"] = item[0]
-            dic["case_number"] = item[1]
-            dic["cl_name_first"] = item[2]
-            dic["cl_name_last"] = item[3]
-            dic["case_date"] = item[4]
-            result.append(dic)
-        # print (result)
-    elif (type == "presenter"):
-        basic_sql = """
-WITH
-case_number_clients	AS (
-SELECT 
-		clients.referral_id,
-		clients.cl_name_first,
-        clients.cl_name_last ,
-        case_number.case_number
-	FROM 
-		clients 
-	INNER JOIN case_number 
-    ON
-		case_number.referral_id = clients.referral_id
-),
-cte_cases AS (
-SELECT
-	cases.case_date,
-    cases.case_closed,
-    cases.referral_id,
-    case_number_clients.cl_name_first,
-    case_number_clients.cl_name_last,
-    case_number_clients.case_number
-FROM cases
-INNER JOIN case_number_clients 
-ON
-	case_number_clients.referral_id = cases.referral_id
-),
-cte_all_cases AS (
-SELECT
-	cte_cases.referral_id ,
-	cte_cases.case_number,
-    cte_cases.cl_name_first,
-    cte_cases.cl_name_last,
-    cte_cases.case_date,
-    cte_cases.case_closed,
-    meeting_notes.meeting_presenters
-FROM cte_cases
-INNER JOIN meeting_notes
-ON cte_cases.referral_id = meeting_notes.referral_id
-)
-SELECT
-	cte_all_cases.referral_id ,
-	cte_all_cases.case_number,
-    cte_all_cases.cl_name_first,
-    cte_all_cases.cl_name_last,
-    cte_all_cases.case_date,
-    cte_all_cases.case_closed,
-    cte_all_cases.meeting_presenters
 
-FROM cte_all_cases
-WHERE
-cte_all_cases.case_closed =
-        """  + str(closedCase)
-        full_name = ""
-        if (first_name):
-            full_name += first_name.strip()
-        if (last_name):
-            full_name += " "
-            full_name += last_name.strip()
-        if (full_name):
-            basic_sql += " AND cte_all_cases.meeting_presenters = " + "\"" + full_name + "\" "
-        
-        cursor.execute(basic_sql)
-        data = cursor.fetchall()
-        
-        for item in data:
-            dic = dict()
-            dic["link"] = "client_information/"+str(item[0])
-            dic["referral_id"] = item[0]
-            dic["case_number"] = item[1]
-            dic["cl_name_first"] = item[2]
-            dic["cl_name_last"] = item[3]
-            dic["case_date"] = item[4]
-            arr = item[6].split(' ')
-            arrln = arr[1:]
-            dic["presenter_name_first"] = arr[0]
-            dic["presenter_name_last"] = ' '.join(arrln)
-            result.append(dic)
-    else : # suspect
-        basic_sql = """
-WITH
-case_number_clients	AS (
-SELECT 
-		clients.referral_id,
-		clients.cl_name_first,
-        clients.cl_name_last ,
-        case_number.case_number
-	FROM 
-		clients 
-	INNER JOIN case_number 
-    ON
-		case_number.referral_id = clients.referral_id
-),
-cte_cases AS (
-SELECT
-	cases.case_date,
-    cases.case_closed,
-    cases.referral_id,
-    case_number_clients.cl_name_first,
-    case_number_clients.cl_name_last,
-    case_number_clients.case_number
-FROM cases
-INNER JOIN case_number_clients 
-ON
-	case_number_clients.referral_id = cases.referral_id
-),
-cte_all_cases AS (
-SELECT
-	cte_cases.referral_id ,
-	cte_cases.case_number,
-    cte_cases.cl_name_first,
-    cte_cases.cl_name_last,
-    cte_cases.case_date,
-    cte_cases.case_closed,
-    suspects.su_name_first,
-    suspects.su_name_last
-FROM cte_cases
-INNER JOIN suspects
-ON cte_cases.referral_id = suspects.referral_id
-)
-SELECT
-	cte_all_cases.referral_id ,
-	cte_all_cases.case_number,
-    cte_all_cases.cl_name_first,
-    cte_all_cases.cl_name_last,
-    cte_all_cases.case_date,
-    cte_all_cases.case_closed,
-    cte_all_cases.su_name_first,
-    cte_all_cases.su_name_last
-FROM cte_all_cases
-WHERE
-cte_all_cases.case_closed = 
-        """   + str(closedCase)
-
-        if (first_name):
-            basic_sql += " AND cte_all_cases.su_name_first = " + "\"" + first_name + "\" "
-        if (last_name):
-            basic_sql += " AND cte_all_cases.su_name_last = " + "\"" + last_name + "\" "
-        cursor.execute(basic_sql)
-        data = cursor.fetchall()
-        
-        for item in data:
-            dic = dict()
-            dic["link"] = "client_information/"+str(item[0])
-            dic["referral_id"] = item[0]
-            dic["case_number"] = item[1]
-            dic["cl_name_first"] = item[2]
-            dic["cl_name_last"] = item[3]
-            dic["case_date"] = item[4]
-            dic["suspect_name_first"] = item[6]
-            dic["suspect_name_last"] = item[7]
-            result.append(dic)
-        
-    return result
 
 @app.route('/')
 def homepage():
-    return render_template('homepage.html')
+    return render_template('homepage.html',referral_id = -1, searchCase = False)
 
 
 
@@ -854,9 +551,8 @@ def example():
     variable = "check your name"
     return render_template('example.html', value = variable)
 
-@app.route('/narrative',methods =["GET", "POST"])
-def narrative():
-    referral_id = 2
+@app.route('/narrative/<int:referral_id>',methods =["GET", "POST"])
+def narrative(referral_id):
     cursor.execute("SELECT * FROM outcome INNER JOIN cases ON cases.referral_id = outcome.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
     data = cursor.fetchone()
     
@@ -875,13 +571,13 @@ def narrative():
     if data == None:
         return "Sorry your data isn't here"
     if request.method == "POST":
-        return render_template('narrative.html', **content)
-    return render_template('narrative.html', **content)
+        return render_template('narrative.html',referral_id = referral_id, **content)
+    return render_template('narrative.html',referral_id = referral_id, **content)
 
 
-@app.route('/consultation', methods =["GET", "POST"])
-def consulation():
-    referral_id = 2
+@app.route('/consultation/<int:referral_id>', methods =["GET", "POST"])
+def consulation(referral_id):
+
     cursor.execute("SELECT * FROM consultation_information INNER JOIN cases ON cases.referral_id = consultation_information.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
     data = cursor.fetchone()
     consultation_id = data[0]
@@ -949,11 +645,9 @@ def consulation():
          (Services, GENESIS, DA, Regional_center, Corner, Law_enforcement, Attorney, Psychologist, 
          Medical_Practitioner, Ombudsman, Public_Guardian, Other, Description_other,Reason))
         conn.commit()
-        print(cursor.rowcount, "record inserted.")
     
     cursor.execute("SELECT * FROM consultation_information INNER JOIN cases on consultation_information.referral_id = cases.referral_id WHERE consultation_information.referral_id = " + str(referral_id) + ";")
     data = cursor.fetchone()
-    print(data)
     
     content = {}
     content["Services"] = data[2]
@@ -974,14 +668,13 @@ def consulation():
     if data == None:
         return "Sorry your data isn't here"
     if request.method == "POST":
-        return render_template('consultation.html', **content)
+        return render_template('consultation.html',referral_id = referral_id, **content)
 
-    return render_template('consultation.html', **content)
+    return render_template('consultation.html',referral_id = referral_id, **content)
 
 
-@app.route('/notes',methods =["GET", "POST"])
-def notes():
-    referral_id = 2
+@app.route('/notes/<int:referral_id>',methods =["GET", "POST"])
+def notes(referral_id):
     # meeting_notes
     cursor.execute("SELECT * FROM meeting_notes INNER JOIN cases ON cases.referral_id =meeting_notes.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
     data = cursor.fetchone()
@@ -1017,17 +710,16 @@ def notes():
         Meeting_presenters = (%s), meeting_narrative = (%s) WHERE meeting_id = """ + str(meeting_id),(meeting_date, meeting_recs,fake_goals,presenter,meeting_notes))
 
         conn.commit()
-        print(cur.rowcount, "record inserted.")
+
         # for Goals - goals table
         cur = conn.cursor()
         cursor.execute("""UPDATE goals SET goal = (%s) WHERE client_goals_id = """ + str(client_goals_id),(goal))
-        conn.commit()
-        print(cur.rowcount, "record inserted.")       
+        conn.commit()     
         # for recommendations
         cur = conn.cursor()
         cursor.execute("""UPDATE recommendations SET  action_step = (%s), person_responsible = (%s), followup_date = (%s), action_status = (%s) WHERE client_rec_id = """ + str(client_rec_id),(action_step,person_response,follow_up,action_status))
         conn.commit()
-        print(cur.rowcount, "record inserted.")
+
 
     # meeeting_notes
     cursor.execute("SELECT * FROM meeting_notes INNER JOIN cases ON cases.referral_id = meeting_notes.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
@@ -1054,9 +746,9 @@ def notes():
     if data == None:
         return "Sorry your data isn't here"
     if request.method == "POST":
-        return render_template('notes.html',  **content)
+        return render_template('notes.html',referral_id = referral_id,  **content)
 
-    return render_template('notes.html', **content)
+    return render_template('notes.html',referral_id = referral_id, **content)
 
 @app.route('/attachments')
 def attachments():
