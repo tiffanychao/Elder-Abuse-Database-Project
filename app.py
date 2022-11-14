@@ -5,13 +5,14 @@ from flaskext.mysql import MySQL
 from dotenv import load_dotenv
 from getDataFromDB import *
 import os #provides ways to access the Operating System and allows us to read the environment variables
-# from mysql.connector import Error
-# import mysql.connector
+from mysql.connector import Error
+import mysql.connector
 from datetime import datetime
-# import pandas as pd
-# import pathlib
-# import worddocparser
-# load_dotenv()  # take environment variables from .env.
+import pandas as pd
+import pathlib
+import worddocparser
+import docToSql
+load_dotenv()  # take environment variables from .env.
 
 
 mysql = MySQL()
@@ -769,12 +770,11 @@ def import_case():
              f.save((file))
              print("file uploaded successfully")
              content = "file uploaded successfully : " + file
-             print(worddocparser.docx2python(file).text)
+             doc = worddocparser.docx2python(file).text
+             docToSql.mapToObj(doc, cursor, conn)
              return render_template('import_case.html', content = content)
 
-
      return render_template('import_case.html')
-    
 
 @app.route('/import_excel',methods =["GET", "POST"])
 def import_excel():
