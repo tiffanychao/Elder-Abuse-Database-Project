@@ -225,7 +225,27 @@ def mapToObj(input, cursor, conn):
     cursor.execute(sql, val)
     conn.commit()
 
-    ## Data for attachments, goals, meeting_notes, outcome and recommendations tables will be created in the SQL when user add that data
+    ## Add referral ID for attachments, goals, meeting_notes, outcome and recommendations tables
+    # sql = """INSERT INTO attachments(referral_id) VALUES (%s)"""
+    # val = (referral_id)
+    # cursor.execute(sql, val)
+    # conn.commit()
+    sql = """INSERT INTO goals(referral_id) VALUES (%s)"""
+    val = (referral_id)
+    cursor.execute(sql, val)
+    conn.commit()
+    sql = """INSERT INTO meeting_notes(referral_id) VALUES (%s)"""
+    val = (referral_id)
+    cursor.execute(sql, val)
+    conn.commit()
+    sql = """INSERT INTO outcome(referral_id) VALUES (%s)"""
+    val = (referral_id)
+    cursor.execute(sql, val)
+    conn.commit()
+    sql = """INSERT INTO recommendations(referral_id) VALUES (%s)"""
+    val = (referral_id)
+    cursor.execute(sql, val)
+    conn.commit()
 
 
 
