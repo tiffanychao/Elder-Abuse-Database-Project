@@ -751,10 +751,10 @@ def notes(referral_id):
 
     return render_template('notes.html',referral_id = referral_id, **content)
 
-@app.route('/attachments')
-def attachments():
+@app.route('/attachments/<int:referral_id>')
+def attachments(referral_id):
     variable = "check your name"
-    return render_template('attachments.html', value = variable)
+    return render_template('attachments.html', referral_id = referral_id, value = variable)
 
 @app.route('/import_case',methods =["GET", "POST"])
 def import_case():
