@@ -771,8 +771,12 @@ def import_case():
              print("file uploaded successfully")
              content = "file uploaded successfully : " + file
              doc = worddocparser.docx2python(file).text
-             docToSql.mapToObj(doc, cursor, conn)
-             return render_template('import_case.html', content = content)
+             try:
+                docToSql.mapToObj(doc, cursor, conn)
+                return render_template('import_case.html', content = content)
+             except:
+                content = "Please choose the standardized Microsoft Form to create a new case."
+                return render_template('import_case.html', content = content)
 
      return render_template('import_case.html')
 
