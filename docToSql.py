@@ -14,6 +14,9 @@ def mapToObj(input, cursor, conn):
     except:
         date = None
     caseNumber = list[4].split(':')[1].strip()
+    if caseNumber == '':
+        caseNumber = None
+
     # print("Urgent " + str(urgent) + " Routine " + str(routine) + " Date " + str(date) + " Case Number " + caseNumber)
     
     ## Insert Data into cases table, and get the Referal ID
@@ -80,6 +83,8 @@ def mapToObj(input, cursor, conn):
     cl_name_last = list[84].strip()
     cl_name_list = cl_name_first + " " + cl_name_last
     cl_age = list[86].strip()
+    if cl_age== '':
+        cl_age = None
     try:
         cl_DOB = datetime.strptime(list[88].strip(), '%m/%d/%Y').date()
     except:
@@ -135,6 +140,8 @@ def mapToObj(input, cursor, conn):
     su_organization = list[194].strip()
     su_name_list = su_name_first + " " + su_name_last
     su_age = list[196].strip()
+    if su_age== '':
+        su_age = None
     try:
         su_DOB = datetime.strptime(list[198].strip(), '%m/%d/%Y').date()
     except:
@@ -195,7 +202,10 @@ def mapToObj(input, cursor, conn):
     ad_FinanRlEst = list[304].find ("☐ Financial – Real Estate") == -1
     ad_FinanOth = list[282].find ("☐ Financial – Other") == -1
     ad_FinanLoss = list[290].split('$')[1].strip()
-    ad_FinanLoss = ad_FinanLoss.replace(',', '')
+    if ad_FinanLoss.find(','):
+        ad_FinanLoss = ad_FinanLoss.replace(',', '')
+    if ad_FinanLoss == '':
+        ad_FinanLoss = None
     ad_Isolation = list[298].find ("☐ Isolation") == -1
     ad_Sexual = list[306].find ("☐ Sexual") == -1
     ad_SelfNeglec = list[284].find ("☐ Self-Neglect") == -1
