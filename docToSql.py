@@ -17,8 +17,8 @@ def mapToObj(input, cursor, conn):
     # print("Urgent " + str(urgent) + " Routine " + str(routine) + " Date " + str(date) + " Case Number " + caseNumber)
     
     ## Insert Data into cases table, and get the Referal ID
-    sql = """INSERT INTO cases (status_urgent, status_routine, case_date) VALUES (%s, %s, %s)"""
-    val = (urgent, routine, date)
+    sql = """INSERT INTO cases (status_urgent, status_routine, case_date, case_closed) VALUES (%s, %s, %s, %s)"""
+    val = (urgent, routine, date, False)
     cursor.execute(sql, val)
     conn.commit()
     referral_id = (cursor.lastrowid)
