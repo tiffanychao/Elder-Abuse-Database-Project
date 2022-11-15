@@ -7,6 +7,7 @@ from getDataFromDB import *
 import os #provides ways to access the Operating System and allows us to read the environment variables
 from mysql.connector import Error
 import mysql.connector
+from sqlalchemy import create_engine  # for import form function
 from datetime import datetime
 import pandas as pd
 import pathlib
@@ -805,21 +806,21 @@ def import_excel():
             '''
             excel_meeting = excel_file.parse(sheet_name="Meeting_Notes")
             meeting_df = excel_meeting[['referral_id','meeting_date','meeting_narrative','meeting_recs','meeting_goals','meeting_presenters']]
-            meeting_df.to_sql(name = 'meeting_notes', con=engine, if_exists = 'append', index = False)
+            meeting_df.to_sql(name = 'meeting_notes', con=engine, if_exists = 'replace', index = False)
 
             '''
             test - recommendationsv
             '''
             excel_recommendation = excel_file.parse(sheet_name = "Recommendations")
             recommendation_df = excel_recommendation[['referral_id','action_step',	'person_responsible',	'followup_date',	'action_status']]
-            recommendation_df.to_sql(name = 'recommendations', con=engine, if_exists = 'append', index = False)
+            recommendation_df.to_sql(name = 'recommendations', con=engine, if_exists = 'replace', index = False)
             '''
             test - Goalsv
             '''
 
             excel_goals = excel_file.parse(sheet_name = "Goals")
             goals_df = excel_goals[['referral_id','goal']]
-            goals_df.to_sql(name = 'goals', con=engine, if_exists = 'append', index = False)
+            goals_df.to_sql(name = 'goals', con=engine, if_exists = 'replace', index = False)
 
 
 
@@ -864,7 +865,7 @@ def import_excel():
                 'su_zip' ,
                 'su_phone' 
             ]]
-            suspect_df.to_sql(name = 'suspects', con=engine, if_exists = 'append', index = False)
+            suspect_df.to_sql(name = 'suspects', con=engine, if_exists = 'replace', index = False)
 
 
 
@@ -908,9 +909,133 @@ def import_excel():
 
 
             ]]
-            client_df.to_sql(name='clients',con = engine ,if_exists = 'append', index = False)
+            client_df.to_sql(name='clients',con = engine ,if_exists = 'replace', index = False)
 
-            # replace or append?
+            '''
+            cases 
+            '''
+
+            cases_df = excel_client[[
+                
+                'referral_id' ,
+                'status_urgent' ,
+                'status_routine',
+                'case_date' ,
+                'case_closed' 
+
+            ]]
+            #print(cases_df.duplicated())
+            #cases_df.to_sql(name='cases',con = engine ,if_exists = 'replace', index = False)
+
+
+            '''
+            abuse-information
+            '''
+            abuse_df = excel_client[[
+                'referral_id' ,
+                'ad_InvAgencies' ,
+                'ad_RptingParty' ,
+                'ad_Others' ,
+                'ad_Abandon' ,
+                'ad_Abduction' ,
+                'ad_Emotional' ,
+                'ad_FinanRlEst' ,
+                'ad_FinanOth' ,
+                'ad_FinanLoss' , 
+                'ad_Isolation' ,
+                'ad_Sexual' ,
+                'ad_SelfNeglec' ,
+                'ad_NeglectOth' ,
+                'ad_PhyAssault' ,
+                'ad_PhyChemRst' ,
+                'ad_PhyCnstDpr' ,
+                'ad_PhyMedicat' ,
+                'ad_UndueInflu' ,
+                'ad_Other' ,
+                'ad_Narrative' 
+            ]]
+
+            abuse_df.to_sql(name='absue_information',con = engine ,if_exists = 'replace', index = False)
+
+
+            '''
+            outcome
+            '''
+            outcome_df = excel_client[[
+                'referral_id' ,
+                'oc_cp_arrest' ,
+                'oc_cp_hospital' ,
+                'oc_ev_neuro' ,
+                'oc_ev_mental' ,
+                'oc_ev_law' ,
+                'oc_ss_support' ,
+                'oc_ss_compAPS' ,
+                'oc_ss_civil' ,
+                'oc_ap_freeze' ,
+                'oc_ap_other' ,
+                'oc_ap_restitution' ,
+                'oc_pr_charges' ,
+                'oc_pr_legal' ,
+                'oc_narrative' ,
+                'oc_csv_probate' ,
+                'oc_csv_lps' , 
+                'oc_csv_temp' ,
+                'oc_csv_pubg' ,
+                'oc_csv_priv' ,
+                'oc_csv_ext' ,
+                'oc_csv_name' ,
+                'oc_sa' ,
+                'oc_ro' ,
+                'oc_ro_name' ,
+                'oc_ev_geri' ,
+                'oc_self_suff' 
+
+            ]]
+
+            outcome_df.to_sql(name = 'outcome',con = engine ,if_exists = 'replace', index = False)
+
+
+            '''
+            referring_agency
+            '''
+            referring_df = excel_client[[
+                'referral_id' ,
+                'ra_fname' ,
+                'ra_lname' ,
+                'ra_name_list' ,
+                'ra_fc_team' ,
+                'ra_fc_other' ,
+                'ra_email' ,
+                'ra_ph_office' ,
+                'ra_fx_office' ,
+                'ra_ph_mobile' ,
+                'ra_supervisor_name'
+
+            ]]
+            referring_df.to_sql(name='referring_agency',con = engine ,if_exists = 'replace', index = False)
+            '''
+            consultation
+            '''
+            consultation_df = excel_client[[
+                'referral_id' ,
+                'consult_aps' ,
+                'consult_genesis' ,
+                'consult_district_att' ,
+                'consult_regional' ,
+                'consult_coroner' ,
+                'consult_law_enf' ,
+                'consult_att_oth' ,
+                'consult_psychologist' ,
+                'consult_physician' ,
+                'consult_ombudsman' ,
+                'consult_pub_guard' ,
+                'consult_other' ,
+                'consult_other_desc' ,
+                'consult_reason' 
+
+            ]]
+            consultation_df.to_sql(name='consultation_information',con = engine ,if_exists = 'replace', index = False)
+
             forward_message = "Insert successfully!"
 
             clients_res = client_df
@@ -918,9 +1043,15 @@ def import_excel():
             rec_res = recommendation_df
             suspect_res = suspect_df
             meeting_res = meeting_df
+            outcome_res = outcome_df
+            abuse_res = abuse_df
+            referring_res = referring_df
+            consultation_res = consultation_df
         
             return render_template('import_excel.html', forward_message=forward_message, goals_res = goals_res,rec_res = rec_res ,
-            suspect_res = suspect_res, meeting_res = meeting_res, clients_res = clients_res, content = content, show_results = show_results
+            suspect_res = suspect_res, meeting_res = meeting_res, clients_res = clients_res,consultation_res = consultation_res,
+            outcome_res= outcome_res, abuse_res = abuse_res, referring_res = referring_res, content = content, show_results = show_results
+            
             )
 
     return render_template('import_excel.html',show_results = show_results)
