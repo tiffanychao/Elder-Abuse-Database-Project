@@ -682,80 +682,152 @@ def consulation(referral_id):
 
 @app.route('/notes/<int:referral_id>',methods =["GET", "POST"])
 def notes(referral_id):
+    
     # meeting_notes
     cursor.execute("SELECT * FROM meeting_notes INNER JOIN cases ON cases.referral_id =meeting_notes.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
     data = cursor.fetchone()
     meeting_id = data[0]
     # goals
     cursor.execute("SELECT * FROM goals INNER JOIN cases ON cases.referral_id =goals.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
-    data1 = cursor.fetchone()
-    client_goals_id = data1[0]
+    data1 = cursor.fetchall()
+    goal_num_db = len(data1)
+    
+    #referral_id = data1[1]
     # recommendations
     cursor.execute("SELECT * FROM recommendations INNER JOIN cases ON cases.referral_id =recommendations.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
-    data2 = cursor.fetchone()
-    client_rec_id  = data2[0]
+    data2 = cursor.fetchall()
+    #client_rec_id  = data2[0]
+    action_num_db = len(data2)
     
-
+    #print(action_num_db)
+    
     if request.method == "POST":
-        # meeting notes
-        presenter = request.form.get("presenter")
-        meeting_date = datetime.strptime(request.form.get("meeting_date"),'%Y-%m-%d')
-        meeting_notes = request.form.get("meeting_notes")
+        # note number
+        #note_num = request.args.get("note_num")
+        #print("this is num:" +str(note_num))
+        #note_num = 5 # 0,1 ,2 ,3, 4
         meeting_recs = ""
         fake_goals = ""
-        # goals
-        goal = request.form.get("goals")
-        # recommendations
-        action_step = request.form.get("action_step")
-        person_response = request.form.get("person_response")
-        follow_up = datetime.strptime(request.form.get("follow_up"),'%Y-%m-%d')
-        action_status = request.form.get("status")
+        # for loop get data - update note table
+        # for num in range(note_num-1):
+        #     # meeting notes
+        #     presenter = request.form.get("presenter"+str(num))
+        #     meeting_date = datetime.strptime(request.form.get("meeting_date"),'%Y-%m-%d')
+        #     meeting_notes = request.form.get("meeting_notes")
+        #     # update
+        #     cursor.execute("""UPDATE meeting_notes SET meeting_date = (%s),meeting_recs = (%s), meeting_goals = (%s) , 
+        #     Meeting_presenters = (%s), meeting_narrative = (%s) WHERE meeting_id = """ + str(meeting_id),(meeting_date, meeting_recs,fake_goals,presenter,meeting_notes))
+        note_num = 37
+        # for num in range(37,note_num+1):
+        #     new_presenter = request.form.get("new_presenter"+str(num))
+        #     print(new_presenter)
+        #     print(request.form.get("new_meetingdate"+str(num)))
+        #     new_date = datetime.strptime(request.form.get("new_meetingdate"+str(num)),'%Y-%m-%d')
+            
+        #     new_meeting_notes = request.form.get("new_meeting_note"+str(num))
+        #     # insert
+        #     sql = "INSERT INTO meeting_notes (referral_id,meeting_date,Meeting_presenters,meeting_narrative) VALUES (%s, %s,%s, %s)"
+        #     val = (referral_id,new_date,new_presenter,new_meeting_notes)
+        #     cursor.execute(sql,val)
+        #     conn.commit()
+        # update for goal
+
+        for num in range(goal_num_db): #012
+            goal = request.form.get("goals_"+str(num+1))
+            goal_id = request.form.get("goal_num_"+str(num+1))
+            cursor.execute("""UPDATE goals SET goal = (%s) WHERE client_goals_id = """ + str(goal_id),(goal))
+            conn.commit()   
+        if request.form.get("goal_num"):
+            goal_num = int(request.form.get("goal_num"))
+            for num in range(goal_num_db+1,goal_num+1):
+                new_goal = request.form.get("new_goal"+str(num))
+                if new_goal:
+                    sql = "INSERT INTO goals(referral_id,goal) VALUES(%s,%s)"
+                    val = (referral_id,new_goal)
+                    cursor.execute(sql,val)
+                    conn.commit()
+  
+        # action_num = 3
+        for num in range(action_num_db): 
+            # update
+            action_step = request.form.get("action_step_"+str(num+1))
+            person_response = request.form.get("person_response_"+str(num+1))     
+            follow_up = datetime.strptime(request.form.get("follow_up_"+str(num+1)),'%Y-%m-%d')
+            action_status = request.form.get("status_"+str(num+1))
+
+            client_rec_id = request.form.get("action_num_"+str(num+1))
+            #print(client_rec_id)
+            cursor.execute("""UPDATE recommendations SET action_step = (%s), person_responsible = (%s), followup_date = (%s), action_status = (%s) WHERE client_rec_id = """ + str(client_rec_id),(action_step,person_response,follow_up,action_status))
+            conn.commit()
+
         
-        # meeting notes insertion
-        cur = conn.cursor()
-        cursor.execute("""UPDATE meeting_notes SET meeting_date = (%s),meeting_recs = (%s), meeting_goals = (%s) , 
-        Meeting_presenters = (%s), meeting_narrative = (%s) WHERE meeting_id = """ + str(meeting_id),(meeting_date, meeting_recs,fake_goals,presenter,meeting_notes))
+        
+        if request.form.get("rec_num"):
+            action_num = int(request.form.get("rec_num"))
+        
+            # Insert
+        
+            for num in range(action_num_db+2,action_num+1):
+                new_step = request.form.get("new_step"+str(num))
+                new_response = request.form.get("new_response"+str(num))
+                print(new_step)
+                print(new_response)
+                new_follow =  datetime.strptime(request.form.get("new_follow"+str(num)),'%Y-%m-%d')
 
-        conn.commit()
+                print(new_follow)
+                new_status = request.form.get("new_status"+str(num))
+                sql = "INSERT INTO recommendations(referral_id,action_step,person_responsible,followup_date,action_status) VALUES(%s,%s,%s,%s,%s)"
+                val = (referral_id,new_step,new_response,new_follow,new_status)
+                cursor.execute(sql,val)
+                conn.commit()
+               
 
-        # for Goals - goals table
-        cur = conn.cursor()
-        cursor.execute("""UPDATE goals SET goal = (%s) WHERE client_goals_id = """ + str(client_goals_id),(goal))
-        conn.commit()     
-        # for recommendations
-        cur = conn.cursor()
-        cursor.execute("""UPDATE recommendations SET  action_step = (%s), person_responsible = (%s), followup_date = (%s), action_status = (%s) WHERE client_rec_id = """ + str(client_rec_id),(action_step,person_response,follow_up,action_status))
-        conn.commit()
+      
 
 
-    # meeeting_notes
-    cursor.execute("SELECT * FROM meeting_notes INNER JOIN cases ON cases.referral_id = meeting_notes.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
-    data = cursor.fetchone()
-    
-    # recommendations
-    cursor.execute("SELECT * FROM recommendations INNER JOIN cases ON cases.referral_id = recommendations.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
-    data2 = cursor.fetchone()
-    
+           
+            
+
+
     # goal
     cursor.execute("SELECT * FROM goals INNER JOIN cases ON cases.referral_id = goals.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
-    data3 = cursor.fetchone()
-    
+    #data3 = cursor.fetchone()
+    columns = [col[0] for col in cursor.description]
+    goals= [dict(zip(columns, row)) for row in cursor.fetchall()]
+    data3 = cursor.fetchall()
+
     content = {}
-    content["presenter"] = data[5]
-    content["meeting_date"] = data[2]
-    content["meeting_notes"] = data[6] # meeting_narrative
-    content["goals"] = data3[2]# goals.goal
-    content["action_step"] = data2[2] 
-    content["person_response"] = data2[3]
-    content["follow_up"] = data2[4]
-    content["status"] = data2[5]
+    goalarr = []
+    notearr = []
+     
+
+    for row in data3:
+        goalarr.append(row[2])
+   
+    #content["goals"] = goalarr
+    #content["goals"] = data3[2]# goals.goal
+
+    # meeting_notes
+    cursor.execute("SELECT * FROM meeting_notes INNER JOIN cases ON cases.referral_id = meeting_notes.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
+    columns = [col[0] for col in cursor.description]
+    meeting_notes = [dict(zip(columns, row)) for row in cursor.fetchall()]
+    
+
+    # recommendations
+    cursor.execute("SELECT * FROM recommendations INNER JOIN cases ON cases.referral_id = recommendations.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
+    columns = [col[0] for col in cursor.description]
+
+    recommendations = [dict(zip(columns, row)) for row in cursor.fetchall()]
+    
+
+
 
     if data == None:
-        return render_template('error_handling.html')
+        return "Sorry your data isn't here"
     if request.method == "POST":
-        return render_template('notes.html',referral_id = referral_id,  **content)
+        return render_template('notes.html', referral_id = referral_id, **content,goals = goals, meeting_notes = meeting_notes,recommendations = recommendations)
+    return render_template('notes.html',referral_id = referral_id, **content,goals = goals,meeting_notes = meeting_notes, recommendations= recommendations)
 
-    return render_template('notes.html',referral_id = referral_id, **content)
 
 @app.route('/attachments/<int:referral_id>')
 def attachments(referral_id):
