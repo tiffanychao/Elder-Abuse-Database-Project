@@ -1,0 +1,30 @@
+.container{
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.home_page_button_container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 15px;
+}
+
+body {
+    background-color: #D6DFEC;
+}
+
+.button_design{
+    width: 120px;
+    height: 30px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.button_design:hover {
+    background-color: #DCDCDC;
+}

@@ -51,7 +51,7 @@ def client(referral_id):
     data = cursor.fetchone()
     print(data)
     if data == None:
-        return "There is no data sorry"
+        return render_template('error_handling.html')
     client_id = data[0]
     if request.method == "POST":
         cursor.execute("""UPDATE clients SET cl_name_first = (%s),cl_name_last = (%s), cl_age = (%s) , 
@@ -109,7 +109,7 @@ def client_information(referral_id):
     cursor.execute("SELECT * FROM clients INNER JOIN cases ON cases.referral_id = clients.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
     data = cursor.fetchone()
     if data == None:
-        return "There is no data sorry"
+        return render_template('error_handling.html')
     client_id = data[0]
     if request.method == "POST":
         request.form.getlist("previous_abuse_no")
@@ -190,7 +190,7 @@ def abuser(referral_id):
     cursor.execute("SELECT * FROM suspects INNER JOIN cases ON cases.referral_id = suspects.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
     data = cursor.fetchone()
     if data == None:
-        return "There is no data sorry"
+        return render_template('error_handling.html')
     su_id = data[0]
     if request.method == "POST":
         cursor.execute("""UPDATE suspects SET su_name_first = (%s),su_name_last = (%s), su_organization = (%s), 
@@ -302,7 +302,7 @@ def abuse_info(referral_id):
     cursor.execute("SELECT * FROM abuse_information INNER JOIN cases ON cases.referral_id = abuse_information.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
     data = cursor.fetchone()
     if data == None:
-        return "There is no data sorry"
+        return render_template('error_handling.html')
     abuse_id = data[0]
     if request.method == "POST":
         cursor.execute("""UPDATE abuse_information SET ad_InvAgencies = (%s), ad_RptingParty = (%s), ad_Others = (%s), ad_Abandon = (%s),
@@ -412,7 +412,7 @@ def center_outcomes(referral_id):
     data = cursor.fetchone()
 
     if data == None:
-        return "There is no data sorry"
+        return render_template('error_handling.html')
 
     if request.method == "POST":
         request.form.getlist("previous_abuse_no")
@@ -571,7 +571,7 @@ def narrative(referral_id):
     content["oc_narrative"] = data[14]
 
     if data == None:
-        return "Sorry your data isn't here"
+        return render_template('error_handling.html')
     if request.method == "POST":
         return render_template('narrative.html',referral_id = referral_id, **content)
     return render_template('narrative.html',referral_id = referral_id, **content)
@@ -668,7 +668,7 @@ def consulation(referral_id):
     content["Reason"] = data[15]
     
     if data == None:
-        return "Sorry your data isn't here"
+        return render_template('error_handling.html')
     if request.method == "POST":
         return render_template('consultation.html',referral_id = referral_id, **content)
 
@@ -746,7 +746,7 @@ def notes(referral_id):
     content["status"] = data2[5]
 
     if data == None:
-        return "Sorry your data isn't here"
+        return render_template('error_handling.html')
     if request.method == "POST":
         return render_template('notes.html',referral_id = referral_id,  **content)
 

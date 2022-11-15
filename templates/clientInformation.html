@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="../static/clientInformation.css">
 <link rel="stylesheet" href="../static/framework.css">
 {% endblock %}
+
 {% block routes %}
     <a href = {{ url_for('consulation', referral_id = referral_id) }} class="individual_case_tab">consultation</a>
     <a href = {{ url_for('client', referral_id = referral_id) }} class="individual_case_tab">client </a>
