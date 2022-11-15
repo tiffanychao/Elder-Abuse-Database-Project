@@ -41,28 +41,61 @@
 
 
 
-
-.notes {
+#notes {
     font-family: Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     width: 100%;
   }
-  
-.notes_td,th {
+#notes td, #notes th {
     border: 1px solid #ddd;
     padding: 8px;
-}
-  
-.tr:nth-child(even){background-color: #f2f2f2;}
-  
- 
-  
-.notes_th_title {
+  }
+#notes tr:nth-child(){background-color: white;}
+#notes th {
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: left;
-    background-color: #AAE8FC;
-    color: white;
+    
+    background-color: white;;
+    color:black;
 }
 
 
+#action {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+#action td, #action th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+#action tr:nth-child(){background-color: white;}
+#action th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    
+    background-color: white;;
+    color:black;
+}
+
+
+#goals {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+#goals td, #goals th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+#goals tr:nth-child(){background-color: white;}
+#goals th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    
+    background-color: white;;
+    color:black;
+}
