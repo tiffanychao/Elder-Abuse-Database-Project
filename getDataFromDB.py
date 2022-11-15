@@ -143,7 +143,7 @@ def search_cases_from_database(type, first_name,last_name, closedCase):
         FROM all_cases
         WHERE
 	    all_cases.case_closed = 
-        """   + str(closedCase)
+        """   + str(closedCase) + " ORDER BY all_cases.case_date DESC"
 
         if (first_name):
             basic_sql += " AND all_cases.cl_name_first = " + "\"" + first_name + "\" "
@@ -215,7 +215,7 @@ SELECT
 FROM cte_all_cases
 WHERE
 cte_all_cases.case_closed =
-        """  + str(closedCase)
+        """  + str(closedCase) + " ORDER BY cte_all_cases.case_date DESC"
         full_name = ""
         if (first_name):
             full_name += first_name.strip()
@@ -295,7 +295,7 @@ SELECT
 FROM cte_all_cases
 WHERE
 cte_all_cases.case_closed = 
-        """   + str(closedCase)
+        """   + str(closedCase) + " ORDER BY cte_all_cases.case_date DESC"
 
         if (first_name):
             basic_sql += " AND cte_all_cases.su_name_first = " + "\"" + first_name + "\" "

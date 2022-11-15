@@ -34,7 +34,6 @@
                     Search By
                 </div>
                 <select name="searchType" id="searchType">
-                    <option {% if searchType == '' %} selected {% endif %} value="" ></option>
                     <option {% if searchType == 'client' %} selected {% endif %} value="client" >Client</option>
                     <option {% if searchType == 'presenter' %} selected {% endif %} value="presenter" >Presenter</option>
                     <option {% if searchType == 'suspect' %} selected {% endif %} value="suspect" >Suspect</option>
@@ -83,7 +82,7 @@
                         <output name = "suspectname">{{number}}</output>
                     </div>
                 </div>
-                <div class="column">   
+                <div class="column300">   
                     <button class = "button" name = "searchButton" type="submit" >Search SQL</button> 
                 </div>
             </div>

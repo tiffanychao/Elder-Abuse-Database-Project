@@ -500,10 +500,10 @@ def case_summary(referral_id):
 @app.route('/search_cases',methods =["GET", "POST"])
 def search_cases():
     delete_referal_id = -1
-    search_type = ''
+    search_type = 'client'
     first_name = ''
     last_name = ''
-    case_closed = 0
+    case_closed = 1
     query = 0
     if request.method == "POST":
         if (request.form.get("deleteButton")):

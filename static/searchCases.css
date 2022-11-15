@@ -44,6 +44,11 @@
     width: 500px;
     /* padding: 10px; */
 }
+.column300 {
+    float: left;
+    width: 200px;
+    /* padding: 10px; */
+}
 
 .column_search {
     width: 90%;
