@@ -44,6 +44,11 @@ except Error as e:
     print("Error while connecting to MySQL", e)
 
 
+@app.errorhandler(404)
+def not_found(e):
+  return render_template('error_handling.html')
+
+
 @app.route('/client/<int:referral_id>', methods = ["POST", "GET"])
 def client(referral_id):  
     # figure out the associated client ID of the referral_id
