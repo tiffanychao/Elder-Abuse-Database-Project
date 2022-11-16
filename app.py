@@ -776,7 +776,7 @@ def notes(referral_id):
         
             # Insert
         
-            for num in range(action_num_db+2,action_num+1):
+            for num in range(action_num,action_num+1):
                 new_step = request.form.get("new_step"+str(num))
                 new_response = request.form.get("new_response"+str(num))
                 try:
