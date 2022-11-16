@@ -789,14 +789,6 @@ def notes(referral_id):
                 val = (referral_id,new_step,new_response,new_follow,new_status)
                 cursor.execute(sql,val)
                 conn.commit()
-               
-
-      
-
-
-           
-            
-
 
     # goal
     cursor.execute("SELECT * FROM goals INNER JOIN cases ON cases.referral_id = goals.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
