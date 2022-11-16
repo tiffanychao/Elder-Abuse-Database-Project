@@ -26,33 +26,90 @@ except Error as e:
 
 def get_case_summary_from_db(id):
     #  search to get
-    dic = dict()
-    dic["name"] = "Mr Darcy"
-    dic["presenter"] = "John Doe"
-    dic["date"] = "2022-04-01"
-    notesarr = []
-    notesarr.append ("notes000")
-    notesarr.append ("notes111")
-    dic["notes"] = notesarr
+    dict_all_info = dict()
+    sql_name = """
+SELECT
+	cl_name_first,
+    cl_name_last
+FROM
+	clients
+WHERE
+	referral_id = 
+    """ + str(id)
+    cursor.execute(sql_name)
+    data = cursor.fetchone()
+    
+    if data == None :
+        return dict_all_info
+    dict_all_info['name'] = data[0] +" "+ data[1]
+
+    arr_notes = []
+    sql_notes = """
+    SELECT 
+        meeting_id,
+	    meeting_date,
+        Meeting_presenters,
+        meeting_narrative
+    FROM meeting_notes
+    WHERE
+	    referral_id = 
+    """ + str(id)
+
+    cursor.execute(sql_notes)
+    data = cursor.fetchall()
+        
+    for item in data:
+        dic = dict()
+        dic['meeting_id'] = item[0]
+        dic['date'] = item[1]
+        dic['presenter'] = item[2]
+        dic['meeting_note'] = item[3]
+        arr_notes.append(dic)
+
+    dict_all_info['notes'] = arr_notes
+  
+    
+    sql_goal = """
+SELECT 
+	goal
+FROM goals
+WHERE
+	referral_id = 
+    """ + str(id)
     goalarr = []
-    goalarr.append("Goal 1: goal1111")
-    goalarr.append("Goal 2: goal2222")
-    dic["goal"] = goalarr
+    cursor.execute(sql_goal)
+    data = cursor.fetchall()
+    for item in data:
+        goalarr.append(item)
+
+    dict_all_info["goal"] = goalarr
+
+    sql_remd = """
+SELECT 
+	action_step,
+    person_responsible,
+    followup_date,
+    action_status
+FROM
+	recommendations
+WHERE
+	referral_id = 
+    """ + str(id)
+
     rcmdlist = []
-    dicrcmd = dict()
-    dicrcmd['ActionStep'] = 'work on goal 1'
-    dicrcmd['PersonResponsilbe'] = 'Jorge L sole'
-    dicrcmd['followupDate'] = '2022-01-01'
-    dicrcmd['status'] = 'ukm'
-    rcmdlist.append(dicrcmd)
-    dicrcmd = dict()
-    dicrcmd['ActionStep'] = 'work on goal 1'
-    dicrcmd['PersonResponsilbe'] = 'Jorge L sole'
-    dicrcmd['followupDate'] = '2022-01-01'
-    dicrcmd['status'] = 'ukm'
-    rcmdlist.append(dicrcmd)
-    dic["rcmd"] = rcmdlist
-    return dic
+
+    cursor.execute(sql_remd)
+    data = cursor.fetchall()
+    for item in data:
+        dicrcmd = dict()
+        dicrcmd['ActionStep'] = item[0]
+        dicrcmd['PersonResponsilbe'] = item[1]
+        dicrcmd['followupDate'] = item[2]
+        dicrcmd['status'] = item[3]
+        rcmdlist.append(dicrcmd)    
+
+    dict_all_info["rcmd"] = rcmdlist
+    return dict_all_info
 
 def delete_case(referral_id):
     delete_sql = "DELETE FROM clients WHERE referral_id = " + str(referral_id)

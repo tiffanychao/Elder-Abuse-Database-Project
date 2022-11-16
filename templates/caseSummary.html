@@ -52,38 +52,46 @@
         
 
         <div class = "section">
-            <div class="text_with_output_container_25p">
-                <div>
-                    Presenter
-                </div>
-                <output name = "presenter" class="text_output_design">{{presenter}}</output>
-                <div></div>
-                <div>
-                    Date
-                </div>
-                <output name = "Date" class="text_output_design">{{date}}</output>
-            </div>
-            <hr class="line">
-
             <div class="text_with_output_container_1000">
                 <div>
                     Meeting/Case Notes
                 </div>
-               <br>
-               <table class="table">
-                <tbody>
+            </div>
+            <hr class="line">
+
+            {% for note in notes %} 
+            <div class="text_with_output_container_25p">
+                <div>
+                    Date
+                </div>
+                <output name = "Date" class="text_output_design">{{note.date}}</output>
+                <div></div>
+                <div>
+                    Presenter(s)/Updated By
+                </div>
+                <output name = "presenter" class="text_output_design">{{note.presenter}}</output>
                 
-                  {% for note in notes %}         
+                
+            </div>
+            
+            <div class="text_with_output_container_1000">
+                Narrative/Case Note
+            </div>
+
+            <div class="text_with_output_container_1000">
+     
+              
+               <table class="table">
+                <tbody>                   
                       <tr>                        
-                          <td>{{note}}</td>
+                          <td>{{note.meeting_note}}</td>
                       </tr>
-                  {% endfor %}
-          
                 </tbody>
               </table>
 
                 <!-- <output name = "notes" class="text_output_design">{{notes}}</output> -->
             </div>
+            {% endfor %}
         </div>
     
         <div class = "section">
@@ -94,13 +102,17 @@
                 <br>
                 <table class="table">
                 <tbody>
-                
+                {% if goal %}
                   {% for g in goal %}         
                       <tr>                        
-                          <td>{{g}}</td>
+                          <td>{{g[0]}}</td>
                       </tr>
                   {% endfor %}
-          
+                {% else %} 
+                    <!-- <tr>                        
+                        <td>No data for Goal Description</td>
+                    </tr> -->
+                {% endif%}
                 </tbody>
               </table>
                  
@@ -117,22 +129,8 @@
                 <br>
                 <table class="table">
                     <tbody>
-                    <tr>
-                        <td>
-                        <div class="text_with_output_container_25p">
-                            <div>
-                                Presenter
-                            </div>
-                            <output name = "presenter" class="text_output_design">{{presenter}}</output>
-                            <div></div>
-                            <div>
-                                Date
-                            </div>
-                            <output name = "Date" class="text_output_design">{{date}}</output>
-                        </div>
-                    </td>
-                    </tr>
-
+                   
+                    {% if rcmd %}
                       {% for r in rcmd %}         
                           <tr>       
                               <td>
@@ -159,7 +157,11 @@
                               
                           </tr>
                       {% endfor %}
-              
+                    {% else %}
+                    <!-- <tr>                        
+                        <td>No data for Recommendations</td>
+                    </tr> -->
+                    {% endif %}
                     </tbody>
                   </table>
           

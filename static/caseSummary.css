@@ -17,7 +17,7 @@
 .text_with_output_container_25p{
     display: grid;
     /* grid-template-rows: 1000px,20px; */
-    grid-template-columns:100px 200px 200px 100px 200px;
+    grid-template-columns:50px 200px 100px 200px 200px;
     /* grid-gap: 30px; */
     padding-top: 10px;
   

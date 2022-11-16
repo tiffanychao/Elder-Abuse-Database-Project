@@ -491,14 +491,12 @@ def case_summary(referral_id):
     if request.method == "POST":
        
         return  data1 
-    # deal with the data
-    #
-    v_name = "John Doe"
+
     
     dic = get_case_summary_from_db(referral_id)
     dic['referral_id'] = referral_id
     # print(dic['notes'])
-    print ("123")
+    
     return render_template('caseSummary.html',**dic) 
 
 
