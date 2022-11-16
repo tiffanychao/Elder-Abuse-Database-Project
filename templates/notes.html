@@ -7,39 +7,111 @@
 {% endblock %}
 
 {% block routes %}
-    <a href = {{ url_for('consulation', referral_id = referral_id) }} class="individual_case_tab">consultation</a>
-    <a href = {{ url_for('client', referral_id = referral_id) }} class="individual_case_tab">client </a>
+<a href = {{ url_for('consulation', referral_id = referral_id) }} class="individual_case_tab">consultation</a>
+<a href = {{ url_for('client', referral_id = referral_id) }} class="individual_case_tab">client </a>
     <a href = {{ url_for('client_information', referral_id = referral_id) }} class="individual_case_tab">client information</a>
     <a href = {{ url_for('center_outcomes', referral_id = referral_id) }} class="individual_case_tab">outcome</a>
     <a href = {{ url_for('abuse_info', referral_id = referral_id) }} class="individual_case_tab">abuse info</a>
     <a href = {{ url_for('abuser', referral_id = referral_id) }} class="individual_case_tab">abuser</a>
     <a href = {{ url_for('narrative', referral_id = referral_id) }} class="individual_case_tab">narrative</a>
-    <a href = {{ url_for('notes', referral_id = referral_id) }} class="individual_case_tab">notes</a>
-    <a href = {{ url_for('referring_agency', referral_id = referral_id) }} class="individual_case_tab">referring agency</a>
-    <a href = {{ url_for('attachments', referral_id = referral_id) }} class="individual_case_tab">attachments</a>
 {% endblock %}
 
 {% block content %}
-<style>
-    #notes {
-      font-family: Arial, Helvetica, sans-serif;
-      border-collapse: collapse;
-      width: 100%;
-    }
-    #notes td, #notes th {
-      border: 1px solid #ddd;
-      padding: 8px;
-    }
-    #notes tr:nth-child(even){background-color: white;}
-    #notes th {
-      padding-top: 12px;
-      padding-bottom: 12px;
-      text-align: left;
-      
-      background-color: white;;
-      color:black;
-    }
-</style>
+
+<script>
+  function addnote() {
+    var table1Count = document.getElementById('notes').rows.length;
+    document.getElementById("note_num").value = table1Count;
+    console.log(note_num)
+    var ele_label = document.createTextNode("Presenter/Update by ");
+    var ele_date = document.createTextNode(" Date ");
+    var ele_step = document.createElement("input")
+    ele_step.name = "new_presenter" + table1Count
+    ele_step.row = 3
+    ele_step.cols = 10
+    var ele_res = document.createElement("input")
+    ele_res.name = "new_meetingdate" + table1Count
+    ele_res.row = 3
+    ele_res.cols = 10
+    var ele_follow = document.createElement("textarea")
+    ele_follow.name = "new_meeting_note"+ table1Count
+    ele_follow.row = 3
+    ele_follow.cols = 100
+    var ele_hidden = document.createElement("input")
+    ele_hidden.name = "isDB"
+    ele_hidden.value = "False"
+    ele_hidden.type = "hidden"
+    ele_hidden.row = 3
+    ele_hidden.cols = 10
+
+    var table1 = document.getElementById("notes")
+    
+     var row1= table1.insertRow(table1Count);
+     var cell1 = row1.insertCell(0);
+
+     cell1.appendChild(ele_label);
+     cell1.appendChild(ele_step);
+     cell1.appendChild(ele_date);
+     cell1.appendChild(ele_res);
+     cell1.appendChild(ele_hidden);
+     var row2= table1.insertRow(table1Count+1);
+     var cell3 = row2.insertCell(0);
+     cell3.appendChild(ele_follow);
+     return table1Count
+  }
+  function addgoal() {
+    var table2Count = document.getElementById('goals').rows.length;
+    document.getElementById("goal_num").value = table2Count;
+    console.log(goal_num )
+    var ele = document.createElement("textarea")
+    ele.name = "new_goal" + table2Count
+    ele.row = 3
+    ele.cols = 100
+    var table = document.getElementById("goals");
+    var row = table.insertRow(-1);
+    var cell1 = row.insertCell(0);
+    cell1.appendChild(ele);
+    return table2Count
+  }
+  function addaction() {
+    var table3Count = document.getElementById('action').rows.length;
+
+    document.getElementById("rec_num").value = table3Count;
+    console.log(rec_num)
+    var ele_step = document.createElement("textarea")
+    ele_step.name = "new_step"+ table3Count
+    ele_step.row = 3
+    ele_step.cols = 22
+    
+    var ele_res = document.createElement("textarea")
+    ele_res.name = "new_response"+ table3Count
+    ele_res.row = 3
+    ele_res.cols = 22
+    var ele_follow = document.createElement("textarea")
+    ele_follow.name = "new_follow"+ table3Count
+    ele_follow.row = 3
+    ele_follow.cols = 22
+    var ele_status = document.createElement("textarea")
+    ele_status.name = "new_status"+ table3Count
+    ele_status.row = 3
+    ele_status.cols = 22
+    var table3 = document.getElementById("action")
+
+     var row1= table3.insertRow(table3Count);
+     var cell1 = row1.insertCell(0);
+     cell1.appendChild(ele_step);
+
+     var cell2 = row1.insertCell(1);
+     cell2.appendChild(ele_res);
+
+     var cell3 = row1.insertCell(2);
+     cell3.appendChild(ele_follow);
+
+     var cell4 = row1.insertCell(3);
+     cell4.appendChild(ele_status);
+     
+  }
+  </script>
 <div class="client_information_banner_container">
     <div class="client_information_banner">Section - Notes</div>
 </div>
@@ -49,71 +121,109 @@
     <div class="text_with_input_container">
         <div>
            Meeting/Case Notes
-            <!--  button -->
-            <button class="blue_button">Add Notes</button>
+            <button  type="button" onclick="addnote()" value="testnote">Add Note</button>
         </div>
-        <br>
-        <br>
     <br>
     <table id="notes">
+      <tr>
+        <td>
+          <input type="hidden" id="note_num" name="note_num" value="" >
+         
+        </td>
+      </tr>
+      {% for note in meeting_notes %} 
+      <tr>
+        <td>
+          <input type="hidden" id="note_num" name="note_num_{{loop.index}}" value={{note.meeting_id}}>
+        </td>
+      </tr>
         <tr>
-          <th >Presenter/Update by <input type="text" id="presenter" name="presenter" value={{presenter}}></th>
-          <th>Date <input type="text" id="meeting_date" name="meeting_date" value = {{meeting_date}}></th>
-          
+          <td >Presenter/Update by <input type="text" id="presenter" name="presenter_{{loop.index}}" value={{note.Meeting_presenters}}>
+          Date <input type="text" id="meeting_date" name="meeting_date_{{loop.index}}" value = {{note.meeting_date}}></td>
         </tr>
+
+        
         <tr>
-          <td colspan="2"><textarea name="meeting_notes" rows="10" cols="100" >{{meeting_notes}}</textarea >
-          </td>
+          <td colspan="2"><textarea name="meeting_notes_{{loop.index}}" rows="3" cols="100" >{{note.meeting_narrative}}</textarea ></td>
         </tr>
+        {% endfor %} 
       </table>
     </div>
-    <div class="text_with_input_container">
+    <div class="text_with_input_container"> 
         <div>
            Goals
-            <!--  button -->
-            <button class="blue_button">Add Goals</button>
-        </div>
+          <button type="button" onclick="addgoal()">Add Goals</button>
+        </div>       
         <br>
         <br>
-
-        <table id="notes">
+        <table id="goals">
+          <tr>
+            <td>
+              <input type="hidden" id="goal_num" name="goal_num" value="" >
+            
+            
+            </td>
+          </tr>
+          {% for goal in goals %} 
+          <tr>
+            <td>
+              <input type="hidden" id="goal_num" name="goal_num_{{loop.index}}" value={{goal.client_goals_id}}>
+            </td>
+          </tr>
             <tr>
-              <th ><textarea name="goals" rows="3" cols="100" >{{goals}}</textarea ></th>
-            </tr>
-          </table>
+              <th><textarea name="goals_{{loop.index}}" rows="3" cols="100" >{{goal.goal}}</textarea ></th>
+            </tr>       
+          {% endfor %}     
+        </table>             
     </div>
     <div class="text_with_input_container">
         <div>
            Recommendation Actions
-            <!--  button -->
-            <button class="blue_button">Add Actions</button>
+          
+            <button  type = "button" onclick="addaction()" value="1" name="action_btn">Add Actions</button>
+          
         </div>
         <br>
         <br>
-        <table id="notes">
+        <table id="action" >
+          <tr>
+            <td>
+              <input type="hidden" id="rec_num" name="rec_num" value="" >
+            
+            
+            </td>
+          </tr>
+          {% for recommendation in recommendations %} 
+          <tr>
+            <td>
+              <input type="hidden" id="action_num" name="action_num_{{loop.index}}" value={{recommendation.client_rec_id}}>
+            </td>
+          </tr>
             <tr>
               <th>Action Step</th>
               <th>Person Responsible</th>
               <th>Follow up Date</th>
               <th>Status</th>
             </tr>
+           
             <tr>
-              <th ><textarea name="action_step" rows="3" cols="22" >{{action_step}}</textarea ></th>
-              <th><textarea name="person_response" rows="3" cols="22" >{{person_response}}</textarea ></th>
-              <th><textarea name="follow_up" rows="3" cols="22">{{follow_up}}</textarea ></th>
-              <th><textarea name="status" rows="3" cols="22" >{{status}}</textarea ></th>
+              <th ><textarea name="action_step_{{loop.index}}" rows="3" cols="22" >{{recommendation.action_step}}</textarea ></th>
+              <th><textarea name="person_response_{{loop.index}}" rows="3" cols="22" >{{recommendation.person_responsible}}</textarea ></th>
+              <th><textarea name="follow_up_{{loop.index}}" rows="3" cols="22">{{recommendation.followup_date}}</textarea ></th>
+              <th><textarea name="status_{{loop.index}}" rows="3" cols="22" >{{recommendation.status}}</textarea ></th>
             </tr>
+            {% endfor %}  
           </table>
 
     </div>  
-          <!--  button -->
-          <div class="button_container">
-            <div class="center">
-                <input class="blue_button" type="submit" value="Save" >
-            </div>
-          </div>
-</div>
 
+</div>
+    <!--  button -->
+    <div class="button_container">
+      <div class="center">
+          <input name="note_btn" class="blue_button" type="submit" value="Save" >
+      </div>
+    </div>
 </form>
 
 {% endblock %}
