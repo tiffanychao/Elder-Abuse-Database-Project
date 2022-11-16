@@ -52,10 +52,11 @@
             Relationship to Client
         </div>
         <select name="su_relationship" class="dropdown_design">
-            <option {% if su_relationship == 'Spouse/Significant Other' %} selected {% endif %} value="Spouse/Significant Other">Spouse/Significant Other</option>
-            <option {% if su_relationship == 'Child(Son)' %} selected {% endif %} value="Child(Son)">Child(Son)</option>
-            <option {% if su_relationship == 'Child(Daughter)' %} selected {% endif %} value="Child(Daughter)">Child(Daughter)</option>
-            <option {% if su_relationship == 'Other Family' %} selected {% endif %} value="Other Family">Other Family</option>
+            <option {% if su_relationship == 'Select...' %} selected {% endif %} value="Select...">Select...</option>
+            <option {% if su_relationship == 'Family...[Spouse/Significant Other]' %} selected {% endif %} value="Family...[Spouse/Significant Other]">Family...[Spouse/Significant Other]</option>
+            <option {% if su_relationship == 'Family...Child..[Son]' %} selected {% endif %} value="Family...Child..[Son]">Family...Child..[Son]</option>
+            <option {% if su_relationship == 'Family...Child..[Daughter]' %} selected {% endif %} value="Family...Child..[Daughter]">Family...Child..[Daughter]</option>
+            <option {% if su_relationship == 'Family...[Other Family]' %} selected {% endif %} value="Family...[Other Family]">Family...[Other Family]</option>
             <option {% if su_relationship == 'Non-family but well-known to clinet' %} selected {% endif %} value="Non-family but well-known to clinet">Non-family but well-known to clinet</option>
             <option {% if su_relationship == 'Stranger' %} selected {% endif %} value="Stranger">Stranger</option>
         </select>
@@ -185,6 +186,7 @@
             Gender
         </div>
         <select name="su_gender" class="dropdown_design">
+            <option {% if su_gender == 'Select...' %} selected {% endif %} value="Select...">Select...</option>
             <option {% if su_gender == 'Female' %} selected {% endif %} value="Female">Female</option>
             <option {% if su_gender == 'Male' %} selected {% endif %} value="Male">Male</option>
             <option {% if su_gender == 'Transgendered' %} selected {% endif %} value="Transgendered">Transgendered</option>
@@ -197,6 +199,7 @@
             Ethnicity
         </div>
         <select name="su_ethnicity" class="dropdown_design">
+            <option value ="Select..."{% if su_ethnicity == 'Select...' %} selected {% endif %} >Select...</option>
             <option value="African American" {% if su_ethnicity == 'African American' %} selected {% endif %} >African American</option>
             <option value="American Indian/Native Alaskan" {% if su_ethnicity == 'American Indian/Native Alaskan' %} selected {% endif %} >American Indian/Native Alaskan</option>
             <option value="Asian/Pacific Islander" {% if su_ethnicity == 'Asian/Pacific Islander' %} selected {% endif %} >Asian/Pacific Islander</option>
