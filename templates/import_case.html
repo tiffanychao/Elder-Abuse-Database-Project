@@ -1,23 +1,28 @@
-{% extends "framework.html" %}
-{% block title %}Index{% endblock %}
-{% block head %}
-{{ super() }}
-<link rel="stylesheet" href="../static/notes.css">
-<link rel="stylesheet" href="../static/framework.css">
-{% endblock %}
-{% block content %}
+{% extends "framework.html" %} {% block title %}Index{% endblock %} {% block
+head %} {{ super() }}
+<link rel="stylesheet" href="../static/error_handling.css" />
+<link rel="stylesheet" href="../static/framework.css" />
+{% endblock %} {% block content %}
 
 <!--  Click choose file to upload-->
 <div class="client_information_container">
-    <div class="text_with_input_container">
-        Create a new case by uploading <br><br> 
-        the Word Document
-        <form method="POST" action="" enctype="multipart/form-data">
-          <p><input type="file" name="file"></p>
-          <p><input type="submit" value="Submit"></p>
-        </form>
-        <pre>{{content}}</pre>
-    </div> 
-
+  <div class="text_with_input_container">
+    Create a new case by uploading <br /><br />
+    the Word Document
+    <form method="POST" action="" enctype="multipart/form-data">
+      <p><input type="file" name="file" /></p>
+      <p><input type="submit" value="Submit" /></p>
+    </form>
+    <pre>{{content}}</pre>
+  </div>
+  <!-- <button onclick="clinet_info page">Go Back</button> -->
+  <div class="home_page_button_container">
+    <button
+      class="button_design"
+      onclick="window.location.href='/client_information/87';"
+    >
+      VIEW CASE
+    </button>
+  </div>
 </div>
 {% endblock %}
