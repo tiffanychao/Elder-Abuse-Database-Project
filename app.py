@@ -5,14 +5,14 @@ from flaskext.mysql import MySQL
 from dotenv import load_dotenv
 from getDataFromDB import *
 import os #provides ways to access the Operating System and allows us to read the environment variables
-from mysql.connector import Error
-import mysql.connector
-from sqlalchemy import create_engine  # for import form function
-from datetime import datetime
-import pandas as pd
-import pathlib
-import worddocparser
-import docToSql
+# from mysql.connector import Error
+# import mysql.connector
+# from sqlalchemy import create_engine  # for import form function
+# from datetime import datetime
+# import pandas as pd
+# import pathlib
+# import worddocparser
+# import docToSql
 load_dotenv()  # take environment variables from .env.
 
 
@@ -88,6 +88,7 @@ def client(referral_id):
     content['cl_city'] = data[14]
     content['cl_zip'] = data[15]
     content['cl_phone'] = data[16]
+    content['searchCase'] = True
 
     if request.method == "POST":
         return render_template('client.html',referral_id =referral_id, **content)
@@ -145,7 +146,7 @@ def client_information(referral_id):
     content['prev_abuse_yes'] = data[28]
     content['prev_abuse_desc'] = data[29]
     content['multiple_suspects'] = data[30]
-
+    content['searchCase'] = True
     if request.method == "POST":
         return render_template('clientInformation.html',referral_id = referral_id, **content)
     return render_template('clientInformation.html',referral_id = referral_id, **content)
@@ -252,7 +253,7 @@ def abuser(referral_id):
     content['su_city'] = data[30]
     content['su_zip'] = data[31]
     content['su_phone'] = data[32]
-
+    content['searchCase'] = True
     return render_template('abuser.html',referral_id = referral_id, **content)
 
 
@@ -341,7 +342,7 @@ def abuse_info(referral_id):
     content['ad_UndueInflu'] = data[19] 
     content['ad_Other'] = data[20] 
     content['ad_Narrative'] = data[21] 
-
+    content['searchCase'] = True
     print('--------')
     print(content)
     return render_template('abuse_info.html',referral_id = referral_id, **content)
@@ -462,6 +463,7 @@ def center_outcomes(referral_id):
     content["oc_ro_name"] = data[24]
     content["oc_ev_geri"] = data[25]
     content["oc_self_suff"] = data[26]
+    content['searchCase'] = True
     return render_template("centerOutcomes.html",referral_id = referral_id, **content)
 
 
@@ -507,7 +509,7 @@ def search_cases():
     search_type = 'client'
     first_name = ''
     last_name = ''
-    case_closed = 1
+    case_closed = 0
     query = 0
     if request.method == "POST":
         if (request.form.get("deleteButton")):
@@ -554,7 +556,7 @@ def homepage():
 @app.route('/example')
 def example():
     variable = "check your name"
-    return render_template('example.html', value = variable)
+    return render_template('example.html', value = variable, searchCase = False)
 
 @app.route('/narrative/<int:referral_id>',methods =["GET", "POST"])
 def narrative(referral_id):
@@ -572,7 +574,7 @@ def narrative(referral_id):
     data = cursor.fetchone()
     content = {}
     content["oc_narrative"] = data[14]
-
+    content['searchCase'] = True
     if data == None:
         return render_template('error_handling.html')
     if request.method == "POST":
@@ -669,7 +671,7 @@ def consulation(referral_id):
     content["Other"] = data[13]
     content["Description_other"] = data[14]
     content["Reason"] = data[15]
-    
+    content['searchCase'] = True
     if data == None:
         return render_template('error_handling.html')
     if request.method == "POST":
@@ -826,13 +828,13 @@ def notes(referral_id):
         return render_template('error_handling.html')
     if request.method == "POST":
         return render_template('notes.html', referral_id = referral_id, **content,goals = goals, meeting_notes = meeting_notes,recommendations = recommendations)
-    return render_template('notes.html',referral_id = referral_id, **content,goals = goals,meeting_notes = meeting_notes, recommendations= recommendations)
+    return render_template('notes.html',referral_id = referral_id, **content,goals = goals,meeting_notes = meeting_notes, recommendations= recommendations, searchCase = True)
 
 
 @app.route('/attachments/<int:referral_id>')
 def attachments(referral_id):
     variable = "check your name"
-    return render_template('attachments.html', referral_id = referral_id, value = variable)
+    return render_template('attachments.html', referral_id = referral_id, value = variable,searchCase = True)
 
 @app.route('/import_case',methods =["GET", "POST"])
 def import_case():
