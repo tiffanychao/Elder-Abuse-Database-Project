@@ -587,7 +587,7 @@ def consulation(referral_id):
 
     cursor.execute("SELECT * FROM consultation_information INNER JOIN cases ON cases.referral_id = consultation_information.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
     data = cursor.fetchone()
-    consultation_id = data[0]
+    #consultation_id = data[0]
     
     #
     Services = True
@@ -643,7 +643,7 @@ def consulation(referral_id):
         Description_other = request.form.get("Description_other")
         Reason = request.form.get("Reason")
         
-
+        
         
         cursor.execute("""UPDATE consultation_information SET consult_aps = (%s), consult_genesis = (%s),
         consult_district_att = (%s), consult_regional = (%s), consult_coroner = (%s), consult_law_enf = (%s),
@@ -661,7 +661,7 @@ def consulation(referral_id):
     content["GENESIS"] = data[3]
     content["DA"] = data[4]
     content["Regional_center"] = data[5]
-    content["Coroner"] = data[6]
+    content["Corner"] = data[6]
     content["Law_enforcement"] = data[7]
     content["Attorney"] = data[8]
     content["Psychologist"] = data[9]
