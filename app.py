@@ -783,7 +783,7 @@ def notes(referral_id):
                     new_follow =  datetime.strptime(request.form.get("new_follow"+str(num)),'%Y-%m-%d')
                 except:
                     # modified, default: today
-                    new_follow = date.today()
+                    new_follow = datetime.strptime("0001-01-01",'%Y-%m-%d')
                 new_status = request.form.get("new_status"+str(num))
                 sql = "INSERT INTO recommendations(referral_id,action_step,person_responsible,followup_date,action_status) VALUES(%s,%s,%s,%s,%s)"
                 val = (referral_id,new_step,new_response,new_follow,new_status)
