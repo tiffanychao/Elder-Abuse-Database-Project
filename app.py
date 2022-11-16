@@ -685,8 +685,9 @@ def notes(referral_id):
     
     # meeting_notes
     cursor.execute("SELECT * FROM meeting_notes INNER JOIN cases ON cases.referral_id =meeting_notes.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
-    data = cursor.fetchone()
-    meeting_id = data[0]
+    data = cursor.fetchall()
+    note_num_db = len(data)
+    #meeting_id = data[0]
     # goals
     cursor.execute("SELECT * FROM goals INNER JOIN cases ON cases.referral_id =goals.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
     data1 = cursor.fetchall()
@@ -702,34 +703,36 @@ def notes(referral_id):
     #print(action_num_db)
     
     if request.method == "POST":
-        # note number
-        #note_num = request.args.get("note_num")
-        #print("this is num:" +str(note_num))
-        #note_num = 5 # 0,1 ,2 ,3, 4
         meeting_recs = ""
         fake_goals = ""
         # for loop get data - update note table
-        # for num in range(note_num-1):
+        for num in range(note_num_db):
         #     # meeting notes
-        #     presenter = request.form.get("presenter"+str(num))
-        #     meeting_date = datetime.strptime(request.form.get("meeting_date"),'%Y-%m-%d')
-        #     meeting_notes = request.form.get("meeting_notes")
-        #     # update
-        #     cursor.execute("""UPDATE meeting_notes SET meeting_date = (%s),meeting_recs = (%s), meeting_goals = (%s) , 
-        #     Meeting_presenters = (%s), meeting_narrative = (%s) WHERE meeting_id = """ + str(meeting_id),(meeting_date, meeting_recs,fake_goals,presenter,meeting_notes))
-        note_num = 37
-        # for num in range(37,note_num+1):
-        #     new_presenter = request.form.get("new_presenter"+str(num))
-        #     print(new_presenter)
-        #     print(request.form.get("new_meetingdate"+str(num)))
-        #     new_date = datetime.strptime(request.form.get("new_meetingdate"+str(num)),'%Y-%m-%d')
-            
-        #     new_meeting_notes = request.form.get("new_meeting_note"+str(num))
-        #     # insert
-        #     sql = "INSERT INTO meeting_notes (referral_id,meeting_date,Meeting_presenters,meeting_narrative) VALUES (%s, %s,%s, %s)"
-        #     val = (referral_id,new_date,new_presenter,new_meeting_notes)
-        #     cursor.execute(sql,val)
-        #     conn.commit()
+            meeting_id = request.form.get("note_num_"+str(num+1))
+            presenter = request.form.get("presenter_"+str(num+1))
+            meeting_date = datetime.strptime(request.form.get("meeting_date_"+str(num+1)),'%Y-%m-%d')
+            meeting_notes = request.form.get("meeting_notes_"+str(num+1))
+            # update
+            cursor.execute("""UPDATE meeting_notes SET meeting_date = (%s),meeting_recs = (%s), meeting_goals = (%s) , 
+            meeting_presenters = (%s), meeting_narrative = (%s) WHERE meeting_id = """ + str(meeting_id),(meeting_date, meeting_recs,fake_goals,presenter,meeting_notes))
+            conn.commit()
+        if request.form.get("note_num"):
+            note_num = int(request.form.get("note_num"))
+            for num in range(note_num,note_num+1):
+                print(note_num)
+                new_presenter = request.form.get("new_presenter"+str(num))
+                print(new_presenter)
+                print(request.form.get("new_meetingdate"+str(num)))
+                try:
+                    new_date = datetime.strptime(request.form.get("new_meetingdate"+str(num)),'%Y-%m-%d')
+                except:
+                    new_date = datetime.strptime("0001-01-01",'%Y-%m-%d')
+                new_meeting_notes = request.form.get("new_meeting_note"+str(num))
+                # insert
+                sql = "INSERT INTO meeting_notes (referral_id,meeting_date,meeting_presenters,meeting_narrative) VALUES (%s, %s,%s, %s)"
+                val = (referral_id,new_date,new_presenter,new_meeting_notes)
+                cursor.execute(sql,val)
+                conn.commit()
         # update for goal
 
         for num in range(goal_num_db): #012
@@ -751,8 +754,14 @@ def notes(referral_id):
         for num in range(action_num_db): 
             # update
             action_step = request.form.get("action_step_"+str(num+1))
-            person_response = request.form.get("person_response_"+str(num+1))     
-            follow_up = datetime.strptime(request.form.get("follow_up_"+str(num+1)),'%Y-%m-%d')
+            person_response = request.form.get("person_response_"+str(num+1)) 
+            
+            if request.form.get("follow_up_"+str(num+1)):
+                try:
+                    follow_up = datetime.strptime(request.form.get("follow_up_"+str(num+1)),'%Y-%m-%d')
+                except:
+                    follow_up = datetime.strptime("0001-01-01",'%Y-%m-%d')
+                
             action_status = request.form.get("status_"+str(num+1))
 
             client_rec_id = request.form.get("action_num_"+str(num+1))
@@ -770,11 +779,11 @@ def notes(referral_id):
             for num in range(action_num_db+2,action_num+1):
                 new_step = request.form.get("new_step"+str(num))
                 new_response = request.form.get("new_response"+str(num))
-                print(new_step)
-                print(new_response)
-                new_follow =  datetime.strptime(request.form.get("new_follow"+str(num)),'%Y-%m-%d')
-
-                print(new_follow)
+                try:
+                    new_follow =  datetime.strptime(request.form.get("new_follow"+str(num)),'%Y-%m-%d')
+                except:
+                    # modified, default: today
+                    new_follow = date.today()
                 new_status = request.form.get("new_status"+str(num))
                 sql = "INSERT INTO recommendations(referral_id,action_step,person_responsible,followup_date,action_status) VALUES(%s,%s,%s,%s,%s)"
                 val = (referral_id,new_step,new_response,new_follow,new_status)
@@ -811,6 +820,7 @@ def notes(referral_id):
     cursor.execute("SELECT * FROM meeting_notes INNER JOIN cases ON cases.referral_id = meeting_notes.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
     columns = [col[0] for col in cursor.description]
     meeting_notes = [dict(zip(columns, row)) for row in cursor.fetchall()]
+   
     
 
     # recommendations
@@ -823,7 +833,7 @@ def notes(referral_id):
 
 
     if data == None:
-        return "Sorry your data isn't here"
+        return render_template('error_handling.html')
     if request.method == "POST":
         return render_template('notes.html', referral_id = referral_id, **content,goals = goals, meeting_notes = meeting_notes,recommendations = recommendations)
     return render_template('notes.html',referral_id = referral_id, **content,goals = goals,meeting_notes = meeting_notes, recommendations= recommendations)
