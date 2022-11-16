@@ -111,7 +111,7 @@
      cell4.appendChild(ele_status);
      
   }
-  </script>
+</script>
 <div class="client_information_banner_container">
     <div class="client_information_banner">Section - Notes</div>
 </div>
@@ -120,8 +120,8 @@
 <div class="client_information_container">
     <div class="text_with_input_container">
         <div>
-           Meeting/Case Notes
-            <button  type="button" onclick="addnote()" value="testnote">Add Note</button>
+          <b>Meeting/Case Notes</b>
+          <button  type="button" onclick="addnote()" value="testnote">Add Note</button>
         </div>
     <br>
     <table id="notes">
@@ -137,93 +137,81 @@
           <input type="hidden" id="note_num" name="note_num_{{loop.index}}" value={{note.meeting_id}}>
         </td>
       </tr>
-        <tr>
-          <td >Presenter/Update by <input type="text" id="presenter" name="presenter_{{loop.index}}" value={{note.Meeting_presenters}}>
-          Date <input type="text" id="meeting_date" name="meeting_date_{{loop.index}}" value = {{note.meeting_date}}></td>
-        </tr>
-
-        
-        <tr>
-          <td colspan="2"><textarea name="meeting_notes_{{loop.index}}" rows="3" cols="100" >{{note.meeting_narrative}}</textarea ></td>
-        </tr>
-        {% endfor %} 
+      <tr>
+        <td >Presenter/Update by <input type="text" id="presenter" name="presenter_{{loop.index}}" value={{note.Meeting_presenters}}>Date 
+          <input type="text" id="meeting_date" name="meeting_date_{{loop.index}}" value = {{note.meeting_date}}>
+        </td>
+      </tr>        
+      <tr>
+        <td colspan="2"><textarea name="meeting_notes_{{loop.index}}" rows="3" cols="100" >{{note.meeting_narrative}}</textarea ></td>
+      </tr>
+      {% endfor %} 
+    </table>
+  </div>
+  <div class="text_with_input_container"> 
+    <div>
+      <b>Goals</b>
+      <button type="button" onclick="addgoal()">Add Goals</button>
+    </div>       
+    <br>
+    <table id="goals">
+      <tr>
+        <td>
+          <input type="hidden" id="goal_num" name="goal_num" value="" >
+        </td>
+      </tr>
+      {% for goal in goals %} 
+      <tr>
+        <td>
+          <input type="hidden" id="goal_num" name="goal_num_{{loop.index}}" value={{goal.client_goals_id}}>
+        </td>
+      </tr>
+      <tr>
+        <th><textarea name="goals_{{loop.index}}" rows="3" cols="100" >{{goal.goal}}</textarea ></th>
+      </tr>       
+      {% endfor %}     
+    </table>             
+  </div>
+  <div class="text_with_input_container">
+    <div>
+      <b>Recommendation Actions</b>    
+      <button  type = "button" onclick="addaction()" value="1" name="action_btn">Add Actions</button>
+    </div>
+    <br>
+    <table id="action" >
+      <tr>
+        <td>
+          <input type="hidden" id="rec_num" name="rec_num" value="" >
+        </td>
+      </tr>
+      {% for recommendation in recommendations %} 
+      <tr>
+        <td>
+          <input type="hidden" id="action_num" name="action_num_{{loop.index}}" value={{recommendation.client_rec_id}}>
+        </td>
+      </tr>
+      <tr>
+        <th>Action Step</th>
+        <th>Person Responsible</th>
+        <th>Follow up Date</th>
+        <th>Status</th>
+      </tr>
+      <tr>
+        <th ><textarea name="action_step_{{loop.index}}" rows="3" cols="22" >{{recommendation.action_step}}</textarea ></th>
+        <th><textarea name="person_response_{{loop.index}}" rows="3" cols="22" >{{recommendation.person_responsible}}</textarea ></th>
+        <th><textarea name="follow_up_{{loop.index}}" rows="3" cols="22">{{recommendation.followup_date}}</textarea ></th>
+        <th><textarea name="status_{{loop.index}}" rows="3" cols="22" >{{recommendation.status}}</textarea ></th>
+      </tr>
+      {% endfor %}  
       </table>
-    </div>
-    <div class="text_with_input_container"> 
-        <div>
-           Goals
-          <button type="button" onclick="addgoal()">Add Goals</button>
-        </div>       
-        <br>
-        <br>
-        <table id="goals">
-          <tr>
-            <td>
-              <input type="hidden" id="goal_num" name="goal_num" value="" >
-            
-            
-            </td>
-          </tr>
-          {% for goal in goals %} 
-          <tr>
-            <td>
-              <input type="hidden" id="goal_num" name="goal_num_{{loop.index}}" value={{goal.client_goals_id}}>
-            </td>
-          </tr>
-            <tr>
-              <th><textarea name="goals_{{loop.index}}" rows="3" cols="100" >{{goal.goal}}</textarea ></th>
-            </tr>       
-          {% endfor %}     
-        </table>             
-    </div>
-    <div class="text_with_input_container">
-        <div>
-           Recommendation Actions
-          
-            <button  type = "button" onclick="addaction()" value="1" name="action_btn">Add Actions</button>
-          
-        </div>
-        <br>
-        <br>
-        <table id="action" >
-          <tr>
-            <td>
-              <input type="hidden" id="rec_num" name="rec_num" value="" >
-            
-            
-            </td>
-          </tr>
-          {% for recommendation in recommendations %} 
-          <tr>
-            <td>
-              <input type="hidden" id="action_num" name="action_num_{{loop.index}}" value={{recommendation.client_rec_id}}>
-            </td>
-          </tr>
-            <tr>
-              <th>Action Step</th>
-              <th>Person Responsible</th>
-              <th>Follow up Date</th>
-              <th>Status</th>
-            </tr>
-           
-            <tr>
-              <th ><textarea name="action_step_{{loop.index}}" rows="3" cols="22" >{{recommendation.action_step}}</textarea ></th>
-              <th><textarea name="person_response_{{loop.index}}" rows="3" cols="22" >{{recommendation.person_responsible}}</textarea ></th>
-              <th><textarea name="follow_up_{{loop.index}}" rows="3" cols="22">{{recommendation.followup_date}}</textarea ></th>
-              <th><textarea name="status_{{loop.index}}" rows="3" cols="22" >{{recommendation.status}}</textarea ></th>
-            </tr>
-            {% endfor %}  
-          </table>
-
     </div>  
-
-</div>
-    <!--  button -->
-    <div class="button_container">
-      <div class="center">
-          <input name="note_btn" class="blue_button" type="submit" value="Save" >
-      </div>
+  </div>
+  <!--  button -->
+  <div class="button_container">
+    <div class="center">
+        <input name="note_btn" class="blue_button" type="submit" value="Save" >
     </div>
+  </div>
 </form>
 
 {% endblock %}
