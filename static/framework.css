@@ -139,7 +139,7 @@ body {
 }
 
 .text_input {
-    width: 60px;
+    width: 68px;
 }
 
 .text_input_design{
@@ -151,6 +151,8 @@ body {
     border: none;
     border-radius: 5px;
 }
+
+
 
 @media only screen and (max-width: 1000px) {
     .sidebar_container {

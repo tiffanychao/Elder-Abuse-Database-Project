@@ -408,3 +408,49 @@ def convertNonetoNull(dataori):
         else :
             data.append(x)
     return data
+
+def getBarInfo(referral_id):
+    str_sql = """
+SELECT
+	status_urgent,
+    status_routine,
+    case_date,
+    case_closed
+FROM cases
+WHERE
+	referral_id = 
+    """ + str(referral_id)
+
+    dic = dict()
+    dic['status_urgent'] = ''
+    dic['status_routine'] = ''
+    dic['case_date'] = ''
+    dic['case_closed'] = ''
+    dic['case_number'] = ''
+    
+    cursor.execute(str_sql)
+    dataori = cursor.fetchone()
+    print(dataori)
+    if dataori != None :
+        data = convertNonetoNull(dataori)
+        dic['status_urgent'] = data[0]
+        dic['status_routine'] = data[1]
+        dic['case_date'] = data[2]
+        dic['case_closed'] = data[3]
+    
+
+    str_sql = """
+SELECT
+	case_number
+FROM case_number
+WHERE
+	referral_id =
+    """ + str(referral_id)
+    cursor.execute(str_sql)
+    dataori = cursor.fetchone()
+    if dataori != None :
+        data = convertNonetoNull(dataori)
+        dic['case_number'] = data[0]
+
+    print(dic)
+    return dic

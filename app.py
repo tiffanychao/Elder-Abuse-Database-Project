@@ -5,14 +5,14 @@ from flaskext.mysql import MySQL
 from dotenv import load_dotenv
 from getDataFromDB import *
 import os #provides ways to access the Operating System and allows us to read the environment variables
-from mysql.connector import Error
-import mysql.connector
-from sqlalchemy import create_engine  # for import form function
-from datetime import datetime
-import pandas as pd
-import pathlib
-import worddocparser
-import docToSql
+# from mysql.connector import Error
+# import mysql.connector
+# from sqlalchemy import create_engine  # for import form function
+# from datetime import datetime
+# import pandas as pd
+# import pathlib
+# import worddocparser
+# import docToSql
 load_dotenv()  # take environment variables from .env.
 
 
@@ -92,6 +92,13 @@ def client(referral_id):
 
     if request.method == "POST":
         return render_template('client.html',referral_id =referral_id, **content)
+
+    barinfo = getBarInfo(referral_id)
+    content['bar_urgentstatus'] = barinfo['status_urgent']
+    content['bar_routinestatus'] = barinfo['status_routine']
+    content['bar_caseclosed'] = barinfo['case_closed']
+    content['bar_date'] = barinfo['case_date']
+    content['bar_case_number'] = barinfo['case_number']
     return render_template('client.html',referral_id = referral_id, **content)  
 
 
@@ -147,6 +154,14 @@ def client_information(referral_id):
     content['prev_abuse_desc'] = data[29]
     content['multiple_suspects'] = data[30]
     content['searchCase'] = True
+    
+    barinfo = getBarInfo(referral_id)
+    content['bar_urgentstatus'] = barinfo['status_urgent']
+    content['bar_routinestatus'] = barinfo['status_routine']
+    content['bar_caseclosed'] = barinfo['case_closed']
+    content['bar_date'] = barinfo['case_date']
+    content['bar_case_number'] = barinfo['case_number']
+
     if request.method == "POST":
         return render_template('clientInformation.html',referral_id = referral_id, **content)
     return render_template('clientInformation.html',referral_id = referral_id, **content)
@@ -256,6 +271,13 @@ def abuser(referral_id):
     content['su_zip'] = data[31]
     content['su_phone'] = data[32]
     content['searchCase'] = True
+
+    barinfo = getBarInfo(referral_id)
+    content['bar_urgentstatus'] = barinfo['status_urgent']
+    content['bar_routinestatus'] = barinfo['status_routine']
+    content['bar_caseclosed'] = barinfo['case_closed']
+    content['bar_date'] = barinfo['case_date']
+    content['bar_case_number'] = barinfo['case_number']
     return render_template('abuser.html',referral_id = referral_id, **content)
 
 
@@ -344,7 +366,14 @@ def abuse_info(referral_id):
     content['ad_UndueInflu'] = data[19] 
     content['ad_Other'] = data[20] 
     content['ad_Narrative'] = data[21] 
+    
     content['searchCase'] = True
+    barinfo = getBarInfo(referral_id)
+    content['bar_urgentstatus'] = barinfo['status_urgent']
+    content['bar_routinestatus'] = barinfo['status_routine']
+    content['bar_caseclosed'] = barinfo['case_closed']
+    content['bar_date'] = barinfo['case_date']
+    content['bar_case_number'] = barinfo['case_number']
     print('--------')
     print(content)
     return render_template('abuse_info.html',referral_id = referral_id, **content)
@@ -465,7 +494,14 @@ def center_outcomes(referral_id):
     content["oc_ro_name"] = data[24]
     content["oc_ev_geri"] = data[25]
     content["oc_self_suff"] = data[26]
+
     content['searchCase'] = True
+    barinfo = getBarInfo(referral_id)
+    content['bar_urgentstatus'] = barinfo['status_urgent']
+    content['bar_routinestatus'] = barinfo['status_routine']
+    content['bar_caseclosed'] = barinfo['case_closed']
+    content['bar_date'] = barinfo['case_date']
+    content['bar_case_number'] = barinfo['case_number']
     return render_template("centerOutcomes.html",referral_id = referral_id, **content)
 
 
@@ -485,6 +521,14 @@ def referring_agency(referral_id):
     dictInfo = get_referral_info_from_db(referral_id)
     dictInfo['referral_id'] = referral_id
     dictInfo['searchCase'] = True
+
+    barinfo = getBarInfo(referral_id)
+    dictInfo['bar_urgentstatus'] = barinfo['status_urgent']
+    dictInfo['bar_routinestatus'] = barinfo['status_routine']
+    dictInfo['bar_caseclosed'] = barinfo['case_closed']
+    dictInfo['bar_date'] = barinfo['case_date']
+    dictInfo['bar_case_number'] = barinfo['case_number']
+
     return render_template('referringAgency.html', **dictInfo)
 
 
@@ -499,8 +543,13 @@ def case_summary(referral_id):
     
     dic = get_case_summary_from_db(referral_id)
     dic['referral_id'] = referral_id
-    # print(dic['notes'])
-    
+  
+    barinfo = getBarInfo(referral_id)
+    dic['bar_urgentstatus'] = barinfo['status_urgent']
+    dic['bar_routinestatus'] = barinfo['status_routine']
+    dic['bar_caseclosed'] = barinfo['case_closed']
+    dic['bar_date'] = barinfo['case_date']
+    dic['bar_case_number'] = barinfo['case_number']
     return render_template('caseSummary.html',**dic) 
 
 
@@ -576,7 +625,14 @@ def narrative(referral_id):
     data = cursor.fetchone()
     content = {}
     content["oc_narrative"] = data[14]
+    
     content['searchCase'] = True
+    barinfo = getBarInfo(referral_id)
+    content['bar_urgentstatus'] = barinfo['status_urgent']
+    content['bar_routinestatus'] = barinfo['status_routine']
+    content['bar_caseclosed'] = barinfo['case_closed']
+    content['bar_date'] = barinfo['case_date']
+    content['bar_case_number'] = barinfo['case_number']
     if data == None:
         return render_template('error_handling.html')
     if request.method == "POST":
@@ -673,7 +729,14 @@ def consulation(referral_id):
     content["Other"] = data[13]
     content["Description_other"] = data[14]
     content["Reason"] = data[15]
+    
     content['searchCase'] = True
+    barinfo = getBarInfo(referral_id)
+    content['bar_urgentstatus'] = barinfo['status_urgent']
+    content['bar_routinestatus'] = barinfo['status_routine']
+    content['bar_caseclosed'] = barinfo['case_closed']
+    content['bar_date'] = barinfo['case_date']
+    content['bar_case_number'] = barinfo['case_number']
     if data == None:
         return render_template('error_handling.html')
     if request.method == "POST":
@@ -823,8 +886,13 @@ def notes(referral_id):
 
     recommendations = [dict(zip(columns, row)) for row in cursor.fetchall()]
     
-
-
+    content['searchCase'] = True
+    barinfo = getBarInfo(referral_id)
+    content['bar_urgentstatus'] = barinfo['status_urgent']
+    content['bar_routinestatus'] = barinfo['status_routine']
+    content['bar_caseclosed'] = barinfo['case_closed']
+    content['bar_date'] = barinfo['case_date']
+    content['bar_case_number'] = barinfo['case_number']
 
     if len(data) == 0:
         #print("no data")
@@ -832,13 +900,22 @@ def notes(referral_id):
     if request.method == "POST":
         return render_template('notes.html', referral_id = referral_id, **content,goals = goals, meeting_notes = meeting_notes,recommendations = recommendations)
     
-    return render_template('notes.html',referral_id = referral_id, **content,goals = goals,meeting_notes = meeting_notes, recommendations= recommendations, searchCase = True)
+    return render_template('notes.html',referral_id = referral_id, **content,goals = goals,meeting_notes = meeting_notes, recommendations= recommendations)
 
 
 @app.route('/attachments/<int:referral_id>')
 def attachments(referral_id):
+    content = dict()
+    content['searchCase'] = True
+    barinfo = getBarInfo(referral_id)
+    content['bar_urgentstatus'] = barinfo['status_urgent']
+    content['bar_routinestatus'] = barinfo['status_routine']
+    content['bar_caseclosed'] = barinfo['case_closed']
+    content['bar_date'] = barinfo['case_date']
+    content['bar_case_number'] = barinfo['case_number']
+    
     variable = "check your name"
-    return render_template('attachments.html', referral_id = referral_id, value = variable,searchCase = True)
+    return render_template('attachments.html', referral_id = referral_id, value = variable,**content)
 
 @app.route('/import_case',methods =["GET", "POST"])
 def import_case():

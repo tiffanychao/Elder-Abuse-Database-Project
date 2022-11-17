@@ -37,28 +37,53 @@
                 <div class="status_container">
                     <!-- urgent status -->
                     <div class="checkbox_with_label">
-                        <div>Case Status</div>
-                        <input type="checkbox">
+                        <div>Urgent Status</div>
+                        {% if bar_urgentstatus %}
+                            <input type="checkbox" onclick="return false" class="checkbox" checked > 
+                        {% else %}
+                            <input type="checkbox" onclick="return false" class="checkbox"  >
+                        {% endif %}
                     </div>
                     <!-- Routine Status -->
                     <div class="checkbox_with_label">
                         <div>Routine Status</div>
-                        <input type="checkbox">
+                        {% if bar_routinestatus %}
+                            <input type="checkbox" onclick="return false" class="checkbox" checked > 
+                        {% else %}
+                            <input type="checkbox" onclick="return false" class="checkbox"  >
+                        {% endif %}
                     </div>
                     <!-- Case Closed -->
                     <div class="checkbox_with_label">
                         <div>Case Closed</div>
-                        <input type="checkbox">
+                        {% if bar_caseclosed %}
+                            <input type="checkbox" onclick="return false" class="checkbox" checked > 
+                        {% else %}
+                            <input type="checkbox" onclick="return false" class="checkbox"  >
+                        {% endif %}
                     </div>
                     <!-- Case Date -->
                     <div class="checkbox_with_label">
-                        <div>Case Date</div>
-                        <input class="text_input" type="text">
+                        <div>Case Date</div>                      
+                        
+                        {% if bar_date %}
+                            <input class="text_input" type="text" disabled value="{{bar_date}}"">
+                        {% else %} 
+                            <input class="text_input" type="text" disabled value="---- - -- - --">
+                        {% endif %}
+                        <!-- <output class="text_output_design"></output> -->
+                        
+                        
                     </div>
                     <!-- Case Number -->
                     <div class="checkbox_with_label">
                         <div>Case Number</div>
-                        <input class="text_input" type="text">
+                        <!-- <input class="text_input" type="text"> -->
+                        {% if bar_case_number %}
+                            <input class="text_input" type="text" disabled value="{{bar_case_number}}"">
+                        {% else %} 
+                            <input class="text_input" type="text" disabled value="----">
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -85,8 +110,8 @@
                 <a href="/" class="flexbox_item">Full Database Export</a>
                 <a href="/" class="flexbox_item">Deidentified Export</a>
                 <a href="{{ url_for('search_cases') }}" class="flexbox_item">Search</a>
-                <a href="/" class="flexbox_item">Search by presenter</a>
-                <a href="/" class="flexbox_item">Search by Suspect</a>
+                <!-- <a href="/" class="flexbox_item">Search by presenter</a>
+                <a href="/" class="flexbox_item">Search by Suspect</a> -->
                 <a href="/" class="flexbox_item">Agency Attendance</a>
                 <a href="/" class="flexbox_item">Case Status</a>
                 <a href="/" class="flexbox_item">Center Roster</a>
