@@ -824,10 +824,12 @@ def notes(referral_id):
 
 
 
-    if data == None:
+    if len(data) == 0:
+        #print("no data")
         return render_template('error_handling.html')
     if request.method == "POST":
         return render_template('notes.html', referral_id = referral_id, **content,goals = goals, meeting_notes = meeting_notes,recommendations = recommendations)
+    
     return render_template('notes.html',referral_id = referral_id, **content,goals = goals,meeting_notes = meeting_notes, recommendations= recommendations, searchCase = True)
 
 
