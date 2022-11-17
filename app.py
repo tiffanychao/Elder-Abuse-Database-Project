@@ -1030,8 +1030,17 @@ def import_excel():
 
             ]]
             #print(cases_df.duplicated())
-            #cases_df.to_sql(name='cases',con = engine ,if_exists = 'replace', index = False)
-
+            try:
+                cases_df.to_sql(name='cases',con = engine ,if_exists = 'replace', index = False)
+            except:
+                sql = """SET FOREIGN_KEY_CHECKS=0;"""
+                cursor.execute(sql)
+                sql = """TRUNCATE table cases;"""
+                cursor.execute(sql)
+                cases_df.to_sql(name='cases',con = engine ,if_exists = 'append', index = False)
+                sql2 = """SET FOREIGN_KEY_CHECKS=1;"""
+                cursor.execute(sql2)
+                conn.commit()
 
             '''
             abuse-information
@@ -1059,9 +1068,19 @@ def import_excel():
                 'ad_Other' ,
                 'ad_Narrative' 
             ]]
-
-            abuse_df.to_sql(name='absue_information',con = engine ,if_exists = 'replace', index = False)
-
+            try:
+                abuse_df.to_sql(name='abuse_information',con = engine ,if_exists = 'replace', index = False)
+            except:
+                sql = """SET FOREIGN_KEY_CHECKS=0;"""
+                cursor.execute(sql)
+                
+                sql = """TRUNCATE table cases;"""
+                cursor.execute(sql)
+                abuse_df.to_sql(name='abuse_information',con = engine ,if_exists = 'append', index = False)
+                cases_df.to_sql(name='cases',con = engine ,if_exists = 'replace', index = False)
+                sql2 = """SET FOREIGN_KEY_CHECKS=1;"""
+                cursor.execute(sql2)
+                
 
             '''
             outcome
