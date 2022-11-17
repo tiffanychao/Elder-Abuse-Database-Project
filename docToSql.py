@@ -257,6 +257,8 @@ def mapToObj(input, cursor, conn):
     cursor.execute(sql, val)
     conn.commit()
 
+    return referral_id
+
 
 
     # for i in range(0, 3):

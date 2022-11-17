@@ -5,14 +5,14 @@ from flaskext.mysql import MySQL
 from dotenv import load_dotenv
 from getDataFromDB import *
 import os #provides ways to access the Operating System and allows us to read the environment variables
-# from mysql.connector import Error
-# import mysql.connector
-# from sqlalchemy import create_engine  # for import form function
-# from datetime import datetime
-# import pandas as pd
-# import pathlib
-# import worddocparser
-# import docToSql
+from mysql.connector import Error
+import mysql.connector
+from sqlalchemy import create_engine  # for import form function
+from datetime import datetime
+import pandas as pd
+import pathlib
+import worddocparser
+import docToSql
 load_dotenv()  # take environment variables from .env.
 
 
@@ -851,9 +851,10 @@ def import_case():
              print("file uploaded successfully")
              content = "file uploaded successfully : " + file
              doc = worddocparser.docx2python(file).text
+             r_id = -1
              try:
-                docToSql.mapToObj(doc, cursor, conn)
-                return render_template('import_case.html', content = content)
+                r_id = docToSql.mapToObj(doc, cursor, conn)
+                return render_template('import_case.html', content = content,referral_id = r_id)
              except:
                 content = "Please choose the standardized Microsoft Form to create a new case."
                 return render_template('import_case.html', content = content)
