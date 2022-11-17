@@ -21,14 +21,15 @@ def mapToObj(input, cursor, conn):
     
     ## Insert Data into cases table, and get the Referal ID
     sql = """INSERT INTO cases (status_urgent, status_routine, case_date, case_closed) VALUES (%s, %s, %s, %s)"""
-    val = (urgent, routine, date, False)
+    val = (urgent, routine, (date), False)
     cursor.execute(sql, val)
     conn.commit()
     referral_id = (cursor.lastrowid)
     print("Referral ID: " + str(referral_id))
     ## Insert Data into case number table
     sql = """INSERT INTO case_number (case_number, referral_id) VALUES (%s, %s)"""
-    val = (caseNumber, referral_id)
+    val = ((caseNumber), referral_id)
+    print(caseNumber)
     cursor.execute(sql, val)
     conn.commit()
     consult_aps = list[10].find("☐ Adult Protective Services") == -1
@@ -129,7 +130,7 @@ def mapToObj(input, cursor, conn):
     cl_gender,cl_marital,cl_address,cl_city,cl_zip,cl_phone, cl_phys_name,cl_phys_ph,cl_insurance,cl_medications,cl_Illnesses,cl_functional_status,
     cl_cognitive_status,cl_living_setting,cl_lives_with,cl_lives_with_desc, cl_prev_abuse_no,cl_prev_abuse_yes,cl_prev_abuse_desc) 
     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s , %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
-    val = (referral_id,cl_name_first,cl_name_last,cl_name_list,cl_age,cl_DOB,cl_language,cl_TransComm,cl_education,cl_ethnicity,
+    val = (referral_id,cl_name_first,cl_name_last,cl_name_list,(cl_age),(cl_DOB),cl_language,cl_TransComm,cl_education,cl_ethnicity,
     cl_gender,cl_marital,cl_address,cl_city,cl_zip,cl_phone, cl_phys_name,cl_phys_ph,cl_insurance,cl_medications,cl_Illnesses,cl_functional_status,
     cl_cognitive_status,cl_living_setting,cl_lives_with,cl_lives_with_desc, cl_prev_abuse_no,cl_prev_abuse_yes,cl_prev_abuse_desc)
     cursor.execute(sql, val)
@@ -186,7 +187,7 @@ def mapToObj(input, cursor, conn):
     su_mental_ill_desc, su_AdAlchlYES, su_AdAlchlNO, su_AdAlchlUNK, su_AdDrugsYES, su_AdDrugsNO, su_AdDrugsUNK, su_AdPrepYES, su_AdPrepNO, su_AdPrepUNK,
     su_AdOther, su_address, su_city, su_zip, su_phone)
     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s , %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
-    val = (referral_id, su_name_first, su_name_last, su_organization, su_name_list, su_age, su_DOB, 
+    val = (referral_id, su_name_first, su_name_last, su_organization, su_name_list, (su_age), (su_DOB), 
     su_ethnicity, su_gender, su_language, su_TransComm, su_PrimCrGvYES, su_PrimCrGvNo, su_LivesWthYES, su_relationship, su_LivesWthNO, su_mental_ill, 
     su_mental_ill_desc, su_AdAlchlYES, su_AdAlchlNO, su_AdAlchlUNK, su_AdDrugsYES, su_AdDrugsNO, su_AdDrugsUNK, su_AdPrepYES, su_AdPrepNO, su_AdPrepUNK,
     su_AdOther, su_address, su_city, su_zip, su_phone)
@@ -202,10 +203,6 @@ def mapToObj(input, cursor, conn):
     ad_FinanRlEst = list[304].find ("☐ Financial – Real Estate") == -1
     ad_FinanOth = list[282].find ("☐ Financial – Other") == -1
     ad_FinanLoss = list[290].split('$')[1].strip()
-    if ad_FinanLoss.find(','):
-        ad_FinanLoss = ad_FinanLoss.replace(',', '')
-    if ad_FinanLoss == '':
-        ad_FinanLoss = None
     ad_Isolation = list[298].find ("☐ Isolation") == -1
     ad_Sexual = list[306].find ("☐ Sexual") == -1
     ad_SelfNeglec = list[284].find ("☐ Self-Neglect") == -1
@@ -256,6 +253,8 @@ def mapToObj(input, cursor, conn):
     val = (referral_id)
     cursor.execute(sql, val)
     conn.commit()
+
+    return referral_id
 
 
 

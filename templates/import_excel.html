@@ -13,10 +13,20 @@
         <h1>File Upload</h1>
         <form method="POST" action="" enctype="multipart/form-data">
           <p><input type="file" name="file"></p>
+          <!-- <p><input type="submit" name="check_excel" value="Check Format"></p> -->
           <p><input type="submit" value="Insert"></p>
         </form>
         {% if show_results == 1 %}
-        <pre>{{content}}</pre>
+        <!-- {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <ul class=flashes>
+          {% for category, message in messages %}
+            <li class="{{ category }}">{{ message }}</li>
+          {% endfor %}
+          </ul>
+        {% endif %}
+      {% endwith %} -->
+        <pre style="color: #ff0000"><b>{{content}}</b></pre>
         {% endif %}
     </div> 
     <!-- <form action="/insert_excel" method="post">
@@ -26,6 +36,9 @@
 <div class="client_information_container">
   <div class="text_with_input_container">
   <form action="/import_excel/" method="post">
+    {% if show_results == 3 %}
+    <pre style="color: #ff0000"><b>{{content}}</b></pre>
+    {% endif %}
     {% if show_results == 2 %}
       {{ forward_message }} 
       <br>
