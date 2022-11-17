@@ -195,8 +195,10 @@ def abuser(referral_id):
     # figure out the associated client ID of the referral_id
     cursor.execute("SELECT * FROM suspects INNER JOIN cases ON cases.referral_id = suspects.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
     data = cursor.fetchone()
+    
     if data == None:
         return render_template('error_handling.html')
+ 
     su_id = data[0]
     if request.method == "POST":
         cursor.execute("""UPDATE suspects SET su_name_first = (%s),su_name_last = (%s), su_organization = (%s), 

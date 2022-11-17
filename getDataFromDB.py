@@ -58,7 +58,8 @@ WHERE
     cursor.execute(sql_notes)
     data = cursor.fetchall()
         
-    for item in data:
+    for itemori in data:
+        item = convertNonetoNull(itemori)
         dic = dict()
         dic['meeting_id'] = item[0]
         dic['date'] = item[1]
@@ -100,7 +101,8 @@ WHERE
 
     cursor.execute(sql_remd)
     data = cursor.fetchall()
-    for item in data:
+    for itemori in data:
+        item = convertNonetoNull(itemori)
         dicrcmd = dict()
         dicrcmd['ActionStep'] = item[0]
         dicrcmd['PersonResponsilbe'] = item[1]
@@ -209,7 +211,8 @@ def search_cases_from_database(type, first_name,last_name, closedCase):
         cursor.execute(basic_sql)
         data = cursor.fetchall()
         
-        for item in data:
+        for itemori in data:
+            item = convertNonetoNull(itemori)
             dic = dict()
             dic["link"] = "client_information/"+str(item[0])
             dic["referral_id"] = item[0]
@@ -285,7 +288,8 @@ cte_all_cases.case_closed =
         cursor.execute(basic_sql)
         data = cursor.fetchall()
         
-        for item in data:
+        for itemori in data:
+            item = convertNonetoNull(itemori)
             dic = dict()
             dic["link"] = "client_information/"+str(item[0])
             dic["referral_id"] = item[0]
@@ -361,7 +365,8 @@ cte_all_cases.case_closed =
         cursor.execute(basic_sql)
         data = cursor.fetchall()
         
-        for item in data:
+        for itemori in data:
+            item = convertNonetoNull(itemori)
             dic = dict()
             dic["link"] = "client_information/"+str(item[0])
             dic["referral_id"] = item[0]
@@ -379,10 +384,12 @@ def get_referral_info_from_db(referral_id):
     # size 10
     Dic = dict()
     cursor.execute(" SELECT * FROM referring_agency WHERE referral_id =  " + str(referral_id) + ";")
-    data = cursor.fetchone()
-    if data != None :
+    dataori = cursor.fetchone()
+    if dataori != None :
+        data = convertNonetoNull(dataori)
+       
         Dic["referCaseNum"] = data[1]
-        Dic["firstName"] = data[2]
+        Dic["firstName"] = data[2] 
         Dic["lastName"] = data[3]
         Dic["FCTeamMember"] = data[5]
         Dic["fcTeamOther"] = data[6]
@@ -393,3 +400,11 @@ def get_referral_info_from_db(referral_id):
         Dic["supervisorName"] = data[11]
  
     return Dic
+def convertNonetoNull(dataori):
+    data = []
+    for x in dataori :
+        if(x == None):
+            data.append('')
+        else :
+            data.append(x)
+    return data
