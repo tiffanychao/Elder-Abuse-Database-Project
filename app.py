@@ -861,6 +861,7 @@ def import_case():
 
      return render_template('import_case.html')
 
+
 @app.route('/import_excel',methods =["GET", "POST"])
 def import_excel():
     show_results= 0
@@ -870,47 +871,72 @@ def import_excel():
         file_extension = pathlib.Path(file).suffix
 
         if not(file_extension.endswith(".xlsx") or file_extension.endswith(".xls")):
-            content = "NOT EXCEL!!!"
+            content = "NOT VALID FILE PROVIDED! CHECK YOUR EXCEL FILE!"
             show_results=1
+            #flash(u'Invalid file provided', 'error')
             return render_template('import_excel.html', content = content, show_results = show_results)
         else:
+             
             show_results=2
             f.save((file))
             content = pd.read_excel(file)
+
             #return render_template('import_excel.html', content = content)
             engine = create_engine(os.getenv("DatabaseEngine"))
 
             excel_file = pd.ExcelFile(file)
+            try:
+                # check excel format
+                # client_sheet
+                client_col = list(content.columns.values)
+                client_col_true = ['referral_id', 'status_urgent', 'status_routine', 'case_date', 'case_number', 'consult_aps', 'consult_genesis', 'consult_district_att', 'consult_regional', 'consult_coroner', 'consult_law_enf', 'consult_att_oth', 'consult_psychologist', 'consult_physician', 'consult_ombudsman', 'consult_pub_guard', 'consult_other', 'consult_other_desc', 'consult_reason', 'case_closed', 'ra_case_no', 'ra_fname', 'ra_lname', 'ra_name_list', 'ra_fc_team', 'ra_fc_other', 'ra_email', 'ra_ph_office', 'ra_fx_office', 'ra_ph_mobile', 'ra_supervisor_name', 'cl_name_first', 'cl_name_last', 'cl_name_list', 'cl_age', 'cl_DOB', 'cl_language', 'cl_TransComm', 'cl_education', 'cl_ethnicity', 'cl_gender', 'cl_marital', 'cl_address', 'cl_city', 'cl_zip', 'cl_phone', 'cl_phys_name', 'cl_phys_ph', 'cl_insurance', 'cl_medications', 'cl_Illnesses', 'cl_functional_status', 'cl_cognitive_status', 'cl_living_setting', 'cl_lives_with', 'cl_lives_with_desc', 'cl_prev_abuse_no', 'cl_prev_abuse_yes', 'cl_prev_abuse_desc', 'cl_multiple_suspects', 'ad_InvAgencies', 'ad_RptingParty', 'ad_Others', 'ad_Abandon', 'ad_Abduction', 'ad_Emotional', 'ad_FinanRlEst', 'ad_FinanOth', 'ad_FinanLoss', 'ad_Isolation', 'ad_Sexual', 'ad_SelfNeglec', 'ad_NeglectOth', 'ad_PhyAssault', 'ad_PhyChemRst', 'ad_PhyCnstDpr', 'ad_PhyMedicat', 'ad_UndueInflu', 'ad_Other', 'ad_Narrative', 'oc_cp_arrest', 'oc_cp_hospital', 'oc_ev_geri', 'oc_ev_neuro', 'oc_ev_mental', 'oc_ev_law', 'oc_ss_support', 'oc_ss_compAPS', 'oc_ss_civil', 'oc_ap_freeze', 'oc_ap_other', 'oc_ap_restitution', 'oc_pr_charges', 'oc_pr_legal', 'oc_narrative', 'oc_self_suff', 'attachments', 'oc_csv_probate', 'oc_csv_lps', 'oc_csv_temp', 'oc_csv_pubg', 'oc_csv_priv', 'oc_csv_ext', 'oc_csv_name', 'oc_sa', 'oc_ro', 'oc_ro_name']
+                # meeting_sheet
+                excel_meeting = excel_file.parse(sheet_name="Meeting_Notes")
+                meeting_col = list(excel_meeting.columns.values)
+                meeting_col_true = ['referral_id', 'meeting_id', 'meeting_date', 'meeting_narrative', 'meeting_recs', 'meeting_goals', 'meeting_presenters']
+                # recommendation sheet
+                excel_recommendation = excel_file.parse(sheet_name = "Recommendations")
+                recommendation_col = list(excel_recommendation.columns.values)
+                recommendation_col_true = ['client_rec_id', 'referral_id', 'action_step', 'person_responsible', 'followup_date', 'action_status']
+                # suspect sheet
+                excel_suspect = excel_file.parse(sheet_name = "Suspect")
+                suspect_col = list(excel_suspect.columns.values)
+                
+                suspect_col_true = ['referral_id', 'su_id', 'su_name_first', 'su_name_last', 'su_organization', 'su_name_list', 'su_age', 'su_DOB', 'su_ethnicity', 'su_gender', 'su_language', 'su_TransComm', 'su_PrimCrGvYES', 'su_PrimCrGvNO', 'su_LivesWthYES', 'su_relationship', 'su_LivesWthNO', 'su_mental_ill', 'su_mental_ill_desc', 'su_AdAlchlYES', 'su_AdAlchlNO', 'su_AdAlchlUNK', 'su_AdDrugsYES', 'su_AdDrugsNO', 'su_AdDrugsUNK', 'su_AdPrepYES', 'su_AdPrepNO', 'su_AdPrepUNK', 'su_AdOther', 'su_address', 'su_city', 'su_zip', 'su_phone']
+                # goals sheet
+                excel_goals = excel_file.parse(sheet_name = "Goals")
+                goal_col = list(excel_goals.columns.values)
+                goal_col_true = ['client_goals_id', 'referral_id', 'goal']
+
+                if (client_col!=client_col_true or meeting_col!=meeting_col_true or recommendation_col!=recommendation_col_true or suspect_col!=suspect_col_true or goal_col!=goal_col_true):
+                    show_results = 3
+                    content = "Please check your format of excel file"
+                    return render_template('import_excel.html',show_results = show_results, content = content)
+            except:
+                show_results = 3
+                content = "Please check your format of excel file"
+                return render_template('import_excel.html',show_results = show_results, content = content)
             '''
-            test  - meeting_notes (use test table)
+            meeting_notes 
             '''
-            excel_meeting = excel_file.parse(sheet_name="Meeting_Notes")
+           
             meeting_df = excel_meeting[['referral_id','meeting_date','meeting_narrative','meeting_recs','meeting_goals','meeting_presenters']]
             meeting_df.to_sql(name = 'meeting_notes', con=engine, if_exists = 'replace', index = False)
 
             '''
-            test - recommendationsv
+            recommendation
             '''
-            excel_recommendation = excel_file.parse(sheet_name = "Recommendations")
+            
             recommendation_df = excel_recommendation[['referral_id','action_step',	'person_responsible',	'followup_date',	'action_status']]
             recommendation_df.to_sql(name = 'recommendations', con=engine, if_exists = 'replace', index = False)
             '''
-            test - Goalsv
-            '''
-
-            excel_goals = excel_file.parse(sheet_name = "Goals")
+            Goal
+            '''         
             goals_df = excel_goals[['referral_id','goal']]
             goals_df.to_sql(name = 'goals', con=engine, if_exists = 'replace', index = False)
-
-
-
-
             '''
-            test - Suspectv
-            '''
-
-
-            excel_suspect = excel_file.parse(sheet_name = "Suspect")
+            Suspect
+            ''' 
             suspect_df = excel_suspect[[
                 'referral_id',
                 'su_name_first',
@@ -950,9 +976,8 @@ def import_excel():
 
 
             '''
-            test - Client
+            Client
             '''
-
 
             excel_client  = excel_file.parse(sheet_name="Client")
             client_df = excel_client [[
