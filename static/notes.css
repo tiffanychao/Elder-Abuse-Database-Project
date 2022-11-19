@@ -48,7 +48,8 @@
   }
 #notes td, #notes th {
     border: 1px solid #ddd;
-    padding: 8px;
+    padding: 6px;
+    background-color: white;
   }
 #notes tr:nth-child(){background-color: white;}
 #notes th {
