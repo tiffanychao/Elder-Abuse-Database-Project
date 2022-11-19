@@ -2,8 +2,19 @@
 {% block title %}Index{% endblock %}
 {% block head %}
 {{ super() }}
+<link rel="stylesheet" href="../static/homepage.css">
 <link rel="stylesheet" href="../static/framework.css">
 {% endblock %}
 {% block content %}
-<div>temporary home page</div>
+<div class="homepage_information_banner_container">
+    <div class="client_information_banner">Database Usage</div>
+</div>
+<div class="homepage_information_container">
+    <p>>> "Import Form" to import a Forensic Center Referral Form into the database.</p>
+    <br>
+    <p>>> "New Record" to manually add a record to the database</p>
+    <br>
+    <p>>> "Search by" to query for clients in the database. The default will to show all. Refine the search by entering addtional search criteria.</p>
+    </div>
+</div>
 {% endblock %}
