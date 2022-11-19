@@ -1,0 +1,50 @@
+.homepage_information_banner{
+    font-size: 40px;
+    position: relative;
+    left: 380px;
+    width: 100%;
+}
+
+.homepage_information_banner_container{
+    background-color: #72b1c2;
+}
+
+
+
+.homepage_information_container{
+    padding: 20px 0px 0px 15px;
+    width: 100%;
+    overflow: visible;
+}
+
+
+
+
+@media only screen and (max-width: 1300px) {
+    .client_information_container{
+        position: relative;
+        right: 120px;
+    }
+    .client_information_banner{
+        font-size: 30px;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    .client_information_container{
+        position: relative;
+        right: 380px;
+    }
+    .client_information_banner{
+        font-size: 30px;
+        position: relative;
+        left: 40px;
+        
+    }
+}
+
+
+
+
+
+
