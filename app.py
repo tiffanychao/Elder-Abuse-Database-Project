@@ -49,6 +49,43 @@ def not_found(e):
   return render_template('error_handling.html')
 
 
+@app.route('/case_info/<int:referral_id>', methods = ["POST", "GET"])
+def case_info(referral_id): 
+    status_urgent = True
+    status_routine = True
+    case_closed = True
+    if request.form.get("status_urgent") == None:
+        status_urgent = False
+    if request.form.get("status_routine") == None:
+        status_routine = False
+    if request.form.get("case_closed") == None:
+        case_closed = False    
+    
+    if request.method == "POST":
+        cursor.execute("""UPDATE cases SET status_urgent = (%s), status_routine = (%s), case_closed = (%s), case_date = (%s) WHERE referral_id = """ + str(referral_id),
+         (status_urgent, status_routine,case_closed, request.form.get("case_date")))
+        conn.commit()
+
+        cursor.execute("""UPDATE case_number SET case_number = (%s) WHERE referral_id = """ + str(referral_id),
+         (request.form.get("case_number")))
+        conn.commit()
+
+    cursor.execute("SELECT * FROM cases INNER JOIN case_number ON cases.referral_id = case_number.referral_id WHERE cases.referral_id = " + str(referral_id) + ';')
+    data = cursor.fetchone()
+    if data == None:
+        return render_template('error_handling.html')
+    
+    content = {}
+    content["status_urgent"] = data[1]
+    content["status_routine"] = data[2]
+    content["case_date"] = data[3]
+    content["case_closed"] = data[4]
+    content["case_number"] = data[5]
+    print(data)
+    content['searchCase'] = True
+    return render_template('case_info.html', referral_id = referral_id, **content)
+    
+
 @app.route('/client/<int:referral_id>', methods = ["POST", "GET"])
 def client(referral_id):  
     # figure out the associated client ID of the referral_id

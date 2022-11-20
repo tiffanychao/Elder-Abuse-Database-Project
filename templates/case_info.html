@@ -2,7 +2,7 @@
 {% block title %}Index{% endblock %}
 {% block head %}
 {{ super() }}
-<link rel="stylesheet" href="../static/narrative.css">
+<link rel="stylesheet" href="../static/case_info.css">
 <link rel="stylesheet" href="../static/framework.css">
 {% endblock %}
 
@@ -21,35 +21,24 @@
 {% endblock %}
 
 {% block content %}
+<!-- Client Information Banner -->
 <div class="client_information_banner_container">
-    <div class="client_information_banner">Section - Narrative</div>
+<div class="client_information_banner">Case Information</div>
 </div>
-<!--  Narrative -->
 <form method="POST">
-<div class="client_information_container">
-    <div class="text_with_input_container">
-        <div>
-            Case Narrative
-        </div>
-        <br>
-        <br>
-        <div class="textarea_container">
-            <div>
-                <textarea name="oc_narrative" rows="20" cols="100">{{oc_narrative}}</textarea>
-            </div>
-        </div>
+<div class="case_info_container">
+    <div>
+        <label>Urgent Status</label> <input type="checkbox" name="status_urgent" {% if status_urgent == 1 %} checked {% endif %}>
+        <label>Routine Status</label> <input type="checkbox" name="status_routine" {% if status_routine == 1 %} checked {% endif %}>
+        <label>Case Closed</label> <input type="checkbox" name="case_closed" {% if case_closed == 1 %} checked {% endif %}>
+        <label>Case Date</label> <input type="date" value={{case_date}} name="case_date">
+        <label>Case Number</label> <input type="text" name="case_number" value={{case_number}}>
     </div>
-    <br>
-    <!--  button -->
-    <div class="button_container">
-        <div class="center">
-            <input class="blue_button" type="submit" value="Save" >
-            <button button onclick="window.print()" class = "blue_button">Print</button>
-        </div>
-    </div>
-
 </div>
-</div>
+<button>this is the button</button>
 </form>
+{% endblock %}
 
+{% block content2 %}
+<div>oh yeah it's working now</div>
 {% endblock %}
