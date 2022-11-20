@@ -613,6 +613,8 @@ def example():
 def narrative(referral_id):
     cursor.execute("SELECT * FROM outcome INNER JOIN cases ON cases.referral_id = outcome.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
     data = cursor.fetchone()
+    if data == None:
+        return render_template('error_handling.html')
     
     if request.method == "POST":
         oc_narrative = request.form.get("oc_narrative")
@@ -646,6 +648,9 @@ def consulation(referral_id):
     cursor.execute("SELECT * FROM consultation_information INNER JOIN cases ON cases.referral_id = consultation_information.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
     data = cursor.fetchone()
     #consultation_id = data[0]
+    if data == None:
+        return render_template('error_handling.html')
+
     
     #
     Services = True
