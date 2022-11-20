@@ -17,6 +17,7 @@
     <a href = {{ url_for('notes', referral_id = referral_id) }} class="individual_case_tab">notes</a>
     <a href = {{ url_for('referring_agency', referral_id = referral_id) }} class="individual_case_tab">referring agency</a>
     <a href = {{ url_for('attachments', referral_id = referral_id) }} class="individual_case_tab">attachments</a>
+    <a href = {{ url_for('case_info', referral_id = referral_id) }} class="individual_case_tab">case info</a>
 {% endblock %}
 
 {% block content %}
