@@ -1152,18 +1152,30 @@ def import_excel():
                 'case_closed' 
 
             ]]
-            #print(cases_df.duplicated())
-            try:
-                cases_df.to_sql(name='cases',con = engine ,if_exists = 'replace', index = False)
-            except:
-                sql = """SET FOREIGN_KEY_CHECKS=0;"""
-                cursor.execute(sql)
-                sql = """TRUNCATE table cases;"""
-                cursor.execute(sql)
-                cases_df.to_sql(name='cases',con = engine ,if_exists = 'append', index = False)
-                sql2 = """SET FOREIGN_KEY_CHECKS=1;"""
-                cursor.execute(sql2)
-                conn.commit()
+            
+            for index,row in cases_df.iterrows():
+                referral_id = row['referral_id']
+                status_urgent = bool(row['status_urgent'])
+                status_routine = bool(row['status_routine'])
+                case_date = row['case_date']
+                case_closed = bool(row['case_closed'])
+                cursor.execute ("""SELECT referral_id from cases""")
+                
+               
+                ref_id = [i[0] for i in cursor.fetchall()]
+                print(ref_id)
+                
+                if referral_id in ref_id:
+                    cursor.execute("""UPDATE cases SET status_urgent = (%s),status_routine=(%s),case_date=(%s),case_closed=(%s) WHERE referral_id = """+str(referral_id),(status_urgent,status_routine,case_date,case_closed))
+                    #print("update "+str(referral_id))
+                    conn.commit()
+                else:
+                    
+                    sql = """INSERT INTO cases VALUES(%s,%s,%s,%s,%s)"""
+                    val = (referral_id,status_urgent,status_routine,case_date,case_closed)
+                    #print("insert "+referral_id)
+                    cursor.execute(sql,val)
+                    conn.commit()
 
             '''
             abuse-information
