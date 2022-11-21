@@ -83,6 +83,11 @@ def case_info(referral_id):
     content["case_number"] = data[5]
     print(data)
     content['searchCase'] = True
+    content['bar_urgentstatus'] = content['status_urgent']
+    content['bar_routinestatus'] = content['status_routine']
+    content['bar_caseclosed'] = content['case_closed']
+    content['bar_date'] = content['case_date']
+    content['bar_case_number'] = content['case_number']
     return render_template('case_info.html', referral_id = referral_id, **content)
     
 

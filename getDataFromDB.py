@@ -53,7 +53,7 @@ WHERE
     FROM meeting_notes
     WHERE
 	    referral_id = 
-    """ + str(id)
+    """ + str(id) + " ORDER BY meeting_date DESC"
 
     cursor.execute(sql_notes)
     data = cursor.fetchall()
@@ -95,7 +95,7 @@ FROM
 	recommendations
 WHERE
 	referral_id = 
-    """ + str(id)
+    """ + str(id) + " ORDER BY followup_date DESC"
 
     rcmdlist = []
 
