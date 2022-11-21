@@ -202,12 +202,14 @@ def search_cases_from_database(type, first_name,last_name, closedCase):
         FROM all_cases
         WHERE
 	    all_cases.case_closed = 
-        """   + str(closedCase) + " ORDER BY all_cases.case_date DESC"
+        """   + str(closedCase) 
 
         if (first_name):
             basic_sql += " AND all_cases.cl_name_first = " + "\"" + first_name + "\" "
         if (last_name):
             basic_sql += " AND all_cases.cl_name_last = " + "\"" + last_name + "\" "
+        
+        basic_sql += " ORDER BY all_cases.case_date DESC"
         cursor.execute(basic_sql)
         data = cursor.fetchall()
         
@@ -275,7 +277,7 @@ SELECT
 FROM cte_all_cases
 WHERE
 cte_all_cases.case_closed =
-        """  + str(closedCase) + " ORDER BY cte_all_cases.case_date DESC"
+        """  + str(closedCase) 
         full_name = ""
         if (first_name):
             full_name += first_name.strip()
@@ -284,7 +286,7 @@ cte_all_cases.case_closed =
             full_name += last_name.strip()
         if (full_name):
             basic_sql += " AND cte_all_cases.meeting_presenters = " + "\"" + full_name + "\" "
-        
+        basic_sql += " ORDER BY all_cases.case_date DESC"
         cursor.execute(basic_sql)
         data = cursor.fetchall()
         
@@ -356,12 +358,14 @@ SELECT
 FROM cte_all_cases
 WHERE
 cte_all_cases.case_closed = 
-        """   + str(closedCase) + " ORDER BY cte_all_cases.case_date DESC"
+        """   + str(closedCase) 
 
         if (first_name):
             basic_sql += " AND cte_all_cases.su_name_first = " + "\"" + first_name + "\" "
         if (last_name):
             basic_sql += " AND cte_all_cases.su_name_last = " + "\"" + last_name + "\" "
+        
+        basic_sql += " ORDER BY all_cases.case_date DESC"
         cursor.execute(basic_sql)
         data = cursor.fetchall()
         

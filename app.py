@@ -573,9 +573,6 @@ def referring_agency(referral_id):
     
 @app.route('/case_summary/<referral_id>',methods =["GET", "POST"])
 def case_summary(referral_id):
-    if request.method == "POST":
-       
-        return  data1 
 
     
     dic = get_case_summary_from_db(referral_id)
