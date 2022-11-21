@@ -179,7 +179,7 @@ def search_cases_from_database(type, first_name,last_name, closedCase):
         ON
 		    case_number.referral_id = clients.referral_id
         ),
-        all_cases AS (
+        cte_all_cases AS (
             SELECT
 	        cases.case_date,
             cases.case_closed,
@@ -193,23 +193,23 @@ def search_cases_from_database(type, first_name,last_name, closedCase):
 	        case_number_clients.referral_id = cases.referral_id
         )
         SELECT
-	        all_cases.referral_id ,
-	        all_cases.case_number,
-            all_cases.cl_name_first,
-            all_cases.cl_name_last,
-            all_cases.case_date,
-            all_cases.case_closed
-        FROM all_cases
+	        cte_all_cases.referral_id ,
+	        cte_all_cases.case_number,
+            cte_all_cases.cl_name_first,
+            cte_all_cases.cl_name_last,
+            cte_all_cases.case_date,
+            cte_all_cases.case_closed
+        FROM cte_all_cases
         WHERE
-	    all_cases.case_closed = 
+	    cte_all_cases.case_closed = 
         """   + str(closedCase) 
 
         if (first_name):
-            basic_sql += " AND all_cases.cl_name_first = " + "\"" + first_name + "\" "
+            basic_sql += " AND cte_all_cases.cl_name_first LIKE " + "\"%" + first_name + "%\" "
         if (last_name):
-            basic_sql += " AND all_cases.cl_name_last = " + "\"" + last_name + "\" "
+            basic_sql += " AND cte_all_cases.cl_name_last LIKE " + "\"%" + last_name + "%\" "
         
-        basic_sql += " ORDER BY all_cases.case_date DESC"
+        basic_sql += " ORDER BY cte_all_cases.case_date DESC"
         cursor.execute(basic_sql)
         data = cursor.fetchall()
         
@@ -285,8 +285,8 @@ cte_all_cases.case_closed =
             full_name += " "
             full_name += last_name.strip()
         if (full_name):
-            basic_sql += " AND cte_all_cases.meeting_presenters = " + "\"" + full_name + "\" "
-        basic_sql += " ORDER BY all_cases.case_date DESC"
+            basic_sql += " AND cte_all_cases.meeting_presenters LIKE " + "\"%" + full_name + "%\" "
+        basic_sql += " ORDER BY cte_all_cases.case_date DESC"
         cursor.execute(basic_sql)
         data = cursor.fetchall()
         
@@ -361,11 +361,11 @@ cte_all_cases.case_closed =
         """   + str(closedCase) 
 
         if (first_name):
-            basic_sql += " AND cte_all_cases.su_name_first = " + "\"" + first_name + "\" "
+            basic_sql += " AND cte_all_cases.su_name_first LIKE " + "\"%" + first_name + "%\" "
         if (last_name):
-            basic_sql += " AND cte_all_cases.su_name_last = " + "\"" + last_name + "\" "
+            basic_sql += " AND cte_all_cases.su_name_last LIKE " + "\"%" + last_name + "%\" "
         
-        basic_sql += " ORDER BY all_cases.case_date DESC"
+        basic_sql += " ORDER BY cte_all_cases.case_date DESC"
         cursor.execute(basic_sql)
         data = cursor.fetchall()
         
