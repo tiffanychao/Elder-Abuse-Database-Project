@@ -586,6 +586,7 @@ def search_cases():
     search_type = 'client'
     first_name = ''
     last_name = ''
+    full_name = ''
     case_closed = 0
     query = 0
     if request.method == "POST":
@@ -595,24 +596,34 @@ def search_cases():
         
             
         search_type = request.form.get("searchType")
-        print(search_type)
+        # print(search_type)
         first_name = request.form.get("FirstName")
         last_name =  request.form.get("LastName")
+        full_name =  request.form.get("FullName")
+    
         if (request.form.get("closedCased")):
             case_closed = 1
 
         # print(case_closed)
     
     dic = dict()
-    dic['firstName'] = first_name
+    
 
    
-    infolist = search_cases_from_database(search_type,first_name,last_name,case_closed,cursor,conn)
+    infolist = search_cases_from_database(search_type,first_name,last_name,full_name,case_closed,cursor,conn)
     v_num = len(infolist)
     dic = dict()
     dic['searchType'] = search_type
+    if search_type == 'presenter':
+        first_name = ''
+        last_name = ''
+    if search_type != 'presenter' :
+        full_name = ''
     dic['firstName'] = first_name
+    dic['fullName'] = full_name
     dic['lastName'] = last_name
+    
+        
     dic['closedCase'] = case_closed
     dic['number'] = v_num
     dic['result'] = infolist

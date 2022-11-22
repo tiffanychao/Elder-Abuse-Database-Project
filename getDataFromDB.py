@@ -129,7 +129,7 @@ def delete_case(referral_id, cursor, conn):
     
     return None
 
-def search_cases_from_database(type, first_name,last_name, closedCase, cursor, conn):
+def search_cases_from_database(type, first_name,last_name,full_name, closedCase, cursor, conn):
     # result =  [dict(link="https://www.google.com/",id="1234", name="John Doe4"),
     #             dict(link="https://www.google.com/",id="1235", name="John Doe5"),
     #             dict(link="https://www.google.com/",id="1236", name="John Doe6"),
@@ -205,9 +205,9 @@ UNION
         """   + str(closedCase) 
 
         if (first_name):
-            basic_sql += " AND cte_all_cases.cl_name_first LIKE " + "\"%" + first_name + "%\" "
+            basic_sql += " AND cte_all_cases.cl_name_first LIKE " + "\"%" + first_name.strip() + "%\" "
         if (last_name):
-            basic_sql += " AND cte_all_cases.cl_name_last LIKE " + "\"%" + last_name + "%\" "
+            basic_sql += " AND cte_all_cases.cl_name_last LIKE " + "\"%" + last_name.strip() + "%\" "
         
         basic_sql += " ORDER BY cte_all_cases.case_date DESC"
         cursor.execute(basic_sql)
@@ -317,15 +317,10 @@ FROM cte_all_cases
 WHERE
 cte_all_cases.case_closed =
         """  + str(closedCase) 
-        full_name = ""
-        if (first_name):
-            full_name += first_name.strip()
-        if (last_name):
-            full_name += " "
-            full_name += last_name.strip()
-        if (full_name):
-            basic_sql += " AND cte_all_cases.meeting_presenters LIKE " + "\"%" + full_name + "%\" "
+        # print(full_name)
+        basic_sql += " AND cte_all_cases.meeting_presenters LIKE " + "\"%" + full_name.strip() + "%\" "
         basic_sql += " ORDER BY cte_all_cases.case_date DESC"
+        # print(basic_sql)
         cursor.execute(basic_sql)
         data = cursor.fetchall()
         
@@ -338,10 +333,8 @@ cte_all_cases.case_closed =
             dic["cl_name_first"] = item[2]
             dic["cl_name_last"] = item[3]
             dic["case_date"] = item[4]
-            arr = item[6].split(' ')
-            arrln = arr[1:]
-            dic["presenter_name_first"] = arr[0]
-            dic["presenter_name_last"] = ' '.join(arrln)
+            dic["presenter_name_full"] = item[6]
+        
             result.append(dic)
     else : # suspect
         basic_sql = """
@@ -443,9 +436,9 @@ cte_all_cases.case_closed =
         """   + str(closedCase) 
 
         if (first_name):
-            basic_sql += " AND cte_all_cases.su_name_first LIKE " + "\"%" + first_name + "%\" "
+            basic_sql += " AND cte_all_cases.su_name_first LIKE " + "\"%" + first_name.strip() + "%\" "
         if (last_name):
-            basic_sql += " AND cte_all_cases.su_name_last LIKE " + "\"%" + last_name + "%\" "
+            basic_sql += " AND cte_all_cases.su_name_last LIKE " + "\"%" + last_name.strip() + "%\" "
         
         basic_sql += " ORDER BY cte_all_cases.case_date DESC"
         cursor.execute(basic_sql)
@@ -516,7 +509,7 @@ WHERE
     
     cursor.execute(str_sql)
     dataori = cursor.fetchone()
-    print(dataori)
+    # print(dataori)
     if dataori != None :
         data = convertNonetoNull(dataori)
         dic['status_urgent'] = data[0]

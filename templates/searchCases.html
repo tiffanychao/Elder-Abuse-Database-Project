@@ -28,7 +28,8 @@
               </ul>
             {% endif %}
           {% endwith %}  -->
-          
+
+{% if searchType != 'presenter' %}
             <div class="text_with_input_container">
                 <div>
                     Search By
@@ -41,18 +42,17 @@
                 </select>
             </div>
     
-
-            <div class="row">
-                <div class="column">
-                    <div class="text_with_input_container">
+            <div class="row" id = "two" >
+                <div class="column"  >
+                    <div class="text_with_input_container"  >
                         <div>
                             First Name
                         </div>
                         <input name = "FirstName" value ="{{firstName}}" class="text_input_design">
                     </div>
                 </div>
-                <div class="column">
-                    <div class="text_with_input_container">
+                <div class="column" >
+                    <div class="text_with_input_container" >
                         <div>
                             Last Name
                         </div>
@@ -60,6 +60,90 @@
                         </div>
                 </div>
             </div>
+            <div class="row" id = "one"  hidden>
+                <div class="column"  >
+                    <div class="text_with_input_container" >
+                        <div>
+                            Full Name
+                        </div>
+                        <input name = "FullName" value="{{fullName}}" class="text_input_design">
+                        </div>
+                </div>
+                
+
+              
+            </div>
+            
+            
+            <script type="text/javascript">
+                
+                document.getElementById("searchType").addEventListener("change",function() {
+                
+                ispresenter = this.value === "presenter"
+                document.getElementById("two").hidden = ispresenter
+                document.getElementById("one").hidden = !ispresenter
+     
+                })
+                
+            </script>
+{% else %}
+<div class="text_with_input_container">
+    <div>
+        Search By
+    </div>
+    <select name="searchType" id="searchType">
+        <option {% if searchType == 'client' %} selected {% endif %} value="client" >Client</option>
+        <option {% if searchType == 'presenter' %} selected {% endif %} value="presenter" >Presenter</option>
+        <option {% if searchType == 'suspect' %} selected {% endif %} value="suspect" >Suspect</option>
+        
+    </select>
+</div>
+
+<div class="row" id = "two" hidden>
+    <div class="column"  >
+        <div class="text_with_input_container"  >
+            <div>
+                First Name
+            </div>
+            <input name = "FirstName" value ="{{firstName}}" class="text_input_design">
+        </div>
+    </div>
+    <div class="column" >
+        <div class="text_with_input_container" >
+            <div>
+                Last Name
+            </div>
+            <input name = "LastName" value="{{lastName}}" class="text_input_design">
+            </div>
+    </div>
+</div>
+<div class="row" id = "one"  >
+    <div class="column"  >
+        <div class="text_with_input_container" >
+            <div>
+                Full Name
+            </div>
+            <input name = "FullName" value="{{fullName}}" class="text_input_design">
+            </div>
+    </div>
+    
+
+  
+</div>
+
+
+<script type="text/javascript">
+    
+    document.getElementById("searchType").addEventListener("change",function() {
+    
+    ispresenter = this.value === "presenter"
+    document.getElementById("two").hidden = ispresenter
+    document.getElementById("one").hidden = !ispresenter
+
+    })
+    
+</script>
+{% endif %}
 
             <br>
             <br>
@@ -138,16 +222,16 @@
                                   <td>Client First Name</td>
                                   <td>Client Last Name</td>
                                   <td>Case Date</td>
-                                  <td>Presenter FN</td>
-                                  <td>Presenter LN</td>
+                                  <td>Presenter Full Name</td>
+                            
                                   {% for r in result %}
                                       <tr onclick="window.open('{{r.link}}' + location.search) ">                        
                                           <td>{{r.case_number}}</td>
                                           <td>{{r.cl_name_first}}</td>
                                           <td>{{r.cl_name_last}}</td>
                                           <td>{{r.case_date}}</td>
-                                          <td>{{r.presenter_name_first}}</td>
-                                          <td>{{r.presenter_name_last}}</td>
+                                          <td>{{r.presenter_name_full}}</td>
+                       
                                           <!-- <td><button >Delete</button></td> -->
                                       </tr>
                                   {% endfor %}
