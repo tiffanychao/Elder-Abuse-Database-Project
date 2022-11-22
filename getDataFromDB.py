@@ -1,30 +1,5 @@
-from flask import Flask
-app = Flask(__name__)
-import os #provides ways to access the Operating System and allows us to read the environment variables
-from flaskext.mysql import MySQL
-mysql = MySQL()
-app.config['MYSQL_DATABASE_USER'] = os.getenv("DatabaseUser")
-app.config['MYSQL_DATABASE_PASSWORD'] = os.getenv("DatabasePassword")
-app.config['MYSQL_DATABASE_DB'] = os.getenv("DatabaseDB")
-app.config['MYSQL_DATABASE_HOST'] = os.getenv("DatabaseHost")
-# app.secret_key = 'super secret key'
-# app.config['SESSION_TYPE'] = 'filesystem'
-mysql.init_app(app)
-# check whether DB is connected
-try:
-    conn = mysql.connect()
-    if conn:
-        db_Info = conn.get_server_info()
-        print("Connected to MySQL Server version ", db_Info)
-        cursor = conn.cursor()
-        cursor.execute("select database();")
-        
-        record = cursor.fetchone()
-        print("You're connected to database: ", record)
-except Error as e:
-    print("Error while connecting to MySQL", e)
 
-def get_case_summary_from_db(id):
+def get_case_summary_from_db(id, cursor, conn):
     #  search to get
     dict_all_info = dict()
     sql_name = """
@@ -113,7 +88,7 @@ WHERE
     dict_all_info["rcmd"] = rcmdlist
     return dict_all_info
 
-def delete_case(referral_id):
+def delete_case(referral_id, cursor, conn):
     delete_sql = "DELETE FROM clients WHERE referral_id = " + str(referral_id)
     cursor.execute(delete_sql)
     conn.commit()
@@ -154,7 +129,7 @@ def delete_case(referral_id):
     
     return None
 
-def search_cases_from_database(type, first_name,last_name, closedCase):
+def search_cases_from_database(type, first_name,last_name, closedCase, cursor, conn):
     # result =  [dict(link="https://www.google.com/",id="1234", name="John Doe4"),
     #             dict(link="https://www.google.com/",id="1235", name="John Doe5"),
     #             dict(link="https://www.google.com/",id="1236", name="John Doe6"),
@@ -384,7 +359,7 @@ cte_all_cases.case_closed =
         
     return result
 
-def get_referral_info_from_db(referral_id):
+def get_referral_info_from_db(referral_id, cursor, conn):
     # size 10
     Dic = dict()
     cursor.execute(" SELECT * FROM referring_agency WHERE referral_id =  " + str(referral_id) + ";")
@@ -413,7 +388,7 @@ def convertNonetoNull(dataori):
             data.append(x)
     return data
 
-def getBarInfo(referral_id):
+def getBarInfo(referral_id, cursor, conn):
     str_sql = """
 SELECT
 	status_urgent,
@@ -456,5 +431,5 @@ WHERE
         data = convertNonetoNull(dataori)
         dic['case_number'] = data[0]
 
-    print(dic)
+    # print(dic)
     return dic

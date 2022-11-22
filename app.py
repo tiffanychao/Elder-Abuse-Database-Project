@@ -7,12 +7,12 @@ from getDataFromDB import *
 import os #provides ways to access the Operating System and allows us to read the environment variables
 # from mysql.connector import Error
 # import mysql.connector
-# from sqlalchemy import create_engine  # for import form function
-# from datetime import datetime
+from sqlalchemy import create_engine  # for import form function
+from datetime import datetime
 # import pandas as pd
-# import pathlib
+import pathlib
 # import worddocparser
-# import docToSql
+import docToSql
 load_dotenv()  # take environment variables from .env.
 
 
@@ -135,7 +135,7 @@ def client(referral_id):
     if request.method == "POST":
         return render_template('client.html',referral_id =referral_id, **content)
 
-    barinfo = getBarInfo(referral_id)
+    barinfo = getBarInfo(referral_id,cursor,conn)
     content['bar_urgentstatus'] = barinfo['status_urgent']
     content['bar_routinestatus'] = barinfo['status_routine']
     content['bar_caseclosed'] = barinfo['case_closed']
@@ -197,7 +197,7 @@ def client_information(referral_id):
     content['multiple_suspects'] = data[30]
     content['searchCase'] = True
     
-    barinfo = getBarInfo(referral_id)
+    barinfo = getBarInfo(referral_id,cursor,conn)
     content['bar_urgentstatus'] = barinfo['status_urgent']
     content['bar_routinestatus'] = barinfo['status_routine']
     content['bar_caseclosed'] = barinfo['case_closed']
@@ -314,7 +314,7 @@ def abuser(referral_id):
     content['su_phone'] = data[32]
     content['searchCase'] = True
 
-    barinfo = getBarInfo(referral_id)
+    barinfo = getBarInfo(referral_id,cursor,conn)
     content['bar_urgentstatus'] = barinfo['status_urgent']
     content['bar_routinestatus'] = barinfo['status_routine']
     content['bar_caseclosed'] = barinfo['case_closed']
@@ -410,7 +410,7 @@ def abuse_info(referral_id):
     content['ad_Narrative'] = data[21] 
     
     content['searchCase'] = True
-    barinfo = getBarInfo(referral_id)
+    barinfo = getBarInfo(referral_id,cursor,conn)
     content['bar_urgentstatus'] = barinfo['status_urgent']
     content['bar_routinestatus'] = barinfo['status_routine']
     content['bar_caseclosed'] = barinfo['case_closed']
@@ -538,7 +538,7 @@ def center_outcomes(referral_id):
     content["oc_self_suff"] = data[26]
 
     content['searchCase'] = True
-    barinfo = getBarInfo(referral_id)
+    barinfo = getBarInfo(referral_id,cursor,conn)
     content['bar_urgentstatus'] = barinfo['status_urgent']
     content['bar_routinestatus'] = barinfo['status_routine']
     content['bar_caseclosed'] = barinfo['case_closed']
@@ -560,11 +560,14 @@ def referring_agency(referral_id):
          request.form.get('OfficePhone'), request.form.get("OfficeTax"), request.form.get("MobilePhone"), 
          request.form.get("SupervisorName")  ))
         conn.commit()
-    dictInfo = get_referral_info_from_db(referral_id)
+
+    dictInfo = get_referral_info_from_db(referral_id,cursor,conn)
+    if not dictInfo :
+        return render_template('error_handling.html')
     dictInfo['referral_id'] = referral_id
     dictInfo['searchCase'] = True
 
-    barinfo = getBarInfo(referral_id)
+    barinfo = getBarInfo(referral_id,cursor,conn)
     dictInfo['bar_urgentstatus'] = barinfo['status_urgent']
     dictInfo['bar_routinestatus'] = barinfo['status_routine']
     dictInfo['bar_caseclosed'] = barinfo['case_closed']
@@ -580,10 +583,10 @@ def referring_agency(referral_id):
 def case_summary(referral_id):
 
     
-    dic = get_case_summary_from_db(referral_id)
+    dic = get_case_summary_from_db(referral_id,cursor,conn)
     dic['referral_id'] = referral_id
   
-    barinfo = getBarInfo(referral_id)
+    barinfo = getBarInfo(referral_id,cursor,conn)
     dic['bar_urgentstatus'] = barinfo['status_urgent']
     dic['bar_routinestatus'] = barinfo['status_routine']
     dic['bar_caseclosed'] = barinfo['case_closed']
@@ -604,7 +607,7 @@ def search_cases():
     if request.method == "POST":
         if (request.form.get("deleteButton")):
             delete_referal_id = request.form.get("deleteButton")
-            delete_case(delete_referal_id)
+            delete_case(delete_referal_id,cursor,conn)
         
             
         search_type = request.form.get("searchType")
@@ -620,7 +623,7 @@ def search_cases():
     dic['firstName'] = first_name
 
    
-    infolist = search_cases_from_database(search_type,first_name,last_name,case_closed)
+    infolist = search_cases_from_database(search_type,first_name,last_name,case_closed,cursor,conn)
     v_num = len(infolist)
     dic = dict()
     dic['searchType'] = search_type
@@ -668,7 +671,7 @@ def narrative(referral_id):
     content["oc_narrative"] = data[14]
     
     content['searchCase'] = True
-    barinfo = getBarInfo(referral_id)
+    barinfo = getBarInfo(referral_id,cursor,conn)
     content['bar_urgentstatus'] = barinfo['status_urgent']
     content['bar_routinestatus'] = barinfo['status_routine']
     content['bar_caseclosed'] = barinfo['case_closed']
@@ -775,7 +778,7 @@ def consulation(referral_id):
     content["Reason"] = data[15]
     
     content['searchCase'] = True
-    barinfo = getBarInfo(referral_id)
+    barinfo = getBarInfo(referral_id,cursor,conn)
     content['bar_urgentstatus'] = barinfo['status_urgent']
     content['bar_routinestatus'] = barinfo['status_routine']
     content['bar_caseclosed'] = barinfo['case_closed']
@@ -931,7 +934,7 @@ def notes(referral_id):
     recommendations = [dict(zip(columns, row)) for row in cursor.fetchall()]
     
     content['searchCase'] = True
-    barinfo = getBarInfo(referral_id)
+    barinfo = getBarInfo(referral_id,cursor,conn)
     content['bar_urgentstatus'] = barinfo['status_urgent']
     content['bar_routinestatus'] = barinfo['status_routine']
     content['bar_caseclosed'] = barinfo['case_closed']
@@ -951,7 +954,7 @@ def notes(referral_id):
 def attachments(referral_id):
     content = dict()
     content['searchCase'] = True
-    barinfo = getBarInfo(referral_id)
+    barinfo = getBarInfo(referral_id,cursor,conn)
     content['bar_urgentstatus'] = barinfo['status_urgent']
     content['bar_routinestatus'] = barinfo['status_routine']
     content['bar_caseclosed'] = barinfo['case_closed']
