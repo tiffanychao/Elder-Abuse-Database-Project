@@ -1007,7 +1007,9 @@ def import_excel():
             content = pd.read_excel(file)
 
             #return render_template('import_excel.html', content = content)
-            engine = create_engine(os.getenv("DatabaseEngine"))
+            database_engine = "mysql+pymysql://"+str(os.getenv("DatabaseUser"))+":"+str(os.getenv("DatabasePassword"))+"@"+str(os.getenv("DatabaseHost"))+"/"+str(os.getenv("DatabaseDB"))
+            
+            engine = create_engine(database_engine)
 
             excel_file = pd.ExcelFile(file)
             try:
