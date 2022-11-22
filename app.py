@@ -989,7 +989,6 @@ def import_case():
 
      return render_template('import_case.html')
 
-
 @app.route('/import_excel',methods =["GET", "POST"])
 def import_excel():
     show_results= 0
@@ -1010,6 +1009,8 @@ def import_excel():
             content = pd.read_excel(file)
 
             #return render_template('import_excel.html', content = content)
+            cursor.execute("SET GLOBAL FOREIGN_KEY_CHECKS=0;")
+            conn.commit()
             database_engine = "mysql+pymysql://"+str(os.getenv("DatabaseUser"))+":"+str(os.getenv("DatabasePassword"))+"@"+str(os.getenv("DatabaseHost"))+"/"+str(os.getenv("DatabaseDB"))
             
             engine = create_engine(database_engine)
@@ -1050,24 +1051,25 @@ def import_excel():
             meeting_notes 
             '''
            
-            meeting_df = excel_meeting[['referral_id','meeting_date','meeting_narrative','meeting_recs','meeting_goals','meeting_presenters']]
+            meeting_df = excel_meeting[['meeting_id','referral_id','meeting_date','meeting_narrative','meeting_recs','meeting_goals','meeting_presenters']]
             meeting_df.to_sql(name = 'meeting_notes', con=engine, if_exists = 'replace', index = False)
 
             '''
             recommendation
             '''
             
-            recommendation_df = excel_recommendation[['referral_id','action_step',	'person_responsible',	'followup_date',	'action_status']]
+            recommendation_df = excel_recommendation[['client_rec_id','referral_id','action_step',	'person_responsible',	'followup_date',	'action_status']]
             recommendation_df.to_sql(name = 'recommendations', con=engine, if_exists = 'replace', index = False)
             '''
             Goal
             '''         
-            goals_df = excel_goals[['referral_id','goal']]
+            goals_df = excel_goals[['client_goals_id','referral_id','goal']]
             goals_df.to_sql(name = 'goals', con=engine, if_exists = 'replace', index = False)
             '''
             Suspect
             ''' 
             suspect_df = excel_suspect[[
+                'su_id',
                 'referral_id',
                 'su_name_first',
                 'su_name_last' ,
@@ -1101,9 +1103,72 @@ def import_excel():
                 'su_zip' ,
                 'su_phone' 
             ]]
-            suspect_df.to_sql(name = 'suspects', con=engine, if_exists = 'replace', index = False)
-
-
+            suspect_df = suspect_df.where(pd.notnull(suspect_df), None)
+            #suspect_df.to_sql(name = 'suspects', con=engine, if_exists = 'replace', index = False)
+            for index,row in suspect_df.iterrows():
+                referral_id = row['referral_id']
+                su_name_first = row['su_name_first']
+                su_name_last = row['su_name_last']
+                su_organization = row['su_organization']
+                su_name_list = row['su_name_list']
+                su_age = row['su_age']
+                su_DOB = row['su_DOB']
+                su_ethnicity = row['su_ethnicity']
+                su_gender = row['su_gender']
+                su_language = row['su_language']
+                su_TransComm = row['su_TransComm']
+                su_PrimCrGvYES = row['su_PrimCrGvYES']
+                su_PrimCrGvNo = row['su_PrimCrGvNO']
+                su_LivesWthYES = row['su_LivesWthYES']
+                su_relationship = row['su_relationship']
+                su_LivesWthNO = row['su_LivesWthNO']
+                su_mental_ill = row['su_mental_ill']
+                su_mental_ill_desc = row['su_mental_ill_desc']
+                su_AdAlchlYES = row['su_AdAlchlYES']
+                su_AdAlchlNO = row['su_AdAlchlNO']
+                su_AdAlchlUNK = row['su_AdAlchlUNK']
+                su_AdDrugsYES = row['su_AdDrugsYES']
+                su_AdDrugsNO = row['su_AdDrugsNO']
+                su_AdDrugsUNK = row['su_AdDrugsUNK']
+                su_AdPrepYES = row['su_AdPrepYES']
+                su_AdPrepNO = row['su_AdPrepNO']
+                su_AdPrepUNK = row['su_AdPrepUNK']
+                su_AdOther = row['su_AdOther']
+                su_address = row['su_address']
+                su_city = row['su_city']
+                su_zip = row['su_zip']
+                su_phone = row['su_phone']
+                cursor.execute ("""SELECT referral_id from cases""")
+                ref_id = [i[0] for i in cursor.fetchall()]
+                    
+                    
+                if referral_id not in ref_id:
+                    sql = """INSERT INTO suspects (referral_id, su_name_first, su_name_last, su_organization, su_name_list, su_age, su_DOB, 
+                    su_ethnicity, su_gender, su_language, su_TransComm, su_PrimCrGvYES, su_PrimCrGvNo, su_LivesWthYES, su_relationship, su_LivesWthNO, su_mental_ill, 
+                    su_mental_ill_desc, su_AdAlchlYES, su_AdAlchlNO, su_AdAlchlUNK, su_AdDrugsYES, su_AdDrugsNO, su_AdDrugsUNK, su_AdPrepYES, su_AdPrepNO, su_AdPrepUNK,
+                    su_AdOther, su_address, su_city, su_zip, su_phone)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s , %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+                    val = (referral_id, su_name_first, su_name_last, su_organization, su_name_list, (su_age), (su_DOB), 
+                    su_ethnicity, su_gender, su_language, su_TransComm, su_PrimCrGvYES, su_PrimCrGvNo, su_LivesWthYES, su_relationship, su_LivesWthNO, su_mental_ill, 
+                    su_mental_ill_desc, su_AdAlchlYES, su_AdAlchlNO, su_AdAlchlUNK, su_AdDrugsYES, su_AdDrugsNO, su_AdDrugsUNK, su_AdPrepYES, su_AdPrepNO, su_AdPrepUNK,
+                    su_AdOther, su_address, su_city, su_zip, su_phone)
+                    #cursor.execute(sql, val)
+                    conn.commit()
+                
+                else:
+                    cursor.execute("""UPDATE suspects SET su_name_first = (%s),su_name_last = (%s), su_organization = (%s), su_name_list = (%s),
+                    su_age = (%s), su_DOB = (%s), su_ethnicity = (%s), su_gender = (%s), su_language = (%s), 
+                    su_TransComm = (%s), su_PrimCrGvYES = (%s), su_PrimCrGvNO = (%s), su_LivesWthYES = (%s), 
+                    su_relationship = (%s), su_LivesWthNO = (%s), su_mental_ill = (%s), su_mental_ill_desc = (%s),
+                    su_AdAlchlYES = (%s), su_AdAlchlNO = (%s), su_AdAlchlUNK = (%s), su_AdDrugsYES = (%s),
+                    su_AdDrugsNO = (%s), su_AdDrugsUNK = (%s), su_AdPrepYES = (%s), su_AdPrepNO = (%s),
+                    su_AdPrepUNK = (%s), su_AdOther = (%s), su_address = (%s), su_city = (%s), su_zip = (%s),
+                    su_phone = (%s) WHERE referral_id = """ + str(referral_id),
+                    (su_name_first, su_name_last, su_organization, su_name_list, (su_age), (su_DOB), 
+                    su_ethnicity, su_gender, su_language, su_TransComm, su_PrimCrGvYES, su_PrimCrGvNo, su_LivesWthYES, su_relationship, su_LivesWthNO, su_mental_ill, 
+                    su_mental_ill_desc, su_AdAlchlYES, su_AdAlchlNO, su_AdAlchlUNK, su_AdDrugsYES, su_AdDrugsNO, su_AdDrugsUNK, su_AdPrepYES, su_AdPrepNO, su_AdPrepUNK,
+                    su_AdOther, su_address, su_city, su_zip, su_phone))
+                    conn.commit()
 
             '''
             Client
@@ -1144,8 +1209,139 @@ def import_excel():
 
 
             ]]
-            client_df.to_sql(name='clients',con = engine ,if_exists = 'replace', index = False)
+            print("----client-----")
+            client_df = client_df.where(pd.notnull(client_df), None)
+            for index,row in client_df.iterrows():
+               
+                referral_id = row['referral_id']
+                cl_name_first = row['cl_name_first']
+                cl_name_last = row['cl_name_last']
+                cl_name_list = row['cl_name_list']
+                cl_age = row['cl_age']
+                cl_DOB = row['cl_DOB']
+                cl_language = row['cl_language']
+                cl_TransComm = row['cl_TransComm']
+                cl_education = row['cl_education']
+                cl_ethnicity = row['cl_ethnicity']
+                cl_gender = row['cl_gender']
+                cl_marital = row['cl_marital']
+                cl_address = row['cl_address']
+                cl_city = row['cl_city']
+                cl_zip = row['cl_zip']
+                cl_phone = row['cl_phone']
+                cl_phys_name = row['cl_phys_name']
+                cl_phys_ph = row['cl_phys_ph']
+                cl_insurance = row['cl_insurance']
+                cl_medications = row['cl_medications']
+                cl_Illnesses = row['cl_Illnesses']
+                cl_functional_status = row['cl_functional_status']
+                cl_cognitive_status = row['cl_cognitive_status']
+                cl_living_setting = row['cl_living_setting']
+                cl_lives_with = row['cl_lives_with']
+                cl_lives_with_desc = row['cl_lives_with_desc']
+                cl_prev_abuse_no = row['cl_prev_abuse_no']
+                cl_prev_abuse_yes = row['cl_prev_abuse_no']
+                cl_prev_abuse_desc = row['cl_prev_abuse_desc']
+                cl_multiple_suspects = row['cl_multiple_suspects']
+                cursor.execute ("""SELECT referral_id from cases""")
+                ref_id = [i[0] for i in cursor.fetchall()]
+                    
+                    
+                if referral_id in ref_id:
+                    pass
+                    # cursor.execute("""UPDATE cases SET status_urgent = (%s),status_routine=(%s),case_date=(%s),case_closed=(%s) WHERE referral_id = """+str(referral_id),(status_urgent,status_routine,case_date,case_closed))
+                    # #print("update "+str(referral_id))
+                    # conn.commit()
+                else:
+                    sql = """INSERT INTO clients(                    
+                    referral_id ,
+                    cl_name_first,
+                    cl_name_last ,
+                    cl_name_list,
+                    cl_age,
+                    cl_DOB,
+                    cl_language,
+                    cl_TransComm,
+                    cl_education,
+                    cl_ethnicity,
+                    cl_gender,
+                    cl_marital,
+                    cl_address,
+                    cl_city,
+                    cl_zip,
+                    cl_phone,
+                    cl_phys_name,
+                    cl_phys_ph,
+                    cl_insurance,
+                    cl_medications,
+                    cl_Illnesses,
+                    cl_functional_status,
+                    cl_cognitive_status,
+                    cl_living_setting,
+                    cl_lives_with,
+                    cl_lives_with_desc,
+                    cl_prev_abuse_no,
+                    cl_prev_abuse_yes,
+                    cl_prev_abuse_desc,
+                    cl_multiple_suspects) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
+                    val=(
+                    referral_id ,
+                    cl_name_first,
+                    cl_name_last ,
+                    cl_name_list,
+                    cl_age,
+                    cl_DOB,
+                    cl_language,
+                    cl_TransComm,
+                    cl_education,
+                    cl_ethnicity,
+                    cl_gender,
+                    cl_marital,
+                    cl_address,
+                    cl_city,
+                    cl_zip,
+                    cl_phone,
+                    cl_phys_name,
+                    cl_phys_ph,
+                    cl_insurance,
+                    cl_medications,
+                    cl_Illnesses,
+                    cl_functional_status,
+                    cl_cognitive_status,
+                    cl_living_setting,
+                    cl_lives_with,
+                    cl_lives_with_desc,
+                    cl_prev_abuse_no,
+                    cl_prev_abuse_yes,
+                    cl_prev_abuse_desc,
+                    cl_multiple_suspects)
+                    cursor.execute(sql,val)
+                    conn.commit()
+                #client_df.to_sql(name='clients',con = engine ,if_exists = 'append', index = False)
 
+            '''
+            case_number
+            '''
+            
+            case_number_df = excel_client[['case_number','referral_id']]
+            case_number_df.to_sql(name='case_number',con = engine ,if_exists = 'replace', index = False)
+            # for index,row in case_number_df.iterrows():
+            #     referral_id = row['referral_id']
+            #     case_number = row['case_number']
+            #     cursor.execute ("""SELECT referral_id from case_number""")
+            #     ref_id = [i[0] for i in cursor.fetchall()]
+            #     if referral_id not in ref_id:
+            #         sql = """INSERT INTO case_number(case_number,referral_id) VALUES(%s,%s)"""
+            #         val = (case_number,referral_id)
+            #         #print("insert "+referral_id)
+            #         cursor.execute(sql,val)
+            #         conn.commit()
+            #     else:
+            #         cursor.execute("""SET FOREIGN_KEY_CHECKS=0;""")
+            #         conn.commit()
+            #         cursor.execute("""UPDATE case_number SET case_number = (%s), referral_id = (%s) WHERE referral_id = """+str(referral_id),(case_number,referral_id))
+            #         conn.commit()
+            
             '''
             cases 
             '''
@@ -1159,7 +1355,7 @@ def import_excel():
                 'case_closed' 
 
             ]]
-            
+            cases_df = cases_df.where(pd.notnull(cases_df), None)
             for index,row in cases_df.iterrows():
                 referral_id = row['referral_id']
                 status_urgent = bool(row['status_urgent'])
@@ -1170,7 +1366,7 @@ def import_excel():
                 
                
                 ref_id = [i[0] for i in cursor.fetchall()]
-                print(ref_id)
+                
                 
                 if referral_id in ref_id:
                     cursor.execute("""UPDATE cases SET status_urgent = (%s),status_routine=(%s),case_date=(%s),case_closed=(%s) WHERE referral_id = """+str(referral_id),(status_urgent,status_routine,case_date,case_closed))
@@ -1210,19 +1406,76 @@ def import_excel():
                 'ad_Other' ,
                 'ad_Narrative' 
             ]]
-            try:
-                abuse_df.to_sql(name='abuse_information',con = engine ,if_exists = 'replace', index = False)
-            except:
-                sql = """SET FOREIGN_KEY_CHECKS=0;"""
-                cursor.execute(sql)
+            abuse_df = abuse_df.where(pd.notnull(abuse_df), None)
+           
+            # print(abuse_df)
+            for index,row in abuse_df.iterrows():
+                referral_id = row['referral_id']
+                ad_InvAgencies = row['ad_InvAgencies']
+                ad_RptingParty = row['ad_RptingParty']
+                ad_Others = row['ad_Others']
+                ad_Abandon = row['ad_Abandon']
+                ad_Abduction = row['ad_Abduction']
+                ad_Emotional = row['ad_Emotional']
+                ad_FinanRlEst = row['ad_FinanRlEst']
+                ad_FinanOth = row['ad_FinanOth']
+                ad_FinanLoss = row['ad_FinanLoss'] 
+                ad_Isolation = row['ad_Isolation']
+                ad_Sexual = row['ad_Sexual']
+                ad_SelfNeglec = row['ad_SelfNeglec']
+                ad_NeglectOth = row['ad_NeglectOth']
+                ad_PhyAssault = row['ad_PhyAssault']
+                ad_PhyChemRst = row['ad_PhyChemRst']
+                ad_PhyCnstDpr = row['ad_PhyCnstDpr']
+                ad_PhyMedicat = row['ad_PhyMedicat']
+                ad_UndueInflu = row['ad_UndueInflu']
+                ad_Other = row['ad_Other']
+                ad_Narrative = row['ad_Narrative']                
                 
-                sql = """TRUNCATE table cases;"""
-                cursor.execute(sql)
-                abuse_df.to_sql(name='abuse_information',con = engine ,if_exists = 'append', index = False)
-                cases_df.to_sql(name='cases',con = engine ,if_exists = 'replace', index = False)
-                sql2 = """SET FOREIGN_KEY_CHECKS=1;"""
-                cursor.execute(sql2)
+                cursor.execute ("""SELECT referral_id from cases""")
+               
+                ref_id = [i[0] for i in cursor.fetchall()]
+               
                 
+                if referral_id in ref_id:
+                    
+                    cursor.execute("""UPDATE abuse_information SET ad_InvAgencies = (%s), ad_RptingParty = (%s), ad_Others = (%s), ad_Abandon = (%s),
+                    ad_Abduction = (%s), ad_Emotional = (%s), ad_FinanRlEst = (%s), ad_FinanOth = (%s), ad_FinanLoss = (%s), ad_Isolation= (%s), ad_Sexual = (%s), ad_SelfNeglec = (%s), 
+                    ad_NeglectOth = (%s), ad_PhyAssault = (%s), ad_PhyChemRst =(%s), ad_PhyCnstDpr = (%s), ad_PhyMedicat = (%s), ad_UndueInflu = (%s), ad_Other = (%s), ad_Narrative = (%s) WHERE referral_id = """ + str(referral_id),
+                        (             
+                        ad_InvAgencies ,
+                        ad_RptingParty ,
+                        ad_Others ,
+                        ad_Abandon ,
+                        ad_Abduction ,
+                        ad_Emotional ,
+                        ad_FinanRlEst ,
+                        ad_FinanOth ,
+                        ad_FinanLoss , 
+                        ad_Isolation ,
+                        ad_Sexual ,
+                        ad_SelfNeglec ,
+                        ad_NeglectOth ,
+                        ad_PhyAssault ,
+                        ad_PhyChemRst ,
+                        ad_PhyCnstDpr ,
+                        ad_PhyMedicat ,
+                        ad_UndueInflu ,
+                        ad_Other ,
+                        ad_Narrative ))
+                    conn.commit()
+                    
+                else:
+                    
+                    sql = """INSERT INTO abuse_information (referral_id, ad_InvAgencies, ad_RptingParty, ad_Others, ad_Abandon, ad_Abduction, 
+                    ad_Emotional, ad_FinanRlEst, ad_FinanOth, ad_FinanLoss,ad_Isolation, ad_Sexual, ad_SelfNeglec, ad_NeglectOth, ad_PhyAssault, 
+                    ad_PhyChemRst, ad_PhyCnstDpr, ad_PhyMedicat, ad_UndueInflu, ad_Other, ad_Narrative) 
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s , %s, %s, %s, %s, %s)"""
+                    val = (referral_id, ad_InvAgencies, ad_RptingParty, ad_Others, ad_Abandon, ad_Abduction, 
+                    ad_Emotional, ad_FinanRlEst, ad_FinanOth, ad_FinanLoss,ad_Isolation, ad_Sexual, ad_SelfNeglec, ad_NeglectOth, ad_PhyAssault, 
+                    ad_PhyChemRst, ad_PhyCnstDpr, ad_PhyMedicat, ad_UndueInflu, ad_Other, ad_Narrative)
+                    cursor.execute(sql, val)
+                    conn.commit()
 
             '''
             outcome
@@ -1257,8 +1510,151 @@ def import_excel():
                 'oc_self_suff' 
 
             ]]
-
-            outcome_df.to_sql(name = 'outcome',con = engine ,if_exists = 'replace', index = False)
+            outcome_df = outcome_df.where(pd.notnull(outcome_df), None)
+            # sql to insert or update
+            for index, row in outcome_df.iterrows():
+                referral_id  = row['referral_id']
+                oc_cp_arrest = row['oc_cp_arrest']
+                oc_cp_hospital = row['oc_cp_hospital']
+                oc_ev_neuro = row['oc_ev_neuro']
+                oc_ev_mental = row['oc_ev_mental']
+                oc_ev_law = row['oc_ev_law']
+                oc_ss_support = row['oc_ss_support']
+                oc_ss_compAPS = row['oc_ss_compAPS']
+                oc_ss_civil = row['oc_ss_civil']
+                oc_ap_freeze = row['oc_ap_freeze']
+                oc_ap_other = row['oc_ap_other']
+                oc_ap_restitution = row['oc_ap_restitution']
+                oc_pr_charges = row['oc_pr_charges']
+                oc_pr_legal = row['oc_pr_legal']
+                oc_narrative = row['oc_narrative']
+                oc_csv_probate = row['oc_csv_probate']
+                oc_csv_lps = row['oc_csv_lps']
+                oc_csv_temp = row['oc_csv_temp']
+                oc_csv_pubg = row['oc_csv_pubg']
+                oc_csv_priv = row['oc_csv_priv']
+                oc_csv_ext = row['oc_csv_ext']
+                oc_csv_name = row['oc_csv_name']
+                oc_sa = row['oc_sa']
+                oc_ro = row['oc_ro']
+                oc_ro_name = row['oc_ro_name']
+                oc_ev_geri = row['oc_ev_geri']
+                oc_self_suff = row['oc_self_suff']
+       
+                cursor.execute ("""SELECT referral_id from cases""")
+               
+                ref_id = [i[0] for i in cursor.fetchall()]
+                if referral_id not in ref_id:        
+                    sql="""INSERT INTO outcome(referral_id,                
+                            oc_cp_arrest,
+                            oc_cp_hospital,
+                            oc_ev_neuro,
+                            oc_ev_mental,
+                            oc_ev_law,
+                            oc_ss_support,
+                            oc_ss_compAPS,
+                            oc_ss_civil,
+                            oc_ap_freeze,
+                            oc_ap_other,
+                            oc_ap_restitution,
+                            oc_pr_charges,
+                            oc_pr_legal,
+                            oc_narrative,
+                            oc_csv_probate,
+                            oc_csv_lps,
+                            oc_csv_temp,
+                            oc_csv_pubg,
+                            oc_csv_priv,
+                            oc_csv_ext,
+                            oc_csv_name,
+                            oc_sa,
+                            oc_ro,
+                            oc_ro_name,
+                            oc_ev_geri,
+                            oc_self_suff)VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) """
+                    val = (referral_id,                
+                            oc_cp_arrest,
+                            oc_cp_hospital,
+                            oc_ev_neuro,
+                            oc_ev_mental,
+                            oc_ev_law,
+                            oc_ss_support,
+                            oc_ss_compAPS,
+                            oc_ss_civil,
+                            oc_ap_freeze,
+                            oc_ap_other,
+                            oc_ap_restitution,
+                            oc_pr_charges,
+                            oc_pr_legal,
+                            oc_narrative,
+                            oc_csv_probate,
+                            oc_csv_lps,
+                            oc_csv_temp,
+                            oc_csv_pubg,
+                            oc_csv_priv,
+                            oc_csv_ext,
+                            oc_csv_name,
+                            oc_sa,
+                            oc_ro,
+                            oc_ro_name,
+                            oc_ev_geri,
+                            oc_self_suff )
+                else:
+                    cursor.execute("""UPDATE outcome SET     
+                            oc_cp_arrest = (%s),
+                            oc_cp_hospital= (%s),
+                            oc_ev_neuro= (%s),
+                            oc_ev_mental= (%s),
+                            oc_ev_law= (%s),
+                            oc_ss_support= (%s),
+                            oc_ss_compAPS= (%s),
+                            oc_ss_civil= (%s),
+                            oc_ap_freeze= (%s),
+                            oc_ap_other= (%s),
+                            oc_ap_restitution= (%s),
+                            oc_pr_charges= (%s),
+                            oc_pr_legal= (%s),
+                            oc_narrative= (%s),
+                            oc_csv_probate= (%s),
+                            oc_csv_lps= (%s),
+                            oc_csv_temp= (%s),
+                            oc_csv_pubg= (%s),
+                            oc_csv_priv= (%s),
+                            oc_csv_ext= (%s),
+                            oc_csv_name= (%s),
+                            oc_sa= (%s),
+                            oc_ro= (%s),
+                            oc_ro_name= (%s),
+                            oc_ev_geri= (%s),
+                            oc_self_suff= (%s)  WHERE referral_id = """ + str(referral_id),
+                    (       oc_cp_arrest,
+                            oc_cp_hospital,
+                            oc_ev_neuro,
+                            oc_ev_mental,
+                            oc_ev_law,
+                            oc_ss_support,
+                            oc_ss_compAPS,
+                            oc_ss_civil,
+                            oc_ap_freeze,
+                            oc_ap_other,
+                            oc_ap_restitution,
+                            oc_pr_charges,
+                            oc_pr_legal,
+                            oc_narrative,
+                            oc_csv_probate,
+                            oc_csv_lps,
+                            oc_csv_temp,
+                            oc_csv_pubg,
+                            oc_csv_priv,
+                            oc_csv_ext,
+                            oc_csv_name,
+                            oc_sa,
+                            oc_ro,
+                            oc_ro_name,
+                            oc_ev_geri,
+                            oc_self_suff ))
+                    conn.commit()
+            #outcome_df.to_sql(name = 'outcome',con = engine ,if_exists = 'append', index = False)
 
 
             '''
@@ -1278,7 +1674,63 @@ def import_excel():
                 'ra_supervisor_name'
 
             ]]
-            referring_df.to_sql(name='referring_agency',con = engine ,if_exists = 'replace', index = False)
+            referring_df = referring_df.where(pd.notnull(referring_df), None)
+            for index, row in referring_df.iterrows():
+                referral_id  = row['referral_id']
+                ra_fname  = row['ra_fname']
+                ra_lname = row['ra_lname']
+                ra_name_list = row['ra_name_list']
+                ra_fc_team = row['ra_fc_team']
+                ra_fc_other = row['ra_fc_other']
+                ra_email = row['ra_email']
+                ra_ph_office = row['ra_ph_office']
+                ra_fx_office = row['ra_fx_office']
+                ra_ph_mobile = row['ra_ph_mobile']
+                ra_supervisor_name = row['ra_supervisor_name']   
+                cursor.execute ("""SELECT referral_id from cases""")
+               
+                ref_id = [i[0] for i in cursor.fetchall()]
+                if referral_id not in ref_id:
+                    sql = """INSERT INTO referring_agency(referral_id,
+                            ra_fname ,
+                            ra_lname ,
+                            ra_name_list ,
+                            ra_fc_team ,
+                            ra_fc_other ,
+                            ra_email ,
+                            ra_ph_office ,
+                            ra_fx_office ,
+                            ra_ph_mobile ,
+                            ra_supervisor_name) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
+                    val = (referral_id,
+                            ra_fname ,
+                            ra_lname ,
+                            ra_name_list ,
+                            ra_fc_team ,
+                            ra_fc_other ,
+                            ra_email ,
+                            ra_ph_office ,
+                            ra_fx_office ,
+                            ra_ph_mobile ,
+                            ra_supervisor_name)
+                    cursor.execute(sql, val)
+                    conn.commit()
+                else:
+                    
+                    cursor.execute("""UPDATE referring_agency SET ra_fname = (%s),ra_lname = (%s),ra_name_list=(%s),ra_fc_team = (%s),ra_fc_other = (%s), ra_email = (%s), ra_ph_office = (%s),ra_fx_office = (%s),ra_ph_mobile = (%s), ra_supervisor_name = (%s)   WHERE referral_id = """ + str(referral_id),
+                    (
+                    ra_fname ,
+                    ra_lname ,
+                    ra_name_list ,
+                    ra_fc_team ,
+                    ra_fc_other ,
+                    ra_email ,
+                    ra_ph_office ,
+                    ra_fx_office ,
+                    ra_ph_mobile ,
+                    ra_supervisor_name ))
+                    conn.commit()
+            #referring_df.to_sql(name='referring_agency',con = engine ,if_exists = 'append', index = False)
             '''
             consultation
             '''
@@ -1300,8 +1752,46 @@ def import_excel():
                 'consult_reason' 
 
             ]]
-            consultation_df.to_sql(name='consultation_information',con = engine ,if_exists = 'replace', index = False)
-
+            #print("consultation------")
+            consultation_df = consultation_df.where(pd.notnull(consultation_df), None)
+            for index,row in consultation_df.iterrows():
+                referral_id = row['referral_id']
+                consult_aps = row['consult_aps']
+                consult_genesis = row['consult_genesis']
+                consult_district_att = row['consult_district_att']
+                consult_regional = row['consult_regional']
+                consult_coroner= row['consult_coroner']
+                consult_law_enf = row['consult_law_enf']
+                consult_att_oth = row['consult_att_oth']
+                consult_psychologist = row['consult_psychologist']
+                consult_physician = row['consult_physician']
+                consult_ombudsman = row['consult_ombudsman']
+                consult_pub_guard = row['consult_pub_guard']
+                consult_other = row['consult_other']
+                consult_other_desc = row['consult_other_desc']
+                consult_reason = row['consult_reason']
+                cursor.execute ("""SELECT referral_id from cases""")
+               
+                ref_id = [i[0] for i in cursor.fetchall()]
+                if referral_id not in ref_id:
+                
+                    sql = """INSERT INTO consultation_information(referral_id, consult_aps, consult_genesis, consult_district_att, consult_regional, consult_coroner,
+                    consult_law_enf, consult_att_oth, consult_psychologist, consult_physician, consult_ombudsman, consult_pub_guard, consult_other, consult_other_desc,consult_reason) 
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+                    val = (referral_id, consult_aps, consult_genesis, consult_district_att, consult_regional, consult_coroner,
+                    consult_law_enf, consult_att_oth, consult_psychologist, consult_physician, consult_ombudsman, consult_pub_guard, consult_other, consult_other_desc,consult_reason)
+                    cursor.execute(sql, val)
+                    conn.commit()
+                    #consultation_df.to_sql(name='consultation_information',con = engine ,if_exists = 'replace', index = False)
+                else:
+                    # need to upadte
+                    cursor.execute("""UPDATE consultation_information SET consult_aps = (%s), consult_genesis = (%s),
+                    consult_district_att = (%s), consult_regional = (%s), consult_coroner = (%s), consult_law_enf = (%s),
+                    consult_att_oth = (%s), consult_psychologist  = (%s), consult_physician = (%s), consult_ombudsman = (%s), consult_pub_guard = (%s), consult_other = (%s),
+                    consult_other_desc = (%s), consult_reason = (%s)  WHERE referral_id = """ + str(referral_id),
+                    (consult_aps, consult_genesis, consult_district_att, consult_regional, consult_coroner,
+                    consult_law_enf, consult_att_oth, consult_psychologist, consult_physician, consult_ombudsman, consult_pub_guard, consult_other, consult_other_desc,consult_reason))
+                    conn.commit()
             forward_message = "Insert successfully!"
 
             clients_res = client_df
