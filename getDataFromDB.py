@@ -150,7 +150,19 @@ def search_cases_from_database(type, first_name,last_name, closedCase, cursor, c
                 case_number.case_number
 	    FROM 
 		    clients 
-	    INNER JOIN case_number 
+	    LEFT JOIN case_number 
+        ON
+		    case_number.referral_id = clients.referral_id
+UNION
+
+            SELECT 
+		        clients.referral_id,
+		        clients.cl_name_first,
+                clients.cl_name_last ,
+                case_number.case_number
+	    FROM 
+		    clients 
+	    RIGHT JOIN case_number 
         ON
 		    case_number.referral_id = clients.referral_id
         ),
@@ -163,7 +175,20 @@ def search_cases_from_database(type, first_name,last_name, closedCase, cursor, c
             case_number_clients.cl_name_last,
             case_number_clients.case_number
         FROM cases
-        INNER JOIN case_number_clients 
+        LEFT JOIN case_number_clients 
+        ON
+	        case_number_clients.referral_id = cases.referral_id
+UNION
+
+            SELECT
+	        cases.case_date,
+            cases.case_closed,
+            cases.referral_id,
+            case_number_clients.cl_name_first,
+            case_number_clients.cl_name_last,
+            case_number_clients.case_number
+        FROM cases
+        RIGHT JOIN case_number_clients 
         ON
 	        case_number_clients.referral_id = cases.referral_id
         )
@@ -210,7 +235,18 @@ SELECT
         case_number.case_number
 	FROM 
 		clients 
-	INNER JOIN case_number 
+	LEFT JOIN case_number 
+    ON
+		case_number.referral_id = clients.referral_id
+    UNION
+SELECT 
+		clients.referral_id,
+		clients.cl_name_first,
+        clients.cl_name_last ,
+        case_number.case_number
+	FROM 
+		clients 
+	RIGHT JOIN case_number 
     ON
 		case_number.referral_id = clients.referral_id
 ),
@@ -223,7 +259,21 @@ SELECT
     case_number_clients.cl_name_last,
     case_number_clients.case_number
 FROM cases
-INNER JOIN case_number_clients 
+LEFT JOIN case_number_clients 
+ON
+	case_number_clients.referral_id = cases.referral_id
+
+UNION
+
+SELECT
+	cases.case_date,
+    cases.case_closed,
+    cases.referral_id,
+    case_number_clients.cl_name_first,
+    case_number_clients.cl_name_last,
+    case_number_clients.case_number
+FROM cases
+RIGHT JOIN case_number_clients 
 ON
 	case_number_clients.referral_id = cases.referral_id
 ),
@@ -237,8 +287,22 @@ SELECT
     cte_cases.case_closed,
     meeting_notes.meeting_presenters
 FROM cte_cases
-INNER JOIN meeting_notes
+LEFT JOIN meeting_notes
 ON cte_cases.referral_id = meeting_notes.referral_id
+
+UNION
+SELECT
+	cte_cases.referral_id ,
+	cte_cases.case_number,
+    cte_cases.cl_name_first,
+    cte_cases.cl_name_last,
+    cte_cases.case_date,
+    cte_cases.case_closed,
+    meeting_notes.meeting_presenters
+FROM cte_cases
+RIGHT JOIN meeting_notes
+ON cte_cases.referral_id = meeting_notes.referral_id
+
 )
 SELECT
 	cte_all_cases.referral_id ,
@@ -290,7 +354,20 @@ SELECT
         case_number.case_number
 	FROM 
 		clients 
-	INNER JOIN case_number 
+	LEFT JOIN case_number 
+    ON
+		case_number.referral_id = clients.referral_id
+
+UNION
+
+SELECT 
+		clients.referral_id,
+		clients.cl_name_first,
+        clients.cl_name_last ,
+        case_number.case_number
+	FROM 
+		clients 
+	RIGHT JOIN case_number 
     ON
 		case_number.referral_id = clients.referral_id
 ),
@@ -303,7 +380,21 @@ SELECT
     case_number_clients.cl_name_last,
     case_number_clients.case_number
 FROM cases
-INNER JOIN case_number_clients 
+LEFT JOIN case_number_clients 
+ON
+	case_number_clients.referral_id = cases.referral_id
+
+UNION
+
+SELECT
+	cases.case_date,
+    cases.case_closed,
+    cases.referral_id,
+    case_number_clients.cl_name_first,
+    case_number_clients.cl_name_last,
+    case_number_clients.case_number
+FROM cases
+RIGHT JOIN case_number_clients 
 ON
 	case_number_clients.referral_id = cases.referral_id
 ),
@@ -318,8 +409,24 @@ SELECT
     suspects.su_name_first,
     suspects.su_name_last
 FROM cte_cases
-INNER JOIN suspects
+LEFT JOIN suspects
 ON cte_cases.referral_id = suspects.referral_id
+
+UNION
+
+SELECT
+	cte_cases.referral_id ,
+	cte_cases.case_number,
+    cte_cases.cl_name_first,
+    cte_cases.cl_name_last,
+    cte_cases.case_date,
+    cte_cases.case_closed,
+    suspects.su_name_first,
+    suspects.su_name_last
+FROM cte_cases
+RIGHT JOIN suspects
+ON cte_cases.referral_id = suspects.referral_id
+
 )
 SELECT
 	cte_all_cases.referral_id ,

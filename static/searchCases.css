@@ -82,15 +82,23 @@
 tbody td{
     padding: 8px;
 }
-table.table_record tr:hover { 
-    background: #cccccc; 
+table.table_record tr:hover td:not(:last-child) {
+    background: rgb(255, 0, 0);
     cursor: pointer;
 }
 
+/* table.table_record tr:hover { 
+    background: #cccccc; 
+    cursor: pointer;
+} */
+
+
+
+/* 
 table.table_record tr:hover:nth-child(odd) { 
     background: #cccccc; 
     cursor: pointer;
-}
+} */
 
 
 tbody tr:nth-child(odd){

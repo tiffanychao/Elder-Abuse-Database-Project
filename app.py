@@ -9,9 +9,9 @@ import os #provides ways to access the Operating System and allows us to read th
 # import mysql.connector
 from sqlalchemy import create_engine  # for import form function
 from datetime import datetime
-# import pandas as pd
+import pandas as pd
 import pathlib
-# import worddocparser
+import worddocparser
 import docToSql
 load_dotenv()  # take environment variables from .env.
 
