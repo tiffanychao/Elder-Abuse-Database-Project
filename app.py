@@ -5,9 +5,6 @@ from flaskext.mysql import MySQL
 from dotenv import load_dotenv
 from getDataFromDB import *
 import os #provides ways to access the Operating System and allows us to read the environment variables
-# from mysql.connector import Error
-# import mysql.connector
-# from sqlalchemy import create_engine  # for import form function
 from datetime import datetime
 import pandas as pd
 import pathlib
@@ -26,22 +23,9 @@ app.config['MYSQL_DATABASE_HOST'] = os.getenv("DatabaseHost")
 mysql.init_app(app)
 
 
-# conn = mysql.connect()
-# cursor = conn.cursor()
+conn = mysql.connect()
+cursor = conn.cursor()
 
-# check whether DB is connected
-try:
-    conn = mysql.connect()
-    if conn:
-        db_Info = conn.get_server_info()
-        print("Connected to MySQL Server version ", db_Info)
-        cursor = conn.cursor()
-        cursor.execute("select database();")
-        
-        record = cursor.fetchone()
-        print("You're connected to database: ", record)
-except Error as e:
-    print("Error while connecting to MySQL", e)
 
 
 @app.errorhandler(404)
