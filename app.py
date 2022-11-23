@@ -1039,6 +1039,47 @@ def import_excel():
                 show_results = 3
                 content = "Please check your format of excel file"
                 return render_template('import_excel.html',show_results = show_results, content = content)
+            
+            excel_client  = excel_file.parse(sheet_name="Client")
+            
+            '''
+            cases 
+            '''
+
+            cases_df = excel_client[[
+                
+                'referral_id' ,
+                'status_urgent' ,
+                'status_routine',
+                'case_date' ,
+                'case_closed' 
+
+            ]]
+            cases_df = cases_df.where(pd.notnull(cases_df), None)
+            for index,row in cases_df.iterrows():
+                referral_id = row['referral_id']
+                status_urgent = bool(row['status_urgent'])
+                status_routine = bool(row['status_routine'])
+                case_date = row['case_date']
+                case_closed = bool(row['case_closed'])
+                cursor.execute ("""SELECT referral_id from cases""")
+                
+               
+                ref_id = [i[0] for i in cursor.fetchall()]
+                
+                
+                if referral_id in ref_id:
+                    cursor.execute("""UPDATE cases SET status_urgent = (%s),status_routine=(%s),case_date=(%s),case_closed=(%s) WHERE referral_id = """+str(referral_id),(status_urgent,status_routine,case_date,case_closed))
+                    #print("update "+str(referral_id))
+                    conn.commit()
+                else:
+                    
+                    sql = """INSERT INTO cases VALUES(%s,%s,%s,%s,%s)"""
+                    val = (referral_id,status_urgent,status_routine,case_date,case_closed)
+                    #print("insert "+referral_id)
+                    cursor.execute(sql,val)
+                    conn.commit()
+
             '''
             meeting_notes 
             '''
@@ -1214,7 +1255,7 @@ def import_excel():
             Client
             '''
 
-            excel_client  = excel_file.parse(sheet_name="Client")
+            
             client_df = excel_client [[
                 'referral_id' ,
                 'cl_name_first' ,
@@ -1418,43 +1459,6 @@ def import_excel():
                 #     cursor.execute("""UPDATE case_number SET case_number = (%s), referral_id = (%s) WHERE referral_id = """+str(referral_id),(case_number,referral_id))
                 #     conn.commit()
             
-            '''
-            cases 
-            '''
-
-            cases_df = excel_client[[
-                
-                'referral_id' ,
-                'status_urgent' ,
-                'status_routine',
-                'case_date' ,
-                'case_closed' 
-
-            ]]
-            cases_df = cases_df.where(pd.notnull(cases_df), None)
-            for index,row in cases_df.iterrows():
-                referral_id = row['referral_id']
-                status_urgent = bool(row['status_urgent'])
-                status_routine = bool(row['status_routine'])
-                case_date = row['case_date']
-                case_closed = bool(row['case_closed'])
-                cursor.execute ("""SELECT referral_id from cases""")
-                
-               
-                ref_id = [i[0] for i in cursor.fetchall()]
-                
-                
-                if referral_id in ref_id:
-                    cursor.execute("""UPDATE cases SET status_urgent = (%s),status_routine=(%s),case_date=(%s),case_closed=(%s) WHERE referral_id = """+str(referral_id),(status_urgent,status_routine,case_date,case_closed))
-                    #print("update "+str(referral_id))
-                    conn.commit()
-                else:
-                    
-                    sql = """INSERT INTO cases VALUES(%s,%s,%s,%s,%s)"""
-                    val = (referral_id,status_urgent,status_routine,case_date,case_closed)
-                    #print("insert "+referral_id)
-                    cursor.execute(sql,val)
-                    conn.commit()
 
             '''
             abuse-information
