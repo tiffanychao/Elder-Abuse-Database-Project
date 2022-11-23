@@ -44,11 +44,16 @@ def case_info(referral_id):
         status_routine = False
     if request.form.get("case_closed") == None:
         case_closed = False    
-    
+    dateForm = request.form.get("case_date")
     if request.method == "POST":
-        cursor.execute("""UPDATE cases SET status_urgent = (%s), status_routine = (%s), case_closed = (%s), case_date = (%s) WHERE referral_id = """ + str(referral_id),
-         (status_urgent, status_routine,case_closed, request.form.get("case_date")))
+        cursor.execute("""UPDATE cases SET status_urgent = (%s), status_routine = (%s), case_closed = (%s) WHERE referral_id = """ + str(referral_id),
+         (status_urgent, status_routine,case_closed))
         conn.commit()
+
+        if dateForm != None and dateForm != '':
+            cursor.execute("""UPDATE cases SET case_date = (%s) WHERE referral_id = """ + str(referral_id),
+         (dateForm))
+            conn.commit()
 
         cursor.execute("""UPDATE case_number SET case_number = (%s) WHERE referral_id = """ + str(referral_id),
          (request.form.get("case_number")))
