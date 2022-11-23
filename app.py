@@ -86,20 +86,31 @@ def client(referral_id):
     cursor.execute("SELECT * FROM clients INNER JOIN cases ON cases.referral_id = clients.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
     data = cursor.fetchone()
     print(data)
+    ageField = request.form.get('cl_age')
+    dateField = request.form.get("cl_DOB")
     if data == None:
         return render_template('error_handling.html')
     client_id = data[0]
     if request.method == "POST":
-        cursor.execute("""UPDATE clients SET cl_name_first = (%s),cl_name_last = (%s), cl_age = (%s) , 
-        cl_DOB = (%s), cl_language = (%s), cl_TransComm = (%s), cl_education = (%s), cl_ethnicity = (%s), 
+        cursor.execute("""UPDATE clients SET cl_name_first = (%s),cl_name_last = (%s) , 
+        cl_language = (%s), cl_TransComm = (%s), cl_education = (%s), cl_ethnicity = (%s), 
         cl_gender = (%s), cl_marital = (%s), cl_address = (%s), cl_city = (%s), 
         cl_zip = (%s), cl_phone = (%s) WHERE client_id = """ + str(client_id),
          (request.form["cl_name_first"], request.form["cl_name_last"], 
-         request.form["cl_age"], request.form["cl_DOB"], request.form["cl_language"], request.form["cl_TransComm"],
+            request.form["cl_language"], request.form["cl_TransComm"],
          request.form.get('cl_education'), request.form.get("cl_ethnicity"), request.form.get("cl_gender"), 
          request.form.get("cl_marital"), request.form.get("cl_address"), request.form.get("cl_city"), 
          request.form.get("cl_zip"),request.form.get("cl_phone")))
         conn.commit()
+
+        if(ageField != ""):
+            cursor.execute("""UPDATE clients SET cl_age = (%s) WHERE client_id = """ + str(client_id),
+         (ageField))
+            conn.commit()
+        if(dateField != ""):
+            cursor.execute("""UPDATE clients SET cl_DOB = (%s) WHERE client_id = """ + str(client_id),
+         (dateField))
+            conn.commit()
 
     cursor.execute("SELECT * FROM clients INNER JOIN cases on clients.referral_id = cases.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
     data = cursor.fetchone()
