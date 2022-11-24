@@ -14,7 +14,7 @@
         <form method="POST" action="" enctype="multipart/form-data">
           <p><input type="file" name="file"></p>
           <!-- <p><input type="submit" name="check_excel" value="Check Format"></p> -->
-          <p><input type="submit" value="Insert"></p>
+          <p><input type="submit" value="Insert" onclick="(function(){alert('Saving the data');})();"/></p>
         </form>
         {% if show_results == 1 %}
         <!-- {% with messages = get_flashed_messages(with_categories=true) %}
