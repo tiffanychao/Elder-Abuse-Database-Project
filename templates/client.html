@@ -75,7 +75,8 @@
             Level of Education
         </div>
         <select name="cl_education" class="dropdown_design">
-            <option {% if cl_education == 'unknown' %} selected {% endif %} value="unknown">unknown</option>
+            <option {% if cl_education == 'Select...' %} selected {% endif %} value="Select...">Select...</option>
+            <option {% if cl_education == 'Unknown' %} selected {% endif %} value="Unknown">Unknown</option>
             <option {% if cl_education == 'Less than high school' %} selected {% endif %} value="Less than high school">Less than high school</option>
             <option {% if cl_education == 'High school graduate' %} selected {% endif %} value="High school graduate">High school graduate</option>
             <option {% if cl_education == 'Some college/trade school' %} selected {% endif %} value="Some college/trade school">Some college/trade school</option>
@@ -89,6 +90,7 @@
             Ethnicity
         </div>
         <select name="cl_ethnicity" class="dropdown_design">
+            <option value="Select..." {% if cl_ethnicity == 'Select...' %} selected {% endif %} >Select...</option>
             <option value="African American" {% if cl_ethnicity == 'African American' %} selected {% endif %} >African American</option>
             <option value="American Indian/Native Alaskan" {% if cl_ethnicity == 'American Indian/Native Alaskan' %} selected {% endif %} >American Indian/Native Alaskan</option>
             <option value="Asian/Pacific Islander" {% if cl_ethnicity == 'Asian/Pacific Islander' %} selected {% endif %} >Asian/Pacific Islander</option>
@@ -103,6 +105,7 @@
             Gender
         </div>
         <select name="cl_gender" class="dropdown_design">
+            <option {% if cl_gender == 'Select...' %} selected {% endif %} value="Select...">Select...</option>
             <option {% if cl_gender == 'Female' %} selected {% endif %} value="Female">Female</option>
             <option {% if cl_gender == 'Male' %} selected {% endif %} value="Male">Male</option>
             <option {% if cl_gender== 'Transgendered' %} selected {% endif %} value="Transgendered">Transgendered</option>
@@ -115,10 +118,12 @@
             Marital Status
         </div>
         <select name="cl_marital" class="dropdown_design">
+            <option {% if cl_marital == 'Select...' %} selected {% endif %} value="Select...">Select...</option>
             <option {% if cl_marital == 'Divorced' %} selected {% endif %} value="Divorced">Divorced</option>
             <option {% if cl_marital == 'Domestic Partnership' %} selected {% endif %} value="Domestic Partnership">Domestic Partnership</option>
             <option {% if cl_marital == 'Married' %} selected {% endif %} value="Married">Married</option>
             <option {% if cl_marital == 'Seperated' %} selected {% endif %} value="Seperated">Seperated</option>
+            <option {% if cl_marital == 'Single' %} selected {% endif %} value="Single">Single</option>
             <option {% if cl_marital == 'Widowed' %} selected {% endif %} value="Widowed">Widowed</option>
         </select>
     </div>
