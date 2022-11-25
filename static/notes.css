@@ -36,7 +36,12 @@
 }
 
 .blue_button{
-    background-color: #88D0E7; 
+    background-color: #88D0E7;
+    color: #ff0054;
+    font-weight: bold;
+    left: 35%;
+    position: absolute;
+    padding: 10px 100px
 }
 
 
