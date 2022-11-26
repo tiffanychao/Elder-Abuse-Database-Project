@@ -975,8 +975,6 @@ def attachments(referral_id):
     UPLOAD_FOLDER = 'uploads/' + str(referral_id) + '/'
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
     # print(UPLOAD_FOLDER)
-    if not os.path.isdir(UPLOAD_FOLDER):
-                os.mkdir(UPLOAD_FOLDER)
     ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
     sql_attachments = """
@@ -1008,9 +1006,8 @@ def attachments(referral_id):
             message = "file format is not allowed, please upload .txt, .pdf, .png, .jpg, .jpeg or .gif file."
             return render_template('attachments.html', referral_id = referral_id, **content, message = message, attachments = attachments)
         else:
-            # case_folder = os.path.join(app.config['UPLOAD_FOLDER'], str(referral_id))
-            # if not os.path.isdir(UPLOAD_FOLDER):
-            #     os.mkdir(UPLOAD_FOLDER)
+            if not os.path.isdir(UPLOAD_FOLDER):
+                os.mkdir(UPLOAD_FOLDER)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
             file_path = UPLOAD_FOLDER + file.filename
             print(file_path)
