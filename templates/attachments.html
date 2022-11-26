@@ -2,7 +2,7 @@
 {% block title %}Index{% endblock %}
 {% block head %}
 {{ super() }}
-<link rel="stylesheet" href="../static/notes.css">
+<link rel="stylesheet" href="../static/attachments.css">
 <link rel="stylesheet" href="../static/framework.css">
 {% endblock %}
 
@@ -19,32 +19,8 @@
 <a href = {{ url_for('attachments', referral_id = referral_id) }} class="individual_case_tab">attachments</a>
 <a href = {{ url_for('case_info', referral_id = referral_id) }} class="individual_case_tab">case info</a>
 {% endblock %}
+
 {% block content %}
-<style>
-    #attachments {
-      font-family: Arial, Helvetica, sans-serif;
-      border-collapse: collapse;
-      width: 100%;
-    }
-    
-    #attachments td, #attachments th {
-      border: 1px solid #ddd;
-      padding: 8px;
-    }
-    
-    #attachments tr:nth-child(even){background-color: white;}
-    
-    
-    
-    #attachments th {
-      padding-top: 12px;
-      padding-bottom: 12px;
-      text-align: left;
-      
-      background-color: white;;
-      color:black;
-    }
-    </style>
 <!--  Click choose file to upload-->
 <div class="client_information_container">
     
@@ -55,28 +31,42 @@
               <p><input type="file" name="file"></p>
               <p><input type="submit" value="Upload" name="submit"></p>
             </form>
-            <pre>{{content}}</pre>
+            <pre>{{message}}</pre>
         </div>
-        <br>
-        <br>
-    
-    
-    <br>
-    <br/>
-    <br/>
-
-    <table id="attachments">
-        <tr>
-          <th >File <input type="text" id="fname" name="fname"></th>
-          <th>Date <input type="text" id="fname" name="fname"></th>
-          
-        </tr>
-        <tr>
-          <td colspan="2"><textarea name="w3review" rows="10" cols="100"></textarea >
-          </td>
-        </tr>
-      </table>
     </div>
-    
+
+    <div class = "outer_of_header">
+      <!-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"/> -->
+      <div class="row">
+        <div class="column column_search">
+            <table class="table_record table-hover">
+                <tbody>
+                  <td>Attachments</td>
+                  {% for each in attachments %}
+                      <tr >                        
+                          <td>{{each.name}}</td>
+                      </tr>
+                  {% endfor %}
+          
+                </tbody>
+              </table>
+        </div>
+        <!-- <div class="column column_button">
+            
+          <table class="table_button">
+              <tbody>
+                <td></td>
+                {% for r in result %}
+                    <tr >                        
+                      <td><button type="submit" name = "deleteButton" value="{{r.referral_id}}">Delete</button></td>
+                        <!-- <td>Delete</td> -->
+                    </tr>
+                {% endfor %}
+        
+              </tbody>
+            </table>
+        </div> -->
+      </div>   
+    </div>
 </div>
 {% endblock %}

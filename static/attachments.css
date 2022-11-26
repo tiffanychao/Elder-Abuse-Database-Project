@@ -1,0 +1,145 @@
+.head_container {
+  padding: 40px 0px 0px 0px;
+}
+
+.client_information_container {
+  padding: 40px 0px 0px 380px;
+  width: 100%;
+  overflow: visible;
+}
+
+.text_with_input_container {
+  display: grid;
+  grid-template-columns: 300px 200px;
+  padding-top: 10px;
+}
+
+.text_header {
+  background: lightblue;
+  font-size: 40px;
+  text-align: left;
+}
+.outer_of_header {
+  display: grid;
+  grid-template-columns: 1000px 200px;
+  padding-top: 10px;
+}
+
+.text_with_input_container {
+  display: grid;
+  grid-template-columns: 150px 200px;
+  padding-top: 10px;
+}
+
+.container {
+  padding: 80px 140px 0px 120px;
+}
+
+.text_output_design {
+  border-style: groove;
+  border-radius: 5px;
+  background-color: white;
+}
+.previous_reports_container {
+  display: flex;
+  flex-direction: column;
+}
+
+.radio_button_adjust {
+  position: relative;
+  right: 4px;
+}
+/* Create four equal columns that floats next to each other */
+.column {
+  float: left;
+  width: 500px;
+  /* padding: 10px; */
+}
+.column300 {
+  float: left;
+  width: 200px;
+  /* padding: 10px; */
+}
+
+.column_search {
+  width: 90%;
+  /* padding: 10px; */
+}
+.column_button {
+  width: 10%;
+  /* padding: 10px; */
+}
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.button {
+  background-color: #4caf50;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+tbody td {
+  padding: 8px;
+}
+/* table.table_record tr:hover td:not(:last-child) {
+    background: rgb(255, 0, 0);
+    cursor: pointer;
+} */
+
+table.table_record tr:hover {
+  background: #cccccc;
+  cursor: pointer;
+}
+
+/* 
+table.table_record tr:hover:nth-child(odd) { 
+    background: #cccccc; 
+    cursor: pointer;
+} */
+
+tbody tr:nth-child(odd) {
+  background-color: #adcbff;
+  color: #fff;
+}
+
+/* td a { 
+    display: block; 
+    border: 1px solid black;
+    padding: 16px; 
+ }  */
+/* .table{
+  
+    padding-top: 10px; 
+    border-style: solid;
+    border-color: coral;
+} */
+td {
+  height: 25px;
+}
+.table_record {
+  width: 100%;
+  margin-bottom: 1rem;
+  color: #212529;
+  padding-top: 10px;
+  border-style: solid;
+  border-color: coral;
+}
+.table_button {
+  width: 100px;
+  margin-bottom: 1rem;
+  padding-top: 10px;
+  border-color: coral;
+  border-style: solid;
+  color: #212529;
+}

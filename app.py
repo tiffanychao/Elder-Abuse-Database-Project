@@ -1,5 +1,5 @@
 import pathlib
-from flask import Flask, render_template, request,flash
+from flask import Flask, render_template, request,flash, send_from_directory, send_file
 app = Flask(__name__)
 from flaskext.mysql import MySQL
 from dotenv import load_dotenv
@@ -961,7 +961,7 @@ def notes(referral_id):
 
 
 
-@app.route('/attachments/<int:referral_id>')
+@app.route('/attachments/<int:referral_id>',methods =["GET", "POST"])
 def attachments(referral_id):
     content = dict()
     content['searchCase'] = True
@@ -971,9 +971,67 @@ def attachments(referral_id):
     content['bar_caseclosed'] = barinfo['case_closed']
     content['bar_date'] = barinfo['case_date']
     content['bar_case_number'] = barinfo['case_number']
+
+    UPLOAD_FOLDER = 'uploads/' + str(referral_id) + '/'
+    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+    # print(UPLOAD_FOLDER)
+    if not os.path.isdir(UPLOAD_FOLDER):
+                os.mkdir(UPLOAD_FOLDER)
+    ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+
+    sql_attachments = """
+    SELECT
+	    file_path
+    FROM
+	    attachments
+    WHERE
+	referral_id = 
+        """ + str(referral_id)
+    cursor.execute(sql_attachments)
+    data = cursor.fetchall()
+    print("data: " + str(data))
+
+    attachments = []
+    for itemori in data:
+            item = convertNonetoNull(itemori)
+            dic = dict()
+            dic["name"] = str(item[0]).split('/')[2]
+            attachments.append(dic)
+            print ("Result: " + str(attachments))
     
-    variable = "check your name"
-    return render_template('attachments.html', referral_id = referral_id, value = variable,**content)
+    if request.method == 'POST':
+        file = request.files['file']
+        if file.filename == '':
+            message = "No selected file"
+            return render_template('attachments.html', referral_id = referral_id, **content, message = message, attachments = attachments)
+        if not(file.filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS):
+            message = "file format is not allowed, please upload .txt, .pdf, .png, .jpg, .jpeg or .gif file."
+            return render_template('attachments.html', referral_id = referral_id, **content, message = message, attachments = attachments)
+        else:
+            # case_folder = os.path.join(app.config['UPLOAD_FOLDER'], str(referral_id))
+            # if not os.path.isdir(UPLOAD_FOLDER):
+            #     os.mkdir(UPLOAD_FOLDER)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
+            file_path = UPLOAD_FOLDER + file.filename
+            print(file_path)
+            sql = """INSERT INTO attachments(referral_id, file_path) VALUES (%s, %s)"""
+            val = (referral_id, file_path)
+            cursor.execute(sql, val)
+            conn.commit()
+            message = "file uploaded successfully : " + file.filename
+            return render_template('attachments.html', referral_id = referral_id, **content, message = message, attachments = attachments)
+    
+    return render_template('attachments.html', referral_id = referral_id, **content, attachments = attachments)
+
+@app.route('/uploads/<int:referral_id>')
+def download_file(name):
+    print(name)
+    return send_from_directory(app.config["UPLOAD_FOLDER"], name)
+
+@app.route('/download')
+def download():
+    path = 'samplefile.pdf'
+    return send_file(path, as_attachment=True)
 
 @app.route('/import_case',methods =["GET", "POST"])
 def import_case():
