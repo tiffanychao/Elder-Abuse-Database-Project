@@ -1,5 +1,5 @@
 import pathlib
-from flask import Flask, render_template, request,flash, send_file, redirect, url_for
+from flask import Flask, render_template, request, send_file
 app = Flask(__name__)
 from flaskext.mysql import MySQL
 from dotenv import load_dotenv
@@ -1017,7 +1017,7 @@ def attachments(referral_id):
             cursor.execute(sql, val)
             conn.commit()
             message = "file uploaded successfully : " + file.filename
-            
+
             cursor.execute(sql_attachments)
             data = cursor.fetchall()
 
