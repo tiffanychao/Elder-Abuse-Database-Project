@@ -1119,6 +1119,71 @@ def import_excel():
                 show_results = 3
                 content = "Please check your format of excel file"
                 return render_template('import_excel.html',show_results = show_results, content = content)
+
+            excel_client  = excel_file.parse(sheet_name="Client")
+            '''
+            case_number
+            '''
+            cursor.execute("Truncate table case_number;")
+            conn.commit()
+            case_number_df = excel_client[['case_number','referral_id']]
+            #case_number_df.to_sql(name='case_number',con = engine ,if_exists = 'replace', index = False)
+            for index,row in case_number_df.iterrows():
+                referral_id = row['referral_id']
+                case_number = row['case_number']
+                sql = """INSERT INTO case_number(case_number,referral_id) VALUES(%s,%s)"""
+                val = (case_number,referral_id)
+                cursor.execute(sql,val)
+                conn.commit()
+                # else:
+                #     cursor.execute("""SET FOREIGN_KEY_CHECKS=0;""")
+                #     conn.commit()
+                #     cursor.execute("""UPDATE case_number SET case_number = (%s), referral_id = (%s) WHERE referral_id = """+str(referral_id),(case_number,referral_id))
+                #     conn.commit()
+            
+            '''
+            cases 
+            '''
+
+            cases_df = excel_client[[
+                
+                'referral_id' ,
+                'status_urgent' ,
+                'status_routine',
+                'case_date' ,
+                'case_closed' 
+
+            ]]
+            cases_df = cases_df.where(pd.notnull(cases_df), None)
+
+            cursor.execute("Truncate table cases;")
+            conn.commit()
+            for index,row in cases_df.iterrows():
+                referral_id = row['referral_id']
+                status_urgent = bool(row['status_urgent'])
+                status_routine = bool(row['status_routine'])
+                case_date = row['case_date']
+                case_closed = bool(row['case_closed'])
+                print(referral_id)
+                
+                # cursor.execute ("""SELECT referral_id from cases""")
+                
+               
+                # ref_id = [i[0] for i in cursor.fetchall()]
+                
+                
+                # if referral_id in ref_id:
+                #     cursor.execute("""UPDATE cases SET status_urgent = (%s),status_routine=(%s),case_date=(%s),case_closed=(%s) WHERE referral_id = """+str(referral_id),(status_urgent,status_routine,case_date,case_closed))
+                #     #print("update "+str(referral_id))
+                #     conn.commit()
+                # else:
+                    
+                sql = """INSERT INTO cases VALUES(%s,%s,%s,%s,%s)"""
+                val = (referral_id,status_urgent,status_routine,case_date,case_closed)
+                #print("insert "+referral_id)
+                cursor.execute(sql,val)
+                conn.commit()
+
             '''
             meeting_notes 
             '''
@@ -1229,6 +1294,8 @@ def import_excel():
             conn.commit()
             # insert by row
             for index,row in suspect_df.iterrows():
+                print("suspect")
+                print(referral_id)
                 referral_id = row['referral_id']
                 su_name_first = row['su_name_first']
                 su_name_last = row['su_name_last']
@@ -1278,7 +1345,7 @@ def import_excel():
             Client
             '''
 
-            excel_client  = excel_file.parse(sheet_name="Client")
+            
             client_df = excel_client [[
                 'referral_id' ,
                 'cl_name_first' ,
@@ -1422,63 +1489,7 @@ def import_excel():
                 cursor.execute(sql,val)
                 conn.commit()
 
-            '''
-            case_number
-            '''
-            cursor.execute("Truncate table case_number;")
-            conn.commit()
-            case_number_df = excel_client[['case_number','referral_id']]
-            #case_number_df.to_sql(name='case_number',con = engine ,if_exists = 'replace', index = False)
-            for index,row in case_number_df.iterrows():
-                referral_id = row['referral_id']
-                case_number = row['case_number']
-                sql = """INSERT INTO case_number(case_number,referral_id) VALUES(%s,%s)"""
-                val = (case_number,referral_id)
-                cursor.execute(sql,val)
-                conn.commit()
-                # else:
-                #     cursor.execute("""SET FOREIGN_KEY_CHECKS=0;""")
-                #     conn.commit()
-                #     cursor.execute("""UPDATE case_number SET case_number = (%s), referral_id = (%s) WHERE referral_id = """+str(referral_id),(case_number,referral_id))
-                #     conn.commit()
-            
-            '''
-            cases 
-            '''
 
-            cases_df = excel_client[[
-                
-                'referral_id' ,
-                'status_urgent' ,
-                'status_routine',
-                'case_date' ,
-                'case_closed' 
-
-            ]]
-            cases_df = cases_df.where(pd.notnull(cases_df), None)
-            for index,row in cases_df.iterrows():
-                referral_id = row['referral_id']
-                status_urgent = bool(row['status_urgent'])
-                status_routine = bool(row['status_routine'])
-                case_date = row['case_date']
-                case_closed = bool(row['case_closed'])
-                cursor.execute ("""SELECT referral_id from cases""")
-                
-               
-                ref_id = [i[0] for i in cursor.fetchall()]
-                
-                
-                if referral_id in ref_id:
-                    cursor.execute("""UPDATE cases SET status_urgent = (%s),status_routine=(%s),case_date=(%s),case_closed=(%s) WHERE referral_id = """+str(referral_id),(status_urgent,status_routine,case_date,case_closed))
-                    #print("update "+str(referral_id))
-                    conn.commit()
-                else:
-                    
-                    sql = """INSERT INTO cases VALUES(%s,%s,%s,%s,%s)"""
-                    val = (referral_id,status_urgent,status_routine,case_date,case_closed)
-                    #print("insert "+referral_id)
-                    cursor.execute(sql,val)
-                    conn.commit()
 
             '''
             abuse-information
@@ -1668,6 +1679,8 @@ def import_excel():
                         oc_ev_geri,
                         oc_self_suff 
                        )
+                cursor.execute(sql, val)
+                conn.commit()
 
             '''
             referring_agency
