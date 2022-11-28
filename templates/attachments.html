@@ -45,7 +45,7 @@
         <div class="column">
             <table class="table_record table-hover">
                 <tbody>
-                  <td>Attachments</td>
+                  <th>Attachments</th>
                   {% for each in attachments %}
                       <tr onclick="window.location.href='/download?value={{each.path}}';">                 
                           <td>{{each.name}}</td>
