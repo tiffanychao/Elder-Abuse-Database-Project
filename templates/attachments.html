@@ -21,12 +21,16 @@
 {% endblock %}
 
 {% block content %}
+<!-- Client Information Banner -->
+<div class="client_information_banner_container">
+<div class="client_information_banner">Attachments</div>
+</div>
+
 <!--  Click choose file to upload-->
 <div class="client_information_container">
-    
+  <b>click Choose File to upload attachments</b>
     <div class="text_with_input_container">
         <div>
-            Click choose file to upload
             <form method="POST" action="" enctype="multipart/form-data">
               <p><input type="file" name="file"></p>
               <p><input type="submit" value="Upload" name="submit"></p>

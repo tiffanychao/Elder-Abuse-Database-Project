@@ -1,5 +1,5 @@
 import pathlib
-from flask import Flask, render_template, request,flash, send_from_directory, send_file
+from flask import Flask, render_template, request,flash, send_file, redirect, url_for
 app = Flask(__name__)
 from flaskext.mysql import MySQL
 from dotenv import load_dotenv
@@ -1017,14 +1017,22 @@ def attachments(referral_id):
             cursor.execute(sql, val)
             conn.commit()
             message = "file uploaded successfully : " + file.filename
+            
+            cursor.execute(sql_attachments)
+            data = cursor.fetchall()
+
+            attachments = []
+            for itemori in data:
+                item = convertNonetoNull(itemori)
+                dic = dict()
+                dic["name"] = str(item[0]).split('/')[2]
+                dic["path"] = str(item[0])
+                attachments.append(dic)
+            
             return render_template('attachments.html', referral_id = referral_id, **content, message = message, attachments = attachments)
     
     return render_template('attachments.html', referral_id = referral_id, **content, attachments = attachments)
 
-@app.route('/uploads/<int:referral_id>')
-def download_file(name):
-    print(name)
-    return send_from_directory(app.config["UPLOAD_FOLDER"], name)
 
 @app.route('/download')
 def download():

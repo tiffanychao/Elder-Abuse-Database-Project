@@ -8,9 +8,20 @@
   overflow: visible;
 }
 
+.client_information_banner {
+  font-size: 40px;
+  position: relative;
+  left: 580px;
+  width: 100%;
+}
+
+.client_information_banner_container {
+  background-color: #aae8fc;
+}
+
 .text_with_input_container {
   display: grid;
-  grid-template-columns: 300px 200px;
+  grid-template-columns: 400px 200px;
   padding-top: 10px;
 }
 
