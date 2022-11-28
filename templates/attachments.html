@@ -43,7 +43,7 @@
                 <tbody>
                   <td>Attachments</td>
                   {% for each in attachments %}
-                      <tr >                        
+                      <tr onclick="window.location.href='/download?value={{each.path}}';">                 
                           <td>{{each.name}}</td>
                       </tr>
                   {% endfor %}

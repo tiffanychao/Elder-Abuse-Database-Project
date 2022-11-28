@@ -994,6 +994,7 @@ def attachments(referral_id):
             item = convertNonetoNull(itemori)
             dic = dict()
             dic["name"] = str(item[0]).split('/')[2]
+            dic["path"] = str(item[0])
             attachments.append(dic)
             print ("Result: " + str(attachments))
     
@@ -1027,8 +1028,8 @@ def download_file(name):
 
 @app.route('/download')
 def download():
-    path = 'samplefile.pdf'
-    return send_file(path, as_attachment=True)
+    value = request.args.get('value', default = '', type = str)
+    return send_file(value, as_attachment=True)
 
 @app.route('/import_case',methods =["GET", "POST"])
 def import_case():
