@@ -132,8 +132,7 @@ def client(referral_id):
     content['cl_phone'] = data[16]
     content['searchCase'] = True
 
-    if request.method == "POST":
-        return render_template('client.html',referral_id =referral_id, **content)
+ 
 
     barinfo = getBarInfo(referral_id,cursor,conn)
     content['bar_urgentstatus'] = barinfo['status_urgent']
