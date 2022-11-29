@@ -1,7 +1,7 @@
 .client_information_banner{
     font-size: 40px;
     position: relative;
-    left: 380px;
+    left: 580px;
     width: 100%;
 }
 
@@ -36,10 +36,12 @@
 @media only screen and (max-width: 1300px) {
     .client_information_container{
         position: relative;
-        right: 120px;
+        right: 50px;
     }
     .client_information_banner{
+        position: relative;
         font-size: 30px;
+        left: 100px;
     }
 }
 

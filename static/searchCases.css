@@ -7,11 +7,15 @@
     background: lightblue;
     font-size: 40px;
     text-align: center;
+
 }
 .outer_of_header{
     display: grid;
     grid-template-columns: 1000px 200px;
-    padding-top: 10px; 
+
+
+    
+
 }
 
 .text_with_input_container{
@@ -21,7 +25,8 @@
 }
 
 .container{
-    padding: 80px 140px 0px 120px;
+    padding: 10px 140px 0px 120px;
+  
 }
 
 .text_output_design{

@@ -8,16 +8,12 @@
 {% block content %}
 
 
-    
+<div class="client_information_banner_container">
+    <div class="client_information_banner">Cases</div>
+    </div>
     <div class="container" >
-        <div class="outer_of_header">
-            <div class = "text_header">
-                Cases
-            </div>
-        </div>
         <br>
         <br>
-
         <form action="{{ url_for("search_cases")}}" method="post">
             <!-- {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
