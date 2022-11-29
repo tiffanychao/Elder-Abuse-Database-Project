@@ -206,3 +206,22 @@ body {
     }
 
 }
+
+
+.note_information_container{
+    padding: 60px 0px 0px 140px;
+    background-color: #aae8fc;
+    height:40px; 
+    width:300px;
+    vertical-align: middle;
+}
+
+
+.blue_button{
+    background-color: #88D0E7;
+    color: #ff0054;
+    font-weight: bold;
+    left: 35%;
+    position: absolute;
+    padding: 10px 100px
+}
