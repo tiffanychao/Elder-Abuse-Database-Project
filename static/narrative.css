@@ -35,8 +35,17 @@
    
 }
 
-.blue_button{
-    background-color: #88D0E7; 
+.button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 5px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
 }
 
 
