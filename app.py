@@ -223,6 +223,8 @@ def abuser(referral_id):
     su_AdPrepYES = True
     su_AdPrepNO = True
     su_AdPrepUNK = True
+    DOB = request.form.get('su_DOB')
+    dateField = request.form.get('su_age')
     if(request.form.get('su_PrimCrGvYES') == None):
         su_PrimCrGvYES = False
     if(request.form.get('su_PrimCrGvNO')== None):
@@ -259,7 +261,7 @@ def abuser(referral_id):
     su_id = data[0]
     if request.method == "POST":
         cursor.execute("""UPDATE suspects SET su_name_first = (%s),su_name_last = (%s), su_organization = (%s), 
-        su_age = (%s), su_DOB = (%s), su_ethnicity = (%s), su_gender = (%s), su_language = (%s), 
+         su_ethnicity = (%s), su_gender = (%s), su_language = (%s), 
         su_TransComm = (%s), su_PrimCrGvYES = (%s), su_PrimCrGvNO = (%s), su_LivesWthYES = (%s), 
         su_relationship = (%s), su_LivesWthNO = (%s), su_mental_ill = (%s), su_mental_ill_desc = (%s),
         su_AdAlchlYES = (%s), su_AdAlchlNO = (%s), su_AdAlchlUNK = (%s), su_AdDrugsYES = (%s),
@@ -267,7 +269,7 @@ def abuser(referral_id):
         su_AdPrepUNK = (%s), su_AdOther = (%s), su_address = (%s), su_city = (%s), su_zip = (%s),
         su_phone = (%s) WHERE su_id = """ + str(su_id),
          (request.form["su_name_first"], request.form["su_name_last"], 
-         request.form["su_organization"], request.form["su_age"], request.form["su_DOB"], request.form.get("su_ethnicity"),
+         request.form["su_organization"],  request.form.get("su_ethnicity"),
          request.form.get('su_gender'), request.form.get("su_language"), request.form.get("su_TransComm"), 
          su_PrimCrGvYES, su_PrimCrGvNO, su_LivesWthYES, request.form.get("su_relationship"), 
          su_LivesWthNO,request.form.get("su_mental_ill"), request.form.get("su_mental_ill_desc"),  
@@ -277,6 +279,14 @@ def abuser(referral_id):
          request.form.get("su_AdOther"),request.form.get("su_address"), request.form.get("su_city"),
          request.form.get("su_zip"),request.form.get("su_phone")))
         conn.commit()
+        if(DOB != ""):
+            cursor.execute("""UPDATE suspects SET su_DOB = (%s) WHERE su_id = """ + str(su_id),
+         (DOB))
+            conn.commit()
+        if(dateField != ""):
+            cursor.execute("""UPDATE suspects SET su_age = (%s) WHERE su_id = """ + str(su_id),
+         (dateField))
+            conn.commit()
     
     cursor.execute("SELECT * FROM suspects INNER JOIN cases on cases.referral_id = suspects.referral_id WHERE cases.referral_id = " + str(referral_id) + ";")
     data = cursor.fetchone()
