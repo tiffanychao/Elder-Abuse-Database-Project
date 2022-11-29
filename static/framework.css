@@ -210,7 +210,6 @@ body {
 
 .note_information_container{
     padding: 60px 0px 0px 140px;
-    background-color: #aae8fc;
     height:40px; 
     width:300px;
     vertical-align: middle;
@@ -224,4 +223,4 @@ body {
     left: 35%;
     position: absolute;
     padding: 10px 100px
-}
+} 
