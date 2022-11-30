@@ -1128,9 +1128,39 @@ def import_excel():
                 show_results = 3
                 content = "Please check your format of excel file"
                 return render_template('import_excel.html',show_results = show_results, content = content)
-
+            
+            # Truncate table first
+            cursor.execute("SET FOREIGN_KEY_CHECKS = 0;")
+            conn.commit()
+            cursor.execute("Truncate table clients;")
+            conn.commit()
+            cursor.execute("Truncate table abuse_information;")
+            conn.commit()
+            cursor.execute("Truncate table attachments;")
+            conn.commit()
+            cursor.execute("Truncate table consultation_information;")
+            conn.commit()
+            cursor.execute("Truncate table goals;")
+            conn.commit()
+            cursor.execute("Truncate table meeting_notes;")
+            conn.commit()
+            cursor.execute("Truncate table outcome;")
+            conn.commit()
+            cursor.execute("Truncate table recommendations;")
+            conn.commit()
+            cursor.execute("Truncate table referring_agency;")
+            conn.commit()
+            cursor.execute("Truncate table suspects;")
+            conn.commit()
+            cursor.execute("Truncate table case_number;")
+            conn.commit()
+            cursor.execute("Truncate table cases;")
+            conn.commit()
+            cursor.execute("SET FOREIGN_KEY_CHECKS = 1;")
+            conn.commit()
             
             excel_client  = excel_file.parse(sheet_name="Client")
+
             '''
             cases 
             '''
@@ -1146,8 +1176,7 @@ def import_excel():
             ]]
             cases_df = cases_df.where(pd.notnull(cases_df), None)
 
-            cursor.execute("Truncate table cases;")
-            conn.commit()
+            
             for index,row in cases_df.iterrows():
                 referral_id = row['referral_id']
                 status_urgent = bool(row['status_urgent'])
@@ -1177,8 +1206,7 @@ def import_excel():
             '''
             case_number
             '''
-            cursor.execute("Truncate table case_number;")
-            conn.commit()
+            
             case_number_df = excel_client[['case_number','referral_id']]
             #case_number_df.to_sql(name='case_number',con = engine ,if_exists = 'replace', index = False)
             for index,row in case_number_df.iterrows():
@@ -1199,9 +1227,8 @@ def import_excel():
             '''
            
             meeting_df = excel_meeting[['meeting_id','referral_id','meeting_date','meeting_narrative','meeting_recs','meeting_goals','meeting_presenters']]
-            # Truncate table first
-            cursor.execute("Truncate table meeting_notes;")
-            conn.commit()
+            
+            
             
             meeting_df = meeting_df.where(pd.notnull(meeting_df), None)
 
@@ -1222,8 +1249,7 @@ def import_excel():
             '''
             recommendation
             '''
-            cursor.execute("Truncate table recommendations;")
-            conn.commit()
+            
             recommendation_df = excel_recommendation[['client_rec_id','referral_id','action_step',	'person_responsible',	'followup_date',	'action_status']]
             recommendation_df = recommendation_df.where(pd.notnull(recommendation_df), None)
             recommendation_df['followup_date'] = recommendation_df['followup_date'].astype('str')
@@ -1246,8 +1272,7 @@ def import_excel():
             Goal
             '''         
             goals_df = excel_goals[['client_goals_id','referral_id','goal']]
-            cursor.execute("Truncate table goals;")
-            conn.commit()
+     
             
             goals_df = goals_df.where(pd.notnull(goals_df), None)
 
@@ -1299,9 +1324,8 @@ def import_excel():
                 'su_phone' 
             ]]
             suspect_df = suspect_df.where(pd.notnull(suspect_df), None)
-            # truncate table first
-            cursor.execute( """TRUNCATE TABLE suspects;""")
-            conn.commit()
+   
+         
             # insert by row
             for index,row in suspect_df.iterrows():
                 print("suspect")
@@ -1397,9 +1421,8 @@ def import_excel():
            
             client_df['cl_DOB'] = client_df['cl_DOB'].astype('str')
             client_df.replace({'NaT': None}, inplace=True)
-            # truncate first
-            cursor.execute("""TRUNCATE TABLE clients;""")
-            conn.commit()
+       
+       
             for index,row in client_df.iterrows():
                 referral_id = row['referral_id']
                 cl_name_first = row['cl_name_first']
@@ -1529,8 +1552,7 @@ def import_excel():
             ]]
             abuse_df = abuse_df.where(pd.notnull(abuse_df), None)
             
-            cursor.execute("Truncate table abuse_information;")
-            conn.commit()      
+            
             
             for index,row in abuse_df.iterrows():
                 referral_id = row['referral_id']
@@ -1599,9 +1621,7 @@ def import_excel():
 
             ]]
             outcome_df = outcome_df.where(pd.notnull(outcome_df), None)
-            # TRUNCATE
-            cursor.execute("Truncate table outcome;")
-            conn.commit()
+           
             # sql to insert or update
             for index, row in outcome_df.iterrows():
                 referral_id  = row['referral_id']
@@ -1710,8 +1730,7 @@ def import_excel():
 
             ]]
             referring_df = referring_df.where(pd.notnull(referring_df), None)
-            cursor.execute("Truncate table referring_agency;")
-            conn.commit()
+         
             for index, row in referring_df.iterrows():
                 referral_id  = row['referral_id']
                 ra_fname  = row['ra_fname']
@@ -1773,8 +1792,7 @@ def import_excel():
             ]]
             
             consultation_df = consultation_df.where(pd.notnull(consultation_df), None)
-            cursor.execute("Truncate table consultation_information;")
-            conn.commit()
+            
             for index,row in consultation_df.iterrows():
                 referral_id = row['referral_id']
                 consult_aps = row['consult_aps']
