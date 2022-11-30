@@ -1,65 +1,56 @@
-.client_information_banner{
-    font-size: 40px;
-    position: relative;
-    left: 580px;
-    width: 100%;
+.client_information_banner {
+  font-size: 40px;
+  position: relative;
+  left: 480px;
+  width: 100%;
 }
 
-.client_information_banner_container{
-    background-color: #AAE8FC;
+.client_information_banner_container {
+  background-color: #aae8fc;
 }
 
-.text_with_input_container{
-    display: grid;
-    grid-template-columns: 300px 200px;
-    padding-top: 10px;
+.text_with_input_container {
+  display: grid;
+  grid-template-columns: 300px 200px;
+  padding-top: 10px;
 }
 
-.client_information_container{
-    padding: 40px 0px 0px 380px;
-    width: 100%;
-    overflow: visible;
+.client_information_container {
+  padding: 40px 0px 0px 380px;
+  width: 100%;
+  overflow: visible;
 }
 
-
-.previous_reports_container{
-    display: flex;
-    flex-direction: column;
+.previous_reports_container {
+  display: flex;
+  flex-direction: column;
 }
 
-.radio_button_adjust{
-    position: relative;
-    right: 4px;
+.radio_button_adjust {
+  position: relative;
+  right: 4px;
 }
-
 
 @media only screen and (max-width: 1300px) {
-    .client_information_container{
-        position: relative;
-        right: 50px;
-    }
-    .client_information_banner{
-        position: relative;
-        font-size: 30px;
-        left: 100px;
-    }
+  .client_information_container {
+    position: relative;
+    right: 50px;
+  }
+  .client_information_banner {
+    position: relative;
+    font-size: 30px;
+    left: 100px;
+  }
 }
 
 @media only screen and (max-width: 800px) {
-    .client_information_container{
-        position: relative;
-        right: 380px;
-    }
-    .client_information_banner{
-        font-size: 30px;
-        position: relative;
-        left: 40px;
-        
-    }
+  .client_information_container {
+    position: relative;
+    right: 380px;
+  }
+  .client_information_banner {
+    font-size: 30px;
+    position: relative;
+    left: 40px;
+  }
 }
-
-
-
-
-
-

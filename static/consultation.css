@@ -1,46 +1,38 @@
-
-.text_with_input_container{
-    display: grid;
-    grid-template-columns: 300px 200px;
-    padding-top: 10px;
+.text_with_input_container {
+  display: grid;
+  grid-template-columns: 300px 200px;
+  padding-top: 10px;
 }
 
-.consultation_container{
-    padding: 40px 0px 0px 300px;
+.consultation_container {
+  padding: 40px 0px 0px 300px;
 }
 
-
-.previous_reports_container{
-    display: flex;
-    flex-direction: column;
+.previous_reports_container {
+  display: flex;
+  flex-direction: column;
 }
 
-.radio_button_adjust{
-    position: relative;
-    right: 4px;
+.radio_button_adjust {
+  position: relative;
+  right: 4px;
 }
 
-
-
-.dropdown_design{
-    border: none;
-    border-radius: 5px;
+.dropdown_design {
+  border: none;
+  border-radius: 5px;
 }
 
-.button_container { 
-    display: grid;
-    grid-template-columns: 300px 200px;
-    position: relative;
+.button_container {
+  display: grid;
+  grid-template-columns: 300px 200px;
+  position: relative;
 }
-  
+
 .center {
-    position:absolute;
-    top: 50%;
-    left: 35%;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-   
+  position: absolute;
+  top: 50%;
+  left: 35%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
-
-
-
