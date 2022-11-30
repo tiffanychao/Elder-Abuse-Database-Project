@@ -26,13 +26,23 @@
 <div class="client_information_banner">Case Information</div>
 </div>
 <form method="POST">
-<div class="case_info_container">
-    <div>
+<div>
+    <div class="case_info_container">
+        <div>
         <label>Urgent Status</label> <input type="checkbox" name="status_urgent" {% if status_urgent == 1 %} checked {% endif %}>
+    </div>
+    <div>
         <label>Routine Status</label> <input type="checkbox" name="status_routine" {% if status_routine == 1 %} checked {% endif %}>
+    </div>
+    <div>
         <label>Case Closed</label> <input type="checkbox" name="case_closed" {% if case_closed == 1 %} checked {% endif %}>
+    </div>
+    <div>
         <label>Case Date</label> <input type="date" value={{case_date}} name="case_date">
+    </div>
+    <div>
         <label>Case Number</label> <input type="text" name="case_number" value={{case_number}}>
+    </div>
     </div>
 </div>
 <button class="blue_button">Save</button>
