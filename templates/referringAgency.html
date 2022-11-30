@@ -24,13 +24,14 @@
 <div class="client_information_banner_container">
     <div class="client_information_banner">Referring Agency</div>
     </div>
-<div class="container">
+    <form action="{{ url_for("referring_agency", referral_id = referral_id)}}" method="post">
+<div class="client_information_container">
     
    
  
     <br>
     <br>
-    <form action="{{ url_for("referring_agency", referral_id = referral_id)}}" method="post">
+   
     <!-- Referring Case Number -->
     <div class="text_with_input_container">
         <div>
@@ -118,12 +119,12 @@
         <input name="SupervisorName" value = "{{supervisorName}}" class="text_input_design">
     </div>
     <br>
-    <div class="text_with_input_container">
-        <div>           
-        </div>
-        <button type="submit" class="blue_button">Save</button>
-</form>
 
 </div>
 </div>
+<button type="submit" class="blue_button">Save</button>
+</form>
+
+
+
 {% endblock %}
