@@ -4,6 +4,7 @@ This section is going to describe the different folders and files within this pr
 files: example files used to test functionalities
 
 static: the folder that holds the css files used to styize the pages
+
 templates: the folder that holds the html files
 
 uploads: the uploads folder is used to store the attachments that are associated with the cases
