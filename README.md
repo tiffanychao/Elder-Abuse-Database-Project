@@ -17,20 +17,15 @@ worddocparser.py: file that was developed by last year's team to parse the Micro
 
 sqlScript.txt: file that includes the SQL to create the database
 
+requirements.txt: list of dependencies and their versions
+
 
 
 # Elder-Abuse-Database-Project
-How to run if version of flask is less than version 2.2:
 
-1.) Go to the project directory 
+How to run project:
 
-2.) run the following command `export FLASK_APP=app.py`
-
-3.) run `export FLASK_ENV=development`
-
-4.) then run `flask run`
+First make sure you have python installed. Then you can download the dependencies that are located in the requirements.txt file. You can do so with the following command: `pip install -r ./requirements.txt`
 
 
-if version of flask is 2.2:
-
-1.) run `flask --app app --debug run` instead
+Now run `flask --app app --debug run` 
