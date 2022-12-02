@@ -318,7 +318,8 @@ WHERE
 cte_all_cases.case_closed =
         """  + str(closedCase) 
         # print(full_name)
-        basic_sql += " AND cte_all_cases.meeting_presenters LIKE " + "\"%" + full_name.strip() + "%\" "
+        if (full_name):
+            basic_sql += " AND cte_all_cases.meeting_presenters LIKE " + "\"%" + full_name.strip() + "%\" "
         basic_sql += " ORDER BY cte_all_cases.case_date DESC"
         # print(basic_sql)
         cursor.execute(basic_sql)
@@ -334,6 +335,8 @@ cte_all_cases.case_closed =
             dic["cl_name_last"] = item[3]
             dic["case_date"] = item[4]
             dic["presenter_name_full"] = item[6]
+            # if (full_name and full_name not in dic["presenter_name_full"]):
+            #     dic["presenter_name_full"] += '...' + full_name +'...'
         
             result.append(dic)
     else : # suspect
