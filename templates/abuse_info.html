@@ -45,7 +45,7 @@
         <div><input type="checkbox" name="ad_SelfNeglec" {% if ad_SelfNeglec == 1 %} checked {% endif %}> <label>Self-Neglect</label></div>
         <div> <div><input type="checkbox" name="ad_PhyCnstDpr" {% if ad_PhyCnstDpr == 1 %} checked {% endif %}> <label>Physical - Constraint or Deprevation</label></div></div>
         <div> <div><input type="checkbox" name="ad_Abduction" {% if ad_Abduction == 1 %} checked {% endif %}> <label>Abduction</label></div></div>
-        <div> <div><label> Est. loss $ </label><input name="ad_FinanLoss" value={{ad_FinanLoss}}> </div></div>
+        <div> <div><label> Est. loss $ </label><input type="number" name="ad_FinanLoss" value={{ad_FinanLoss}}> </div></div>
         <div> <div><input type="checkbox" name="ad_NeglectOth" {% if ad_NeglectOth == 1 %} checked {% endif %}> <label>Neglect by Others</label></div></div>
         <div> <div><input type="checkbox" name="ad_PhyMedicat" {% if ad_PhyMedicat == 1 %} checked {% endif %}> <label>Physical - Medication</label></div></div>
         <div> <div><input type="checkbox" name="ad_Emotional" {% if ad_Emotional == 1 %} checked {% endif %}> <label>Emotional</label></div></div>
