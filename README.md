@@ -13,7 +13,9 @@ app.py: the main file that has the main logic and routes
 
 docToSql.py: file used to handle logic from turning microsoft word form to sql database
 
-worddocparser.py: file that was developed by last year's team to parse the Microsoft word form. 
+worddocparser.py: file that was developed by last year's team to parse the Microsoft word form
+
+sqlScript.txt: file that includes the SQL to create the database
 
 
 
