@@ -1,0 +1,268 @@
+DROP DATABASE IF EXISTS ElderAbuseDatabase;
+CREATE DATABASE ElderAbuseDatabase;
+use ElderAbuseDatabase;
+
+CREATE TABLE cases (
+	referral_id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	status_urgent boolean,
+	status_routine boolean,
+	case_date date,
+	case_closed boolean
+);
+
+CREATE TABLE case_number (
+case_number int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+referral_id int
+);
+
+ALTER TABLE case_number
+ADD FOREIGN KEY (referral_id) REFERENCES cases(referral_id);
+
+CREATE TABLE clients (
+	client_id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	referral_id int,
+	cl_name_first varchar(255),
+	cl_name_last varchar(255),
+cl_name_list varchar(255),
+	cl_age int,
+	cl_DOB date,
+cl_language varchar(255),
+cl_TransComm varchar(255),
+cl_education varchar(255),
+cl_ethnicity varchar(255),
+cl_gender varchar(255),
+cl_marital varchar(255),
+cl_address varchar(255),
+cl_city varchar(255),
+cl_zip varchar(255),
+cl_phone varchar(255),
+cl_phys_name varchar(255),
+cl_phys_ph varchar(255),
+cl_insurance varchar(255),
+cl_medications varchar(255),
+cl_Illnesses varchar(255),
+cl_functional_status varchar(255),
+cl_cognitive_status varchar(255),
+cl_living_setting varchar(255),
+cl_lives_with varchar(255),
+cl_lives_with_desc varchar(255),
+cl_prev_abuse_no boolean,
+cl_prev_abuse_yes boolean,
+cl_prev_abuse_desc varchar(255),
+cl_multiple_suspects boolean
+);
+
+ALTER TABLE clients
+ADD FOREIGN KEY (referral_id) REFERENCES cases(referral_id);
+
+CREATE TABLE abuse_information (
+	abuser_id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	referral_id int,
+	ad_InvAgencies varchar(255),
+ad_RptingParty varchar(255),
+ad_Others varchar(255),
+ad_Abandon boolean,
+ad_Abduction boolean,
+ad_Emotional boolean,
+ad_FinanRlEst boolean,
+ad_FinanOth boolean,
+ad_FinanLoss varchar(50),
+ad_Isolation boolean,
+ad_Sexual boolean,
+ad_SelfNeglec boolean,
+ad_NeglectOth boolean,
+ad_PhyAssault boolean,
+ad_PhyChemRst boolean,
+ad_PhyCnstDpr boolean,
+ad_PhyMedicat boolean,
+ad_UndueInflu boolean,
+ad_Other boolean,
+ad_Narrative varchar(5000)
+);
+
+ALTER TABLE abuse_information
+ADD FOREIGN KEY (referral_id) REFERENCES cases(referral_id);
+
+CREATE TABLE suspects (
+	su_id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	referral_id int,
+	su_name_first varchar(255),
+	su_name_last varchar(255),
+	su_organization varchar(255),
+	su_name_list varchar(255),
+	su_age int,
+	su_DOB date,
+	su_ethnicity varchar(255),
+	su_gender varchar(255),
+	su_language varchar(255),
+	su_TransComm varchar(255),
+	su_PrimCrGvYES boolean,
+	su_PrimCrGvNo boolean,
+	su_LivesWthYES boolean,
+	su_relationship varchar(255),
+	su_LivesWthNO boolean,
+	su_mental_ill varchar(255),
+	su_mental_ill_desc varchar(255),
+	su_AdAlchlYES boolean,
+	su_AdAlchlNO boolean,
+	su_AdAlchlUNK boolean,
+	su_AdDrugsYES boolean,
+	su_AdDrugsNO boolean,
+	su_AdDrugsUNK boolean,
+	su_AdPrepYES boolean,
+	su_AdPrepNO boolean,
+	su_AdPrepUNK boolean,
+	su_AdOther varchar(255),
+	su_address varchar(255),
+	su_city varchar(255),
+	su_zip varchar(255),
+	su_phone varchar(255)
+);
+
+ALTER TABLE suspects
+ADD FOREIGN KEY (referral_id) REFERENCES cases(referral_id);
+
+CREATE TABLE meeting_notes (
+	meeting_id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	referral_id int,
+	meeting_date date,
+	meeting_recs varchar(255),
+	meeting_goals varchar(255),
+	meeting_presenters varchar(255),
+	meeting_narrative varchar(5000));
+
+ALTER TABLE meeting_notes
+ADD FOREIGN KEY (referral_id) REFERENCES cases(referral_id);
+
+CREATE TABLE goals (
+client_goals_id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+referral_id int,
+goal varchar(400)
+);
+ALTER TABLE goals
+ADD FOREIGN KEY (referral_id) REFERENCES cases(referral_id);
+
+
+CREATE TABLE recommendations (
+client_rec_id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+referral_id int,
+action_step varchar(400),
+person_responsible varchar(50),
+followup_date date,
+action_status varchar(100)
+);
+ALTER TABLE recommendations
+ADD FOREIGN KEY (referral_id) REFERENCES cases(referral_id);
+
+
+# Alter table outcome modify oc_narrative varchar(5000)
+CREATE TABLE outcome (
+	referral_id int NOT NULL,
+oc_cp_arrest boolean,
+oc_cp_hospital boolean,
+oc_ev_neuro boolean,
+oc_ev_mental boolean,
+oc_ev_law boolean,
+oc_ss_support boolean,
+oc_ss_compAPS boolean,
+oc_ss_civil boolean,
+oc_ap_freeze boolean,
+oc_ap_other boolean,
+oc_ap_restitution boolean,
+oc_pr_charges boolean,
+oc_pr_legal boolean,
+oc_narrative varchar(5000),
+oc_csv_probate boolean,
+oc_csv_lps boolean, 
+oc_csv_temp boolean,
+oc_csv_pubg boolean,
+oc_csv_priv varchar(100),
+oc_csv_ext varchar(100),
+oc_csv_name varchar(100),
+oc_sa boolean,
+oc_ro varchar(100),
+oc_ro_name varchar(100),
+oc_ev_geri boolean,
+oc_self_suff boolean,
+outcome_id int NOT NULL PRIMARY KEY AUTO_INCREMENT
+
+);
+
+ALTER TABLE outcome
+ADD FOREIGN KEY (referral_id) REFERENCES cases(referral_id);
+
+CREATE TABLE user (
+user_id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+is_admin boolean,
+is_basic_user boolean,
+is_analyst boolean,
+username varchar(255),
+password varchar(255)
+);
+
+CREATE TABLE attachments (
+Attachment_id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+referral_id int NOT NULL,
+file_path varchar(200) NOT NULL 
+);
+ALTER TABLE attachments
+ADD FOREIGN KEY (referral_id) REFERENCES cases(referral_id);
+
+CREATE TABLE referring_agency (
+Referring_agency_id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+referral_id int,
+ra_fname varchar(50),
+ra_lname varchar(50),
+ra_name_list varchar(100),
+ra_fc_team varchar(255),
+ra_fc_other varchar(255),
+ra_email varchar(255),
+ra_ph_office varchar(255),
+ra_fx_office varchar(255),
+ra_ph_mobile varchar(255),
+ra_supervisor_name varchar(255)
+);
+
+ALTER TABLE referring_agency
+ADD FOREIGN KEY (referral_id) REFERENCES cases(referral_id);
+
+CREATE TABLE consultation_information (
+consultation_id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+referral_id int,
+consult_aps boolean,
+consult_genesis boolean,
+consult_district_att boolean,
+consult_regional boolean,
+consult_coroner boolean,
+consult_law_enf boolean,
+consult_att_oth boolean,
+consult_psychologist boolean,
+consult_physician boolean,
+consult_ombudsman boolean,
+consult_pub_guard boolean,
+consult_other boolean,
+consult_other_desc varchar(255),
+consult_reason varchar(255)
+);
+
+ALTER TABLE consultation_information
+ADD FOREIGN KEY (referral_id) REFERENCES cases(referral_id);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
